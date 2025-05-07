@@ -1,39 +1,76 @@
-# I'm Ryan O'Boyle, aka LayerDynamics
-I'm a developer with a focus on machine learning and web development with an obsession for developing, understanding and deploying machine learning models, I have experience in various programming languages, including Python, JavaScript, and Rust, as well as frameworks such as PyTorch, Deno, FastAPI, and the MERN stack.
+<!-- README.md -->
 
-## Projects
+<h1 align="center">Ryan O'Boyle — LayerDynamics</h1>
+<p align="center">
+  <b>Full‑stack & ML Developer · Rustacean · OSS Advocate</b><br/>
+  🛠 Building performant, type‑safe software at the intersection of <b>Machine Learning</b>,
+  <b>WebAssembly</b>, and <b>Developer Tooling</b>.
+</p>
 
-- [**Rex-ORM**](https://github.com/LayerDynamics/rex-orm): A modern TypeScript ORM for Deno with PostgreSQL/SQLite support(more coming), real-time sync, GraphQL generation, and seamless serverless deployment. Built for type-safety and developer productivity.
+<p align="center">
+  <a href="https://deno.land/">
+    <img alt="Deno" src="https://img.shields.io/badge/deno-🦕-black?style=for-the-badge"/>
+  </a>
+  <a href="https://www.rust-lang.org/">
+    <img alt="Rust" src="https://img.shields.io/badge/rust-🦀-black?style=for-the-badge"/>
+  </a>
+  <a href="https://www.python.org/">
+    <img alt="Python" src="https://img.shields.io/badge/python-🐍-black?style=for-the-badge"/>
+  </a>
+  <a href="https://react.dev/">
+    <img alt="React" src="https://img.shields.io/badge/react-⚛️-black?style=for-the-badge"/>
+  </a>
+  <a href="https://webassembly.org/">
+    <img alt="WebAssembly" src="https://img.shields.io/badge/webassembly-🕸️-black?style=for-the-badge"/>
+  </a>
+</p>
 
-- [**Node-Rust-PTY**](https://github.com/LayerDynamics/node-rust-pty): A high-performance Node.js native module providing comprehensive PTY (pseudo-terminal) functionality with virtual DOM-based rendering and advanced session management, implemented in Rust with N-API bindings.
+## 🚀 About Me
 
-- [**Stega**](https://github.com/LayerDynamics/stega): A modern CLI framework built for Deno that enables developers to create sophisticated command-line applications with features like workflow automation, template generation, and service management. It combines type safety with powerful abstractions to streamline CLI development.
+I'm a developer obsessed with shipping **real‑world, production‑grade** machine‑learning and web solutions.
+My toolbox spans **Python**, **JavaScript/TypeScript**, and **Rust**, with deep experience in **PyTorch**, **FastAPI**, **React**, **Deno**, and **WebAssembly**.
+When I'm not coding, I'm probably reverse‑engineering file formats, reading about compilers, or automating something that shouldn't be automated.
 
-- [**Scriptic**](https://github.com/LayerDynamics/scriptic): A minimalist, embeddable Python REPL with zero external dependencies. It's a simple yet powerful tool for interactive Python development.
+---
 
-- [**MDX-to-JSON**](https://github.com/LayerDynamics/mdx-to-json): A Web application designed to transform MDX (Markdown with JSX) files into structured JSON format. This tool bridges the gap between rich, interactive MDX content and machine-readable JSON data, making it invaluable for content management systems, documentation platforms, and data processing pipelines that need to work with MDX content programmatically.
+## 📌 Featured Projects
 
-- [ **TGC** ](https://github.com/LayerDynamics/tgc): TypeGraph Compiler (TGC) - A high-performance TypeScript compiler and bundler powered by WebAssembly that leverages graph theory for intelligent dependency management. Features cross-platform binary generation, granular security controls, and advanced optimization through a hybrid TypeScript/Rust architecture.
+| Project                                                             | Description                                                                                                | Tech Highlights                                 |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| **[Rex‑ORM](https://github.com/LayerDynamics/rex-orm)**             | Modern TypeScript ORM for Deno with real‑time sync, GraphQL schema generation, and serverless‑first DX.    | Deno • TypeScript • PostgreSQL/SQLite • GraphQL |
+| **[Node‑Rust‑PTY](https://github.com/LayerDynamics/node-rust-pty)** | High‑performance PTY bindings for Node.js with virtual DOM rendering and advanced session management.      | Rust • N‑API • xterm.js                         |
+| **[Stega](https://github.com/LayerDynamics/stega)**                 | CLI framework for Deno featuring workflow automation, template generation, and service management.         | Deno • TypeScript • YAML                        |
+| **[Scriptic](https://github.com/LayerDynamics/scriptic)**           | Minimalist embeddable Python REPL with zero dependencies.                                                  | C • Python/C‑API                                |
+| **[MDX‑to‑JSON](https://github.com/LayerDynamics/mdx-to-json)**     | Transforms MDX documents into structured JSON for headless CMS and data pipelines.                         | Next.js • MDX • Vite                            |
+| **[TGC](https://github.com/LayerDynamics/tgc)**                     | Graph‑aware, WASM‑powered TypeScript compiler with granular security policies and cross‑platform binaries. | Rust • Wasm • SWC                               |
+
+---
+
+## 🧠 Tech Stack & Interests
+
+* **Machine Learning** – NLP & CV, model compression, ONNX, CUDA kernels
+* **Web Development** – React, Vite, FastAPI, GraphQL, htmx
+* **Rust & WebAssembly** – Systems programming, compiler plugins, WASI, sandboxed plugins
+* **Dev Tooling** – CLIs, bundlers, test frameworks, fuzzers
+* **Security** – Secure coding, penetration testing, side‑channel analysis
+* **Open Source** – I maintain a handful of OSS projects and contribute where I can.
+
+---
 
 
+## 📈 Weekly Coding Activity
 
-### Weekly Time Spent Coding 
+<p align="center">
+  <img src="assets/week_coding_average.gif" alt="Weekly coding activity graph"/>
+</p>
 
-![Weekly Coding Activity](assets/week_coding_average.gif)
+---
 
-### Interests
+## 🤝 Connect with Me
 
-- **Machine Learning**: I have a strong interest in machine learning, particularly in the areas of natural language processing and computer vision. I enjoy exploring new algorithms and techniques to improve model performance and efficiency.
+* Twitter / X: [@Layer\_Dynamics](https://x.com/Layer_Dynamics)
+* LinkedIn: [LayerDynamics](https://www.linkedin.com/in/layerdynamics)
+* Email: [layerdynamics@proton.me](mailto:layerdynamics@proton.me)
 
-- **Web Development**: I have a passion for web development, particularly in building modern, responsive applications using frameworks like React and Deno. I enjoy creating user-friendly interfaces and optimizing performance for a seamless user experience.
-
-- **Rust**: I have a keen interest in Rust and its ecosystem. I enjoy exploring its features, such as memory safety and concurrency, and applying them to real-world projects.
-
-- **TypeScript**: I have a strong interest in TypeScript and its type system. I enjoy using TypeScript to build robust and maintainable applications, leveraging its features to catch errors early in the development process.
-
-- **Python**: I have a passion for Python and its simplicity. I enjoy using Python to build efficient and scalable applications, leveraging its versatility and ease of use.
-
-- **WebAssembly**: I have a keen interest in WebAssembly and its potential to bring high-performance computing to the web. I enjoy exploring its features, such as low-level control and portability, and applying them to real-world projects.
-- **Security**: I have a strong interest in security and its importance in software development. I enjoy exploring security best practices, such as secure coding techniques and vulnerability assessment, and applying them to real-world projects.
-- **Open Source**: I have a passion for open source and its ability to foster collaboration and innovation. I enjoy contributing to open source projects, sharing my knowledge with the community, and learning from others.
-- **Continuous Learning**: I have a strong interest in continuous learning and its importance in the fast-paced world of technology. I enjoy exploring new technologies, frameworks, and best practices, and applying them to real-world projects.
+---
+ > *“Talk is cheap. Show me the code.”* — Linus Torvalds
