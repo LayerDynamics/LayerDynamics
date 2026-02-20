@@ -3,17 +3,12 @@ name: Generate Repo Cards
 on:
   schedule:
     - cron: "0 0 * * 0"
-  push:
-    branches:
-      - main
-    paths:
-      - ".github/scripts/generate-repo-cards.py"
   workflow_dispatch:
 
 jobs:
   generate:
     runs-on: ubuntu-latest
-    timeout-minutes: 5
+    timeout-minutes: 10
     permissions:
       contents: write
 
@@ -33,10 +28,9 @@ jobs:
         run: python .github/scripts/generate-repo-cards.py
 
       - name: Commit and push
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add assets/repo-cards/
-          git diff --staged --quiet && exit 0
-          git commit -m "chore: update repo card SVGs"
-          git push
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update repo card SVGs"
+          file_pattern: "assets/repo-cards/*.svg"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "41898282+github-actions[bot]@users.noreply.github.com"
