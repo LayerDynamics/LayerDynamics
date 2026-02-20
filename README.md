@@ -30,22 +30,22 @@ I build at the systems level — runtimes, compilers, frameworks, and toolchains
 
 <div align="center">
 <a href="https://github.com/LayerDynamics/BrowserX">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=BrowserX&theme=tokyonight" alt="BrowserX" />
+  <img src="./assets/repo-cards/BrowserX.svg" alt="BrowserX" width="400" />
 </a>
 <a href="https://github.com/LayerDynamics/forge">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=forge&theme=tokyonight" alt="forge" />
+  <img src="./assets/repo-cards/forge.svg" alt="forge" width="400" />
 </a>
 <a href="https://github.com/LayerDynamics/node-rust-pty">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=node-rust-pty&theme=tokyonight" alt="node-rust-pty" />
+  <img src="./assets/repo-cards/node-rust-pty.svg" alt="node-rust-pty" width="400" />
 </a>
 <a href="https://github.com/LayerDynamics/Echelon">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=Echelon&theme=tokyonight" alt="Echelon" />
+  <img src="./assets/repo-cards/Echelon.svg" alt="Echelon" width="400" />
 </a>
 <a href="https://github.com/LayerDynamics/smlx">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=smlx&theme=tokyonight" alt="smlx" />
+  <img src="./assets/repo-cards/smlx.svg" alt="smlx" width="400" />
 </a>
 <a href="https://github.com/LayerDynamics/stega">
-  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=stega&theme=tokyonight" alt="stega" />
+  <img src="./assets/repo-cards/stega.svg" alt="stega" width="400" />
 </a>
 </div>
 
