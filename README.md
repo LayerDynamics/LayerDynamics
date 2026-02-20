@@ -6,7 +6,7 @@
 
 **Layer Dynamics**
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=58A6FF&center=true&vCenter=true&width=435&lines=Systems+Builder;Runtime+Engineer;Polyglot+Developer;Framework+Architect" alt="Typing SVG" /></a>
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=3000&pause=500&color=58A6FF&center=true&vCenter=true&width=435&lines=Framework+Architecture;Experience+Through+Practice;Polyglot;Agents,+NNs,+ML;Systems+Design;Tooling+and+Infrastructure;CAD,+STEP,+Mesh+Processing;Endless+Tinkerer;Endless+Student" alt="Typing SVG" /></a>
 
 [![Rust](https://img.shields.io/badge/Rust-000000?style=flat&logo=rust&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=rust)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=typescript)
@@ -21,10 +21,7 @@
 </div>
 
 ---
-
-I build at the systems level — runtimes, compilers, frameworks, and toolchains — usually from scratch, usually across multiple languages. Most of my projects share a common thread: if the abstraction doesn't exist or the existing one makes the wrong tradeoffs, build a better one.
-
-53 original public repos. Account since March 2024.
+I like building things from scratch — runtimes, frameworks, CLI tools, whatever. If I can't find something that works the way I need it to, I'll just make it. Most of my stuff is cross-language because different problems call for different tools.
 
 ## Featured Projects
 

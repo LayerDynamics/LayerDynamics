@@ -108,9 +108,6 @@ def generate_card(repo_data):
         lang_section = f'''<circle cx="25" cy="{bottom_y}" r="6" fill="{lang_color}"/>
     <text x="37" y="{bottom_y + 4}" fill="{text_color}" font-size="12" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">{escape_xml(lang)}</text>'''
 
-    star_x = 160
-    fork_x = 215
-
     svg = f'''<svg width="400" height="{card_height}" viewBox="0 0 400 {card_height}" xmlns="http://www.w3.org/2000/svg">
   <rect x="0.5" y="0.5" width="399" height="{card_height - 1}" rx="6" fill="{bg}" stroke="{border}" stroke-width="1"/>
   <g>
@@ -120,14 +117,6 @@ def generate_card(repo_data):
     <text x="48" y="36" fill="{title_color}" font-size="14" font-weight="bold" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">{escape_xml(name)}</text>
 {desc_svg}
     {lang_section}
-    <svg x="{star_x}" y="{bottom_y - 6}" width="16" height="16" viewBox="0 0 16 16" fill="{text_color}">
-      <path fill-rule="evenodd" d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
-    </svg>
-    <text x="{star_x + 20}" y="{bottom_y + 4}" fill="{text_color}" font-size="12" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">{stars}</text>
-    <svg x="{fork_x}" y="{bottom_y - 6}" width="16" height="16" viewBox="0 0 16 16" fill="{text_color}">
-      <path fill-rule="evenodd" d="M5 3.25a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm0 2.122a2.25 2.25 0 10-1.5 0v.878A2.25 2.25 0 005.75 8.5h1.5v2.128a2.251 2.251 0 101.5 0V8.5h1.5a2.25 2.25 0 002.25-2.25v-.878a2.25 2.25 0 10-1.5 0v.878a.75.75 0 01-.75.75h-4.5A.75.75 0 015 6.25v-.878zm3.75 7.378a.75.75 0 11-1.5 0 .75.75 0 011.5 0zm3-8.75a.75.75 0 100-1.5.75.75 0 000 1.5z"/>
-    </svg>
-    <text x="{fork_x + 20}" y="{bottom_y + 4}" fill="{text_color}" font-size="12" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">{forks}</text>
   </g>
 </svg>'''
     return svg
