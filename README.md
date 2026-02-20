@@ -2,11 +2,11 @@
 
 # Ryan O'Boyle
 
-<img src="./assets/LayerDynamicsLogoStroke.svg" alt="Layer Dynamics" width="420" />
+<img src="./assets/LayerDynamicsLogoStrokeSpin.svg" alt="Layer Dynamics" width="320" />
 
 **Layer Dynamics**
 
-<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=3000&pause=500&color=58A6FF&center=true&vCenter=true&width=435&lines=Framework+Architecture;Experience+Through+Practice;Polyglot;Agents,+NNs,+ML;Systems+Design;Tooling+and+Infrastructure;CAD,+STEP,+Mesh+Processing;Endless+Tinkerer;Endless+Student" alt="Typing SVG" /></a>
+
 
 [![Rust](https://img.shields.io/badge/Rust-000000?style=flat&logo=rust&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=rust)
 [![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=typescript)
@@ -18,6 +18,8 @@
 [![MLX](https://img.shields.io/badge/MLX-000000?style=flat&logo=apple&logoColor=white)](#)
 [![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat&logo=threedotjs&logoColor=white)](#)
 
+
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=3000&pause=500&color=58A6FF&center=true&vCenter=true&width=435&lines=Framework+Architecture;Experience+Through+Practice;Polyglot;Agents,+NNs,+ML;Systems+Design;Tooling+and+Infrastructure;CAD,+STEP,+Mesh+Processing;Endless+Tinkerer;Endless+Student" alt="Typing SVG" /></a>
 </div>
 
 ---
