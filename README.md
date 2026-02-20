@@ -144,14 +144,9 @@ Build the thing. Don't configure someone else's thing. Zero-dep where possible. 
 ## GitHub Stats
 
 <div align="center">
-<a href="https://github.com/LayerDynamics">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=LayerDynamics&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true" alt="GitHub Stats" />
-</a>
-<a href="https://github.com/LayerDynamics">
-  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=LayerDynamics&layout=compact&theme=tokyonight" alt="Top Languages" />
-</a>
-
-<img src="https://github-profile-trophy.vercel.app/?username=LayerDynamics&theme=darkhub&no-frame=true&row=1&column=7" alt="GitHub Trophies" />
+<img src="./assets/repo-cards/stats.svg" alt="GitHub Stats" />
+<img src="./assets/repo-cards/top-langs.svg" alt="Top Languages" />
+<img src="./assets/repo-cards/trophies.svg" alt="GitHub Trophies" />
 
 </div>
 
@@ -161,7 +156,7 @@ Build the thing. Don't configure someone else's thing. Zero-dep where possible. 
 
 <img src="./assets/feb24-feb25.gif" alt="Coding activity Feb 2024 – Feb 2025" width="800" />
 
-<img src="https://raw.githubusercontent.com/LayerDynamics/LayerDynamics/dist/github-snake.svg" alt="Snake animation" />
+<img src="https://raw.githubusercontent.com/LayerDynamics/LayerDynamics/output/github-snake.svg" alt="Snake animation" />
 
 </div>
 
