@@ -1,76 +1,177 @@
-<!-- README.md -->
+<div align="center">
 
-<h1 align="center">Ryan O'Boyle — LayerDynamics</h1>
-<p align="center">
-  <b>Full‑stack & ML Developer · Rustacean · OSS Advocate</b><br/>
-  🛠 Building performant, type‑safe software at the intersection of <b>Machine Learning</b>,
-  <b>WebAssembly</b>, and <b>Developer Tooling</b>.
-</p>
+# Ryan O'Boyle
 
-<p align="center">
-  <a href="https://deno.land/">
-    <img alt="Deno" src="https://img.shields.io/badge/deno-🦕-black?style=for-the-badge"/>
-  </a>
-  <a href="https://www.rust-lang.org/">
-    <img alt="Rust" src="https://img.shields.io/badge/rust-🦀-black?style=for-the-badge"/>
-  </a>
-  <a href="https://www.python.org/">
-    <img alt="Python" src="https://img.shields.io/badge/python-🐍-black?style=for-the-badge"/>
-  </a>
-  <a href="https://react.dev/">
-    <img alt="React" src="https://img.shields.io/badge/react-⚛️-black?style=for-the-badge"/>
-  </a>
-  <a href="https://webassembly.org/">
-    <img alt="WebAssembly" src="https://img.shields.io/badge/webassembly-🕸️-black?style=for-the-badge"/>
-  </a>
-</p>
+<img src="./assets/LayerDynamicsLogoStroke.svg" alt="Layer Dynamics" width="420" />
 
-## 🚀 About Me
+**Layer Dynamics**
 
-I'm a developer obsessed with shipping **real‑world, production‑grade** machine‑learning and web solutions.
-My toolbox spans **Python**, **JavaScript/TypeScript**, and **Rust**, with deep experience in **PyTorch**, **FastAPI**, **React**, **Deno**, and **WebAssembly**.
-When I'm not coding, I'm probably reverse‑engineering file formats, reading about compilers, or automating something that shouldn't be automated.
+<a href="https://git.io/typing-svg"><img src="https://readme-typing-svg.demolab.com?font=Fira+Code&pause=1000&color=58A6FF&center=true&vCenter=true&width=435&lines=Systems+Builder;Runtime+Engineer;Polyglot+Developer;Framework+Architect" alt="Typing SVG" /></a>
+
+[![Rust](https://img.shields.io/badge/Rust-000000?style=flat&logo=rust&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=rust)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat&logo=typescript&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=typescript)
+[![Deno](https://img.shields.io/badge/Deno-000000?style=flat&logo=deno&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=typescript)
+[![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=python)
+[![Go](https://img.shields.io/badge/Go-00ADD8?style=flat&logo=go&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=go)
+[![C++](https://img.shields.io/badge/C++-00599C?style=flat&logo=cplusplus&logoColor=white)](https://github.com/LayerDynamics?tab=repositories&language=c%2B%2B)
+[![WASM](https://img.shields.io/badge/WebAssembly-654FF0?style=flat&logo=webassembly&logoColor=white)](#)
+[![MLX](https://img.shields.io/badge/MLX-000000?style=flat&logo=apple&logoColor=white)](#)
+[![Three.js](https://img.shields.io/badge/Three.js-000000?style=flat&logo=threedotjs&logoColor=white)](#)
+
+</div>
 
 ---
 
-## 📌 Featured Projects
+I build at the systems level — runtimes, compilers, frameworks, and toolchains — usually from scratch, usually across multiple languages. Most of my projects share a common thread: if the abstraction doesn't exist or the existing one makes the wrong tradeoffs, build a better one.
 
-| Project                                                             | Description                                                                                                | Tech Highlights                                 |
-| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| **[Rex‑ORM](https://github.com/LayerDynamics/rex-orm)**             | Modern TypeScript ORM for Deno with real‑time sync, GraphQL schema generation, and serverless‑first DX.    | Deno • TypeScript • PostgreSQL/SQLite • GraphQL |
-| **[Node‑Rust‑PTY](https://github.com/LayerDynamics/node-rust-pty)** | High‑performance PTY bindings for Node.js with virtual DOM rendering and advanced session management.      | Rust • N‑API • xterm.js                         |
-| **[Stega](https://github.com/LayerDynamics/stega)**                 | CLI framework for Deno featuring workflow automation, template generation, and service management.         | Deno • TypeScript • YAML                        |
-| **[Scriptic](https://github.com/LayerDynamics/scriptic)**           | Minimalist embeddable Python REPL with zero dependencies.                                                  | C • Python/C‑API                                |
-| **[MDX‑to‑JSON](https://github.com/LayerDynamics/mdx-to-json)**     | Transforms MDX documents into structured JSON for headless CMS and data pipelines.                         | Next.js • MDX • Vite                            |
-| **[TGC](https://github.com/LayerDynamics/tgc)**                     | Graph‑aware, WASM‑powered TypeScript compiler with granular security policies and cross‑platform binaries. | Rust • Wasm • SWC                               |
+53 original public repos. Account since March 2024.
+
+## Featured Projects
+
+<div align="center">
+<a href="https://github.com/LayerDynamics/BrowserX">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=BrowserX&theme=tokyonight" alt="BrowserX" />
+</a>
+<a href="https://github.com/LayerDynamics/forge">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=forge&theme=tokyonight" alt="forge" />
+</a>
+<a href="https://github.com/LayerDynamics/node-rust-pty">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=node-rust-pty&theme=tokyonight" alt="node-rust-pty" />
+</a>
+<a href="https://github.com/LayerDynamics/Echelon">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=Echelon&theme=tokyonight" alt="Echelon" />
+</a>
+<a href="https://github.com/LayerDynamics/smlx">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=smlx&theme=tokyonight" alt="smlx" />
+</a>
+<a href="https://github.com/LayerDynamics/stega">
+  <img src="https://github-readme-stats.vercel.app/api/pin/?username=LayerDynamics&repo=stega&theme=tokyonight" alt="stega" />
+</a>
+</div>
+
+## Areas of Focus
+
+<details>
+<summary><strong>Systems Programming & Native Runtimes</strong> — Custom runtimes, FFI bridges, capability-based security</summary>
+
+| Project | Lang | What it demonstrates |
+|---------|------|---------------------|
+| [forge](https://github.com/LayerDynamics/forge) | Rust + Deno | Electron alternative with capability-based security and system WebViews |
+| [node-rust-pty](https://github.com/LayerDynamics/node-rust-pty) | Rust + Node.js | Native PTY with virtual DOM terminal rendering via N-API |
+| [blkbox](https://github.com/LayerDynamics/blkbox) | Rust | Sandboxed execution environment |
+| [aether](https://github.com/LayerDynamics/aether) | Rust | Low-level runtime experimentation |
+| [bb-stream](https://github.com/LayerDynamics/bb-stream) | Go | Streaming infrastructure |
+
+</details>
+
+<details>
+<summary><strong>AI/ML on Apple Silicon</strong> — Local inference, MLX optimization, sub-1B model tooling</summary>
+
+| Project | Lang | What it demonstrates |
+|---------|------|---------------------|
+| [smlx](https://github.com/LayerDynamics/smlx) | Python + MLX | Sub-1B parameter framework for M4. Quantization, OpenAI-compatible API, agent system |
+| [MLXR](https://github.com/LayerDynamics/MLXR) | C++ | MLX runtime extensions |
+| [mlxllm](https://github.com/LayerDynamics/mlxllm) | Python | vLLM implementation specifically for M-class chips |
+| [destill3d](https://github.com/LayerDynamics/destill3d) | Python | ML distillation pipelines |
+
+</details>
+
+<details>
+<summary><strong>AI Agents & Autonomous Systems</strong> — Agent architectures, tool-use frameworks, MCP servers</summary>
+
+| Project | Lang | What it demonstrates |
+|---------|------|---------------------|
+| [agent-x](https://github.com/LayerDynamics/agent-x) | Python | Full-featured agent with tool integration |
+| [agent_io](https://github.com/LayerDynamics/agent_io) | Python | Browser, desktop, coding, and vision-capable agent |
+| [agent-xsh](https://github.com/LayerDynamics/agent-xsh) | Python | Offline-first AI coding agent |
+| [canto](https://github.com/LayerDynamics/canto) | TypeScript | MCP server for Claude Code plugin scaffolding |
+| [universal_query_agent](https://github.com/LayerDynamics/universal_query_agent) | Python | QL-to-QL conversion agent |
+
+</details>
+
+<details>
+<summary><strong>3D Graphics & Computational Geometry</strong> — CAD toolchains, point clouds, WebGL/Three.js pipelines</summary>
+
+| Project | Lang | What it demonstrates |
+|---------|------|---------------------|
+| [GameWarden](https://github.com/LayerDynamics/GameWarden) | Rust | ML-first game engine (Bevy ECS + Rapier3D + Gymnasium) |
+| [fluxon](https://github.com/LayerDynamics/fluxon) | TypeScript | PBR/path-tracing tile-based renderer for Three.js/R3F |
+| [deno-three](https://github.com/LayerDynamics/deno-three) | TypeScript | Dependency-free 3D library for Deno |
+| [500kdensityPointClouds](https://github.com/LayerDynamics/500kdensityPointClouds) | — | High-density point cloud processing |
+| [react-three-fiber](https://github.com/LayerDynamics/react-three-fiber) | TypeScript | React renderer for Three.js |
+
+</details>
+
+<details>
+<summary><strong>Developer Tooling & CLIs</strong> — CLI frameworks, dependency analysis, code generation</summary>
+
+| Project | Lang | What it demonstrates |
+|---------|------|---------------------|
+| [stega](https://github.com/LayerDynamics/stega) | TypeScript/Deno | CLI framework: workflows, i18n, plugins, templates, service management |
+| [llm-pack](https://github.com/LayerDynamics/llm-pack) | JavaScript | Package LLM contexts from codebases |
+| [CodeMarauder](https://github.com/LayerDynamics/CodeMarauder) | TypeScript | Code generator and search engine for web/data queries |
+| [nodepad](https://github.com/LayerDynamics/nodepad) | TypeScript | Node-based visual editor |
+| [logly](https://github.com/LayerDynamics/logly) | Python | Structured logging utility |
+| [RustSee](https://github.com/LayerDynamics/RustSee) | Rust | Interactive code visualizer for Rust/Tauri projects |
+| [mdpx](https://github.com/LayerDynamics/mdpx) | TypeScript | Markdown editor and previewer |
+
+</details>
+
+<details>
+<summary><strong>Web Frameworks & Full-Stack</strong> — Zero-dep application frameworks, ORMs, composable toolkits</summary>
+
+| Project | Lang | What it demonstrates |
+|---------|------|---------------------|
+| [BrowserX](https://github.com/LayerDynamics/BrowserX) | TypeScript/Deno + Rust | Composable browser toolkit: engine, proxy, query, GPU compute, CDP, MCP server |
+| [Echelon](https://github.com/LayerDynamics/Echelon) | TypeScript/Deno | Zero-dep "Application OS" — RBAC, KV ORM, telemetry, WASM sandbox |
+| [rex-orm](https://github.com/LayerDynamics/rex-orm) | TypeScript/Deno | ORM with real-time WebSocket sync + GraphQL generation |
+| [tgc](https://github.com/LayerDynamics/tgc) | TypeScript + Rust/WASM | TypeGraph Compiler — graph-based dependency management |
+
+</details>
+
+<details>
+<summary><strong>WebAssembly</strong> — Rust→WASM compilation, browser/edge compute, cross-platform binaries</summary>
+
+| Project | Lang | What it demonstrates |
+|---------|------|---------------------|
+| [forge](https://github.com/LayerDynamics/forge) | Rust → WASM | WASM-enabled desktop runtime |
+| [tgc](https://github.com/LayerDynamics/tgc) | Rust → WASM | WASM-powered TypeScript compiler |
+| [Echelon](https://github.com/LayerDynamics/Echelon) | TypeScript/Deno | WASM execution sandbox within application framework |
+
+</details>
+
+## Philosophy
+
+Build the thing. Don't configure someone else's thing. Zero-dep where possible. Cross-language when the problem demands it. Systems-level thinking at every layer.
+
+## GitHub Stats
+
+<div align="center">
+<a href="https://github.com/LayerDynamics">
+  <img height="180em" src="https://github-readme-stats.vercel.app/api?username=LayerDynamics&show_icons=true&theme=tokyonight&include_all_commits=true&count_private=true" alt="GitHub Stats" />
+</a>
+<a href="https://github.com/LayerDynamics">
+  <img height="180em" src="https://github-readme-stats.vercel.app/api/top-langs/?username=LayerDynamics&layout=compact&theme=tokyonight" alt="Top Languages" />
+</a>
+
+<img src="https://github-profile-trophy.vercel.app/?username=LayerDynamics&theme=darkhub&no-frame=true&row=1&column=7" alt="GitHub Trophies" />
+
+</div>
+
+## Dedicated
+
+<div align="center">
+
+<img src="./assets/feb24-feb25.gif" alt="Coding activity Feb 2024 – Feb 2025" width="800" />
+
+<img src="https://raw.githubusercontent.com/LayerDynamics/LayerDynamics/dist/github-snake.svg" alt="Snake animation" />
+
+</div>
 
 ---
 
-## 🧠 Tech Stack & Interests
+<div align="center">
 
-* **Machine Learning** – NLP & CV, model compression, ONNX, CUDA kernels
-* **Web Development** – React, Vite, FastAPI, GraphQL, htmx
-* **Rust & WebAssembly** – Systems programming, compiler plugins, WASI, sandboxed plugins
-* **Dev Tooling** – CLIs, bundlers, test frameworks, fuzzers
-* **Security** – Secure coding, penetration testing, side‑channel analysis
-* **Open Source** – I maintain a handful of OSS projects and contribute where I can.
+[![GitHub](https://img.shields.io/badge/LayerDynamics-181717?style=flat&logo=github&logoColor=white)](https://github.com/LayerDynamics)
 
----
-
-
-## 📈 Weekly Coding Activity
-
-<p align="center">
-  <img src="assets/week_coding_average.gif" alt="Weekly coding activity graph"/>
-</p>
-
----
-
-## 🤝 Connect with Me
-
-* Twitter / X: [@Layer\_Dynamics](https://x.com/Layer_Dynamics)
-* LinkedIn: [LayerDynamics](https://www.linkedin.com/in/layerdynamics)
-* Email: [layerdynamics@proton.me](mailto:layerdynamics@proton.me)
-
----
- > *“Talk is cheap. Show me the code.”* — Linus Torvalds
+</div>
