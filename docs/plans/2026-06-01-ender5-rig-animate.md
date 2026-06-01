@@ -7,7 +7,14 @@
 
 **Architecture:** A **hybrid, staged Blender pipeline**. Deterministic stages run headless (`blender --background --python`) from committed scripts under `blender/scripts/` + `blender/workflows/`; the Blender MCP is used only to visually verify rig pivots. STEP is read **inside Blender's own Python 3.13** via the OpenCASCADE wheel `cadquery-ocp` (recovers the 151 part names + assembly hierarchy — the realization of the "Blender STEP add-on" choice), tessellated to named meshes, then: fasteners dropped → parts grouped into kinematic assemblies (`Frame_Static`, `Bed_Z`, `GantryY`, `CarriageX`, `Extruder_Spin`) → empties rig → print choreography keyframed → decimated + Draco-compressed glTF with **baked animation clips** → typed R3F component via `gltfjsx` → scrubbed by scroll with `useAnimations`.
 
-**Tech Stack:** Blender 5.1.2 (bundled Python 3.13.9, pip 25.2), `cadquery-ocp` 7.9.3.1.1 (OpenCASCADE/OCP) in Blender's Python, Blender core glTF exporter (Draco), `npx gltfjsx`, React 19 + R3F 9 + drei (`useAnimations`), Vitest (new), `three` 0.184.
+**Tech Stack:** Blender 5.1.2 (bundled Python 3.13.9, pip 25.2), `cadquery-ocp` 7.9.3.1.1 (OpenCASCADE/OCP) in Blender's Python, `npx gltfjsx -T -S` (gltf-transform: join + meshopt simplify + palette + Draco), React 19 + R3F 9 + drei (`useAnimations`), Vitest (new), `three` 0.184.
+
+> **Update (2026-06-01, post-implementation):** Tasks 8–9 below described a Blender-side
+> COLLAPSE-decimate + Blender-Draco export. That was **replaced** by the canonical pmndrs
+> workflow — Blender exports **raw** full-res (`50_export_raw.py`), and `build_ender5.sh weboptimize`
+> runs **`gltfjsx -T -S`** to join meshes (105→12 draw calls), meshopt-simplify, palette
+> materials, prune, and Draco in one step. `45_decimate.py` + `50_optimize_export.py` were
+> removed. See SPEC-002 Appendix A for the executed pipeline.
 
 **Practices (Phase-2 answers):**
 - **Verify each stage's output** — every stage ends with an assertion (object count / bbox / file size) **and** a rendered thumbnail before proceeding. No stage is "done" without evidence.

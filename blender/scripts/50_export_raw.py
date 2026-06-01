@@ -1,8 +1,9 @@
-"""Assign brand materials and export a Draco-compressed glTF with the print clip.
+"""Assign brand materials and export a RAW full-res glTF (geometry + rig + anim).
 
-Few shared PBR materials keep the GLB tiny and on-brand. Exports GLB with Draco
-mesh compression, the single 'Print' animation (SCENE mode bakes all movers into
-one clip), named nodes preserved, +Y-up. Asserts <= 3 MB (SPEC-002 NFR).
+No Draco, no decimation: Blender's job is authoring. Web optimization (mesh join,
+meshopt simplify, palette materials, Draco) is done downstream by gltfjsx -T -S
+(see build_ender5.sh weboptimize), which is purpose-built for it and does it
+better. Output is the gitignored intermediate lib_ender5.RAW_GLB.
 Run via: build_ender5.sh export
 """
 import bpy, sys, os
@@ -42,30 +43,26 @@ def main():
             ob.data.materials.clear()
             ob.data.materials.append(pick(ob.name))
 
-    # The exporter emits one translation clip per mover action (Bed_Z / GantryY /
-    # CarriageX), all sharing the scene frame range / duration. PrintingLevel plays
-    # all three together and scrubs their time off scroll, so they stay in lockstep.
+    # One translation clip per mover (Bed_Z / GantryY / CarriageX), all the same
+    # 10 s range; PrintingLevel scrubs them together.
     bpy.context.scene.name = "Print"
 
-    out = os.path.abspath(L.OUT_GLB)
+    out = os.path.abspath(L.RAW_GLB)
     os.makedirs(os.path.dirname(out), exist_ok=True)
     bpy.ops.object.select_all(action='SELECT')
     bpy.ops.export_scene.gltf(
         filepath=out,
         export_format='GLB',
         use_selection=True,
-        export_draco_mesh_compression_enable=True,
-        export_draco_mesh_compression_level=7,
+        export_draco_mesh_compression_enable=False,   # gltfjsx -T does Draco
         export_animations=True,
         export_animation_mode='SCENE',
-        export_apply=False,         # modifiers already applied; keep animation intact
+        export_apply=False,
         export_yup=True,
         export_extras=True,
     )
     size = os.path.getsize(out)
-    print("@@EXPORT %s bytes=%d (%.2f MB)" % (out, size, size / 1e6))
-    assert size <= 3_000_000, "GLB %d bytes exceeds 3MB budget" % size
-    print("@@EXPORT ok")
+    print("@@EXPORTRAW %s bytes=%d (%.2f MB)" % (out, size, size / 1e6))
 
 
 main()

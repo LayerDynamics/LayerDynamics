@@ -461,19 +461,27 @@ Repeatable, committed pipeline under `blender/scripts/` + `blender/workflows/`
 5. **Animate** (`40_animate.py`): bake a 250-frame @ 25 fps print loop — carriage X
    sweep (6 raster passes), gantry Y advance, bed Z descent. Verified by frame
    renders.
-6. **Optimize** (`45_decimate.py`): COLLAPSE-decimate 650k → **179,934 tris**
-   (web budget), silhouette preserved.
-7. **Export** (`50_optimize_export.py`): ≤4 brand PBR materials; glTF-binary with
-   **KHR_draco_mesh_compression**, +Y-up, named nodes + animation. Output
-   `apps/client/public/assets/objects/Ender5Pro.glb` = **2.04 MB** (≤3 MB NFR),
-   110 nodes. The exporter emits **one translation clip per mover** (`Bed_Z` /
-   `GantryY` / `CarriageX`), all 10 s — not a single merged clip.
-8. **Wrap** (`gltfjsx`): `Ender5Pro.tsx` (typed, `--keepnames`); GLB path fixed to
-   `/assets/objects/Ender5Pro.glb`; internal `useAnimations` removed so
-   `PrintingLevel` owns the single mixer.
-9. **Verify:** GLB decoded directly — clips target the named rig nodes with real
-   translation spans (bed 0.06 m vertical, gantry/carriage 0.11 m); `scrubToClipTime`
-   unit-tested; `pnpm build` + `lint` + `test` green.
+6. **Raw export** (`50_export_raw.py`): ≤4 brand PBR materials assigned by name;
+   glTF-binary with named nodes + animation, +Y-up, **no Draco, no decimation** →
+   gitignored intermediate `blender/assets/Ender5Pro.raw.glb` (**45.65 MB** full-res).
+   Blender's job stops at authoring; web optimization is delegated to gltf-transform.
+7. **Web-optimize + wrap** (`build_ender5.sh weboptimize` → `gltfjsx -T -S`): one
+   command runs gltf-transform (**join compatible meshes, palette materials, prune,
+   Draco**) + **meshopt simplify** (`--ratio 0.4 --error 0.001`) and generates the
+   typed component. Result `apps/client/public/assets/objects/Ender5Pro.glb` =
+   **2.10 MB**, **12 meshes** (down from 105 — ~9× fewer draw calls), **15 nodes**,
+   3 translation clips intact, Draco. The join is animation-aware: it keeps the
+   animated `Bed_Z`/`GantryY`/`CarriageX` nodes separate and prunes the static
+   `Frame_Static`/`Extruder_Spin` empties (never animated) into the join.
+   *This replaced an earlier hand-rolled Blender decimate + Draco export — gltf-transform
+   does web optimization better and in one step (the canonical pmndrs workflow).*
+8. **Component fixes** (post-gltfjsx): GLB path → `/assets/objects/Ender5Pro.glb`;
+   internal `useAnimations` removed so `PrintingLevel` owns the single mixer; typed
+   `GLTF` from `three-stdlib` with `as unknown as GLTFResult`; `React.JSX.IntrinsicElements`.
+9. **Verify:** the optimized GLB re-imported into Blender + Cycles-rendered (silhouette
+   + thin parts survive simplify at ratio 0.4); GLB decoded — 3 clips target the rig
+   nodes with real translation spans (bed 0.06 m vertical, gantry/carriage 0.11 m);
+   `scrubToClipTime` unit-tested; `pnpm build` + `lint` + `test` green.
 
 > Status: **Executed.** Owner: Ryan + Claude. Renders under `blender/assets/_renders/`.
 
@@ -500,3 +508,4 @@ Repeatable, committed pipeline under `blender/scripts/` + `blender/workflows/`
 | 2026-06-01 | Stand up Vitest for the level reducer | Honest testing of the one purely-logical piece; visual guarantees stay manual. |
 | 2026-06-01 | Ender 5 motion = **baked glTF clips** scrubbed via `useAnimations`, not runtime node math | Owner choice; rig still authored in Blender to produce the clips. Exporter emits one translation clip per mover (all 10 s), played in lockstep. |
 | 2026-06-01 | STEP→mesh via `cadquery-ocp` (OpenCASCADE) inside Blender's Python | Blender 5.1 has no STEP importer + no FreeCAD; OCP recovers the 151 SolidWorks part names that make auto-rigging tractable. |
+| 2026-06-01 | Web optimization via **gltfjsx `-T -S`** (gltf-transform), not Blender decimate+Draco | Canonical pmndrs workflow: Blender authors raw, gltf-transform joins meshes (105→12 draw calls), meshopt-simplifies, palettes materials, prunes, Draco — better + one step. Animation-aware join keeps the rig clips intact. |

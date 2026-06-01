@@ -35,6 +35,10 @@ def classify(name: str):
 SRC_STEP = "blender/assets/ender-5-pro-assem.STEP"
 BLEND_RAW = "blender/assets/ender5_raw.blend"   # after import
 BLEND_RIG = "blender/assets/ender5_rig.blend"   # after rig+anim
+# Blender exports a RAW full-res GLB (geometry + rig + animation, no Draco). The
+# web optimization (mesh join, meshopt simplify, palette, Draco) is done by
+# gltfjsx -T -S, which produces the public OUT_GLB below.
+RAW_GLB = "blender/assets/Ender5Pro.raw.glb"
 OUT_GLB = "apps/client/public/assets/objects/Ender5Pro.glb"
 RENDER_DIR = "blender/assets/_renders"
 

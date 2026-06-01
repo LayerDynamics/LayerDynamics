@@ -1,6 +1,10 @@
 assets/*.STEP
 assets/*.IGS
 assets/*.blend
+assets/*.blend1
+assets/*.glb
 assets/_renders/
-asset_gen/__pycache__/
+# asset_gen/ is the owner's standalone text/image->3D tool (separate venvs), not
+# part of the portfolio source — keep it untracked.
+asset_gen/
 scripts/__pycache__/
