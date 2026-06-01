@@ -1,0 +1,172 @@
+/* HireMe feature styles — co-located with the component (modular: the feature
+   owns its own CSS). Uses the global brand tokens from styles/theme.css. */
+
+.hireme {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 120px clamp(20px, 6vw, 48px) 120px;
+}
+
+.hireme__header {
+  margin-bottom: 36px;
+}
+.hireme__eyebrow {
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  color: var(--cyan);
+  margin: 0 0 12px;
+}
+.hireme__title {
+  font-size: clamp(40px, 8vw, 72px);
+  line-height: 1.02;
+  margin: 0 0 14px;
+  color: var(--text-h);
+}
+.hireme__intro {
+  font-size: clamp(16px, 2.4vw, 19px);
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0;
+  max-width: 60ch;
+}
+
+.hireme__panel {
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  padding: clamp(20px, 4vw, 36px);
+}
+
+.hireme__form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.hireme__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.hireme__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+}
+.hireme__label {
+  font-family: var(--mono);
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: var(--text-h);
+}
+.hireme__optional {
+  color: var(--text-dim);
+  text-transform: none;
+}
+.hireme__input {
+  font-family: var(--sans);
+  font-size: 15px;
+  color: var(--text-h);
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: rgba(12, 10, 20, 0.5);
+  transition: border-color var(--dur) var(--ease), box-shadow var(--dur) var(--ease);
+}
+.hireme__input::placeholder {
+  color: var(--text-dim);
+}
+.hireme__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgba(170, 59, 255, 0.18);
+}
+.hireme__input:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.hireme__textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.55;
+}
+.hireme__error {
+  font-size: 13px;
+  color: #ff8a8a;
+  margin: 0;
+}
+
+.hireme__submit {
+  align-self: flex-start;
+  margin-top: 6px;
+  font-family: var(--mono);
+  font-size: 14px;
+  color: #fff;
+  padding: 13px 26px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: linear-gradient(120deg, var(--violet-deep), var(--violet-soft));
+  box-shadow: 0 10px 30px -8px rgba(126, 20, 255, 0.6);
+  cursor: pointer;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease);
+}
+.hireme__submit:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+.hireme__submit:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.hireme__banner {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 138, 138, 0.4);
+  background: rgba(255, 138, 138, 0.08);
+  color: #ffb4b4;
+  font-size: 14px;
+}
+
+.hireme__swap {
+  width: 100%;
+}
+.hireme__success {
+  text-align: center;
+  padding: 16px 8px;
+}
+.hireme__success-title {
+  font-size: 24px;
+  color: var(--text-h);
+  margin: 0 0 10px;
+}
+.hireme__success-body {
+  color: var(--text);
+  line-height: 1.6;
+  margin: 0 auto 22px;
+  max-width: 46ch;
+}
+.hireme__reset {
+  font-family: var(--mono);
+  font-size: 14px;
+  color: var(--text);
+  padding: 10px 20px;
+  border-radius: 10px;
+  border: 1px solid var(--glass-border);
+  background: var(--glass-bg);
+  cursor: pointer;
+  transition: color 0.3s var(--ease), border-color 0.3s var(--ease);
+}
+.hireme__reset:hover {
+  color: var(--text-h);
+  border-color: var(--accent);
+}
+
+@media (max-width: 560px) {
+  .hireme__row {
+    grid-template-columns: 1fr;
+  }
+}

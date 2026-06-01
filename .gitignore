@@ -18,3 +18,4 @@ target/
 # OS / editor noise
 .DS_Store
 *.local
+.env

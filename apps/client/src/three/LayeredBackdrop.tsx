@@ -1,19 +1,9 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, CanvasTexture, MathUtils, type Group } from 'three'
-import GlassLayer from './GlassLayer'
 import Starfield from './Starfield'
 import { brand } from '../styles/brand'
 import { useScene } from '../stores/useScene'
-
-// Soft, near-invisible glass strata that give the deep space a sense of layered
-// planes without the hard wireframe rectangles the old version drew. Large,
-// low-opacity, edgeless — they read as atmosphere, not boxes.
-const STRATA = [
-  { z: -6, w: 34, h: 40, color: brand.violetDeep, opacity: 0.05 },
-  { z: -13, w: 30, h: 36, color: brand.violet, opacity: 0.045 },
-  { z: -20, w: 26, h: 32, color: brand.cyan, opacity: 0.04 },
-]
 
 /** Builds a radial-gradient texture (bright center → transparent edge) used for
  *  the soft hero glow plane. */
@@ -70,19 +60,6 @@ export default function LayeredBackdrop() {
           blending={AdditiveBlending}
         />
       </mesh>
-
-      {STRATA.map((s) => (
-        <GlassLayer
-          key={s.z}
-          position={[0, -4, s.z]}
-          width={s.w}
-          height={s.h}
-          color={s.color}
-          opacity={s.opacity}
-          edge={s.color}
-          edgeOpacity={0}
-        />
-      ))}
     </group>
   )
 }

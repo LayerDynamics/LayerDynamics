@@ -16,6 +16,9 @@ export default function Nav() {
             ← All work
           </Link>
         )}
+        <Link to="/hire" className="nav__link">
+          Hire me
+        </Link>
         <a
           className="nav__link"
           href="https://github.com/LayerDynamics"
