@@ -13,16 +13,15 @@ WORKDIR /app
 # (pnpm@10.32.1, matching the committed lockfile) is the one that runs.
 RUN corepack enable
 
-# Install deps first (cached unless a manifest or the lockfile changes). The
-# pnpm workspace globs apps/* and packages/*, so every workspace manifest must
-# be present for --frozen-lockfile to resolve.
-COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
-COPY apps/client/package.json ./apps/client/
-COPY packages/ ./packages/
+# Copy the whole workspace in one shot. The pnpm workspace globs apps/* and
+# packages/*, so every workspace manifest must be present for --frozen-lockfile
+# to resolve. A single COPY (rather than per-directory COPYs) avoids a BuildKit
+# per-subdir cache-key failure seen on Railway; .dockerignore keeps
+# node_modules/dist/.git out of the context.
+COPY . .
 RUN pnpm install --frozen-lockfile
 
 # Build the client (tsc -b && vite build -> apps/client/dist).
-COPY . .
 RUN pnpm --filter client build
 
 # ---- runtime stage --------------------------------------------------------
