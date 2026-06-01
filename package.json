@@ -1,0 +1,15 @@
+{
+  "name": "layerdynamics",
+  "private": true,
+  "version": "0.0.0",
+  "packageManager": "pnpm@10.32.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "build": "pnpm --filter client build",
+    "start": "pnpm --filter client preview --host 0.0.0.0 --port ${PORT:-4173}",
+    "dev": "pnpm --filter client dev",
+    "lint": "pnpm --filter client lint"
+  }
+}

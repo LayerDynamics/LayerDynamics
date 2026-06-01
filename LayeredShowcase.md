@@ -9,6 +9,7 @@ Projects organized by scale and ambition. Everything here is built from scratch 
 Framework-scale systems. Cross-language. Deep architecture.
 
 ### [BrowserX](https://github.com/LayerDynamics/BrowserX)
+
 **TypeScript/Deno + Rust** · Composable browser toolkit
 
 Not a browser. Not a scraper. A *toolkit* — every piece usable independently or composed together. Browser engine, proxy engine, query engine, GPU compute via wgpu, Chrome DevTools Protocol support, and an MCP server. The kind of project where the architecture diagram has its own architecture diagram.
@@ -18,6 +19,7 @@ Not a browser. Not a scraper. A *toolkit* — every piece usable independently o
 ---
 
 ### [forge](https://github.com/LayerDynamics/forge)
+
 **Rust + Deno** · Desktop runtime (Electron alternative)
 
 Capability-based security model. System WebViews instead of bundled Chromium. Cross-platform. Hot reload. Multiple framework templates. Apps don't need to write Rust — the runtime handles the native layer.
@@ -27,6 +29,7 @@ Capability-based security model. System WebViews instead of bundled Chromium. Cr
 ---
 
 ### [node-rust-pty](https://github.com/LayerDynamics/node-rust-pty)
+
 **Rust + Node.js (N-API)** · Native PTY module
 
 Platform-specific PTY implementations for Linux, macOS, and Windows — all behind a single N-API interface. Virtual DOM-based terminal rendering. This is deep Rust↔JavaScript interop at the systems level.
@@ -36,6 +39,7 @@ Platform-specific PTY implementations for Linux, macOS, and Windows — all behi
 ---
 
 ### [Echelon](https://github.com/LayerDynamics/Echelon)
+
 **TypeScript/Deno** · Application OS
 
 Zero external dependencies. RBAC authentication, KV-backed ORM, Prometheus telemetry, WASM execution sandbox, job scheduling, plugin system. A web framework that's closer to an operating system for applications.
@@ -45,6 +49,7 @@ Zero external dependencies. RBAC authentication, KV-backed ORM, Prometheus telem
 ---
 
 ### [smlx](https://github.com/LayerDynamics/smlx)
+
 **Python + MLX** · Small model framework for Apple Silicon ⭐ 2
 
 Complete framework for sub-1B parameter models on M4. Handles vision, language, audio, and multimodal. Quantization support (GPTQ/AWQ/LoRA/DoRA), OpenAI-compatible API server, built-in agent system.
@@ -58,6 +63,7 @@ Complete framework for sub-1B parameter models on M4. Handles vision, language, 
 Well-scoped, well-executed projects that show range.
 
 ### [stega](https://github.com/LayerDynamics/stega) ⭐ 1
+
 **TypeScript/Deno** · CLI framework + workflow automation
 
 Full CLI framework with i18n, plugin architecture, template engine, and service management. Well-documented at 39K repo size. The kind of tool you build because every other CLI framework makes the wrong tradeoffs.
@@ -65,6 +71,7 @@ Full CLI framework with i18n, plugin architecture, template engine, and service 
 ---
 
 ### [rex-orm](https://github.com/LayerDynamics/rex-orm) ⭐ 2
+
 **TypeScript/Deno** · Real-time ORM
 
 ORM with real-time WebSocket sync, automatic GraphQL schema generation, and serverless optimization. PostgreSQL + SQLite. Treats the database as a live data source, not a dumb store.
@@ -72,6 +79,7 @@ ORM with real-time WebSocket sync, automatic GraphQL schema generation, and serv
 ---
 
 ### [tgc](https://github.com/LayerDynamics/tgc)
+
 **TypeScript + Rust/WASM** · TypeGraph Compiler
 
 TypeScript compiler/bundler that uses graph theory for dependency management. Cross-platform binaries. Security controls for the build pipeline. A different take on what a compiler's dependency model should look like.
@@ -79,6 +87,7 @@ TypeScript compiler/bundler that uses graph theory for dependency management. Cr
 ---
 
 ### [mdx-to-json](https://github.com/LayerDynamics/mdx-to-json) ⭐ 3
+
 **TypeScript** · MDX converter
 
 Highest-starred original repo. Converts MDX to structured JSON — simple problem, clean solution, published utility that people actually use.
@@ -86,6 +95,7 @@ Highest-starred original repo. Converts MDX to structured JSON — simple proble
 ---
 
 ### [nodepad](https://github.com/LayerDynamics/nodepad)
+
 **TypeScript** · Node-based visual editor
 
 Visual node editor for composing... anything. Recent, actively developed. The kind of tool that becomes infrastructure for other tools.
