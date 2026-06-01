@@ -75,12 +75,12 @@ The portfolio *is* a portfolio piece. A scattered continuous scroll undersells t
 | FR-5 | MUST | While a transition is playing, scroll/wheel/touch input that would advance or reverse MUST be **locked** (ignored for level-change purposes) until the transition completes. |
 | FR-6 | MUST | Forward scroll intent past the end of a level MUST advance to the next level; reverse scroll intent past the start MUST return to the previous level, **playing the transition in reverse**. There is no jump to non-adjacent levels. |
 | FR-7 | MUST | The `processing` level MUST reproduce the existing mesh→point-cloud logo pipeline (Solid→Surface→Point cloud→Segmentation→Decimation→Variation) as a self-contained, mount/unmount-safe level (GPU resources disposed on unmount). |
-| FR-8 | MUST | The `printing` level MUST render a **rigged, web-optimized Ender 5 Pro** (produced from the owner's STEP file) that performs **mechanical print motion** — the gantry/Z, X-carriage/hotend, and bed/Y move along the printer's real axes as if printing. |
+| FR-8 | MUST | The `printing` level MUST render a **rigged, web-optimized Ender 5 Pro** (produced from the owner's STEP file) that performs **mechanical print motion** — the bed descends (vertical/Z), the gantry advances (front-back), and the carriage/hotend sweeps (left-right) along the printer's real axes as if printing. Realized as **baked glTF animation clips** on the named rig nodes (one translation clip per mover), not per-frame node math. |
 | FR-9 | MUST | The `otherWork` level MUST present the ~20 code projects from `data/projects.ts` as an interactive collection; clicking a project MUST open its detail route (`/projects/:id`) exactly as today. The **tier↔domain lens toggle MUST be removed**. |
 | FR-10 | MUST | The `hireMe` level MUST present the existing HireMe form path (Web3Forms email + Discord alert) reachable as the final level. |
 | FR-11 | MUST | Reduced-motion (`prefers-reduced-motion: reduce`) MUST be honored: transitions collapse to an instant cut, level animations snap to a representative static pose, and no continuous idle motion plays. |
 | FR-12 | MUST | The active level (and transition phase) MUST be reflected in shared state so non-Canvas UI (loader, level indicator) and the Canvas agree on a single source of truth. |
-| FR-13 | SHOULD | The Ender 5 print motion SHOULD be **scrubbable by scroll** within the `printing` level (scrolling drives the print timeline); reaching the timeline end arms the transition. (See OQ-2 for the cross-level in-level-scroll policy.) |
+| FR-13 | SHOULD | The Ender 5 print motion SHOULD be **scrubbable by scroll** within the `printing` level: the baked clips are played paused and their `action.time` is set from in-level scroll progress (`scrubToClipTime`) via drei `useAnimations`; reaching the timeline end arms the transition. (See OQ-2.) |
 | FR-14 | SHOULD | A minimal **level progress indicator** (e.g. "02 / 05" or dotted rail) SHOULD show which level the user is on and the count. |
 | FR-15 | SHOULD | Heavy level assets (Ender 5 GLB, logo GLB) SHOULD **preload/prewarm** before their level is entered so a transition never reveals an unloaded level. |
 | FR-16 | COULD | The transition COULD adapt its accent (color/shape) per the level being entered (e.g. printer-orange entering `printing`). |
@@ -213,7 +213,7 @@ Replace the single world-traversal with a **Level State Machine** that owns whic
 #### Level components (each: single responsibility = "be one level, mount/unmount-safe")
 - `HeroLevel` — brand intro (reuses `Hero` content), advance-on-scroll.
 - `ProcessingLevel` — wraps the existing `MeshProcessing` pipeline, but **band math is local to the level** (0→1 over the level's own scrub) instead of the global `PROCESS` offsets; disposes geometry/material on unmount (already does). Scrub-then-advance.
-- `PrintingLevel` — loads `Ender5Pro.glb` (via the gltfjsx-generated `Ender5Pro.tsx`), drives the rig's named nodes for mechanical print motion; scrub-then-advance (FR-13).
+- `PrintingLevel` — loads `Ender5Pro.glb` (geometry via the gltfjsx-generated `Ender5Pro.tsx`), owns a single `useAnimations` mixer that plays the three baked clips paused and scrubs their time from scroll for mechanical print motion; scrub-then-advance (FR-13). Implemented at `src/components/scene/PrintingLevel/`.
 - `OtherWorkLevel` — the project grid from `ProjectCollection` minus the lens; one fixed grouping (e.g. by tier order, headers from `tierTitle`), `onOpen` routing preserved.
 - `HireMeLevel` — surfaces the HireMe form as the terminal level (DOM form overlaid or the existing `/hire` path framed as a level).
 
@@ -257,7 +257,7 @@ interface LevelsState {
 ```
 
 - **`projects` / `Project`** (`data/projects.ts`) — unchanged; consumed only by `OtherWorkLevel`. `Domain`/`domains.ts` may stay for detail pages even though the lens is dropped.
-- **Ender 5 rig contract** — the GLB exposes the five named nodes above; `PrintingLevel` reads them by name (`nodes.Carriage_X` etc.) and mutates `position`/`rotation` per frame from local scroll progress. Lifecycle: authored once offline, committed, loaded at runtime with Draco decoder; disposed on level unmount.
+- **Ender 5 rig contract** — the GLB exposes five named nodes (`Frame_Static`, `Bed_Z`, `GantryY`, `CarriageX`, `Extruder_Spin`; `CarriageX` nested under `GantryY`) and three baked translation clips (`Bed_Z`/`GantryY`/`CarriageX`, 10 s each). `PrintingLevel` binds them with `useAnimations` and scrubs `action.time` from local scroll progress. Lifecycle: authored once offline, committed, loaded at runtime with the Draco decoder; mixer stopped + GLTF cache retained on unmount.
 - **Lifecycle (runtime):** level content is **created on enter, mutated per frame while live, disposed on exit**. State transitions: `live(index) → [advance/reverse] → transition(direction) → (swap index at midpoint) → live(index±1)`.
 
 ### 3.4 API & Interface Design
@@ -423,7 +423,7 @@ Static site — no runtime dashboards. Post-launch verification is the manual QA
 | # | Question | Owner | Due |
 |---|----------|-------|-----|
 | OQ-1 | Transition **visual**: glass wipe vs fade-through-brand vs depth-dive vs printer-themed? (Trigger/timing already locked; visual deferred to M5.) | Ryan | Before M5 |
-| OQ-2 | In-level scroll policy: confirm the proposed default — **scrub-then-advance** for `processing` + `printing`, **advance-on-scroll** for `hero` + `hireMe`, `otherWork` = advance (grid is browse, not scrub). Owner answered "unsure"; this is the recommended default pending confirmation. | Ryan | Before M3 |
+| OQ-2 | In-level scroll policy: **resolved for `printing`** — scrub-then-advance (clip time = scroll progress via `scrubToClipTime`). Still pending for the others: **advance-on-scroll** for `hero` + `hireMe`, `otherWork` = advance (grid is browse, not scrub). | Ryan | Before M3 (printing done) |
 | OQ-3 | `otherWork` grouping now that the lens is dropped: keep the three tier groups (`Featured`/`Selected`/`More Work`) as fixed sections, or a single flat grid? | Ryan | Before M4 |
 | OQ-4 | Should `hireMe` be an in-Canvas framed form or the existing DOM `/hire` route presented as the terminal level? | Ryan | Before M4 |
 | OQ-5 | Keep `domains.ts` for project **detail pages** even though the landing lens is gone? (Assumed yes.) | Ryan | Before M4 |
@@ -433,19 +433,49 @@ Static site — no runtime dashboards. Post-launch verification is the manual QA
 
 ## Appendices
 
-### Appendix A — Ender 5 Pro asset pipeline (to be filled during M2)
+### Appendix A — Ender 5 Pro asset pipeline (executed 2026-06-01)
 
-Repeatable record of the offline build (populated as the pipeline is executed in M2):
+Repeatable, committed pipeline under `blender/scripts/` + `blender/workflows/`
+(driver `build_ender5.sh`, shared config `lib_ender5.py`). Plan of record:
+`docs/plans/2026-06-01-ender5-rig-animate.md`.
 
-1. **Import:** STEP → Blender (units, scale to meters, import tessellation tolerance).
-2. **Separate assemblies:** identify and isolate `Bed_Y`, `Gantry_Z`, `Carriage_X`, `Hotend`, `Extruder` (by body/material/loose-parts); set per-assembly origins at their real pivot.
-3. **Rig:** parent moving parts to empties along the printer's real axes; verify each axis moves independently in viewport.
-4. **Optimize:** decimate to web budget; apply Draco/meshopt; KTX2-compress any textures; bake/assign brand-compatible materials.
-5. **Export:** glTF-binary (`.glb`) with named nodes preserved → `public/assets/objects/Ender5Pro.glb`.
-6. **Wrap:** `gltfjsx Ender5Pro.glb` → `components/scene/PrintingLevel/Ender5Pro.tsx`; confirm node names match the rig contract (§3.3).
-7. **Verify:** transfer size, independent node transforms, Draco decode at runtime.
+1. **Engine:** Blender 5.1 has no STEP importer + no FreeCAD, so `cadquery-ocp`
+   (OpenCASCADE 7.9.3.1.1) is installed into Blender's bundled Python 3.13. This is
+   the realization of the "Blender STEP add-on" choice and the only path that
+   recovers the SolidWorks `PRODUCT` names. (Needs full deps — the `OCP` binary is
+   linked against VTK.)
+2. **Import** (`10_import_step.py`): `STEPCAFControl_Reader` + `XCAFDoc` walk reads the
+   77 MB AP203 assembly, preserving 151 part names + per-instance placement;
+   `BRepMesh` tessellation → **392 named meshes**, metre-scaled. The doc must stay
+   referenced past the XCAF walk (a GC'd doc yields 0 shapes). Orientation is
+   normalized Y-up→Blender Z-up (lead-screw axis → +Z), dropped to the floor.
+   Verified: world bbox ≈ 0.678 × 0.485 × 0.505 m (real Ender 5 Pro envelope).
+3. **Cull + group** (`20_cull_group.py`, `21_reassign.py`): drop **287 fastener
+   instances**; sort the remaining **105 meshes** into `Frame_Static` / `Bed_Z` /
+   `GantryY` / `CarriageX` / `Extruder_Spin` by name regex; reassign 5 spatially-
+   ambiguous shared parts (pulleys/belt/hose) by bbox containment.
+4. **Rig** (`30_rig.py`): one empty per group; meshes parented (keep-transform);
+   **`CarriageX` nested under `GantryY`**; travel axes derived (vertical=Z from the
+   lead-screw, LR=X from the x-axis-strut, FB=Y). Verified by render: bed lifts
+   alone, gantry carries the carriage.
+5. **Animate** (`40_animate.py`): bake a 250-frame @ 25 fps print loop — carriage X
+   sweep (6 raster passes), gantry Y advance, bed Z descent. Verified by frame
+   renders.
+6. **Optimize** (`45_decimate.py`): COLLAPSE-decimate 650k → **179,934 tris**
+   (web budget), silhouette preserved.
+7. **Export** (`50_optimize_export.py`): ≤4 brand PBR materials; glTF-binary with
+   **KHR_draco_mesh_compression**, +Y-up, named nodes + animation. Output
+   `apps/client/public/assets/objects/Ender5Pro.glb` = **2.04 MB** (≤3 MB NFR),
+   110 nodes. The exporter emits **one translation clip per mover** (`Bed_Z` /
+   `GantryY` / `CarriageX`), all 10 s — not a single merged clip.
+8. **Wrap** (`gltfjsx`): `Ender5Pro.tsx` (typed, `--keepnames`); GLB path fixed to
+   `/assets/objects/Ender5Pro.glb`; internal `useAnimations` removed so
+   `PrintingLevel` owns the single mixer.
+9. **Verify:** GLB decoded directly — clips target the named rig nodes with real
+   translation spans (bed 0.06 m vertical, gantry/carriage 0.11 m); `scrubToClipTime`
+   unit-tested; `pnpm build` + `lint` + `test` green.
 
-> Status: **TBD — executed in Milestone M2.** Owner: Ryan + Claude.
+> Status: **Executed.** Owner: Ryan + Claude. Renders under `blender/assets/_renders/`.
 
 ### Appendix B — Glossary
 
@@ -468,3 +498,5 @@ Repeatable record of the offline build (populated as the pipeline is executed in
 | 2026-06-01 | Auto-play, scroll-locked, fixed wall-clock transitions | Owner requirement: "timing perfect no matter the screen." |
 | 2026-06-01 | Bidirectional, no jump | Owner choice; keeps the state machine simple. |
 | 2026-06-01 | Stand up Vitest for the level reducer | Honest testing of the one purely-logical piece; visual guarantees stay manual. |
+| 2026-06-01 | Ender 5 motion = **baked glTF clips** scrubbed via `useAnimations`, not runtime node math | Owner choice; rig still authored in Blender to produce the clips. Exporter emits one translation clip per mover (all 10 s), played in lockstep. |
+| 2026-06-01 | STEP→mesh via `cadquery-ocp` (OpenCASCADE) inside Blender's Python | Blender 5.1 has no STEP importer + no FreeCAD; OCP recovers the 151 SolidWorks part names that make auto-rigging tractable. |
