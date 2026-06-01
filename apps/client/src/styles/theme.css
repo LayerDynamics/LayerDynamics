@@ -1,0 +1,51 @@
+/* Layer Dynamics brand tokens — "layered depth" aesthetic.
+   Palette derived from the brand logo + favicon:
+   deep violet #7e14ff, mid #863bff, light lavender #ede6ff, cyan accent #47bfff. */
+:root {
+  /* Depth background — dark gradient the camera descends through */
+  --bg-0: #0b0a14;
+  --bg-1: #12101f;
+  --bg-2: #171526;
+  --bg-grad: radial-gradient(
+      120% 90% at 50% 0%,
+      #1b1730 0%,
+      var(--bg-1) 45%,
+      var(--bg-0) 100%
+    );
+
+  /* Brand */
+  --violet-deep: #7e14ff;
+  --violet: #863bff;
+  --violet-soft: #aa3bff;
+  --lavender: #ede6ff;
+  --cyan: #47bfff;
+  --accent: var(--violet-soft);
+  --accent-cyan: var(--cyan);
+
+  /* Per-tier layer tints (used by 3D strata + detail accents) */
+  --tier-flagship: #aa3bff;
+  --tier-strong: #6b6bff;
+  --tier-notable: #47bfff;
+
+  /* Text on dark */
+  --text: #b8b2c9;
+  --text-h: #f3f0fb;
+  --text-dim: #6f6884;
+
+  /* Surfaces / glass */
+  --glass-bg: rgba(134, 59, 255, 0.06);
+  --glass-border: rgba(170, 130, 255, 0.22);
+  --glass-hi: rgba(237, 230, 255, 0.5);
+  --shadow: 0 18px 50px -12px rgba(0, 0, 0, 0.7);
+
+  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
+  --mono: ui-monospace, 'SF Mono', Menlo, Consolas, monospace;
+
+  /* Motion */
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dur: 0.6s;
+}
+
+/* WebGL clear color uses --bg-0; the three brand colors as numbers live in
+   src/styles/brand.ts so JS/TSX and CSS stay in sync. */

@@ -1,0 +1,40 @@
+import { Suspense } from 'react'
+import { Canvas } from '@react-three/fiber'
+import { ScrollControls, Preload } from '@react-three/drei'
+import { useNavigate } from 'react-router-dom'
+import SceneContent from '../three/SceneContent'
+import LensToggle from '../components/LensToggle'
+import { SCENE } from '../three/layout'
+import { brand } from '../styles/brand'
+
+/**
+ * The scroll-driven 3D landing. The Canvas renders transparently over the CSS
+ * gradient-depth body background; ScrollControls supplies scroll state that the
+ * CameraRig reads to descend through the scene. `navigate` is captured here (DOM
+ * side) and handed into the scene so cards can route without bridging context.
+ */
+export default function Landing() {
+  const navigate = useNavigate()
+  const onOpen = (id: string) => navigate(`/projects/${id}`)
+
+  return (
+    <div className="landing">
+      <Canvas
+        className="landing__canvas"
+        dpr={[1, 2]}
+        gl={{ antialias: true, alpha: true }}
+        camera={{ position: [0, SCENE.cameraTopY, 10], fov: 45 }}
+      >
+        <fog attach="fog" args={[brand.bg0, 16, 42]} />
+        <Suspense fallback={null}>
+          <ScrollControls pages={SCENE.pages} damping={0.25}>
+            <SceneContent onOpen={onOpen} />
+          </ScrollControls>
+          <Preload all />
+        </Suspense>
+      </Canvas>
+
+      <LensToggle />
+    </div>
+  )
+}

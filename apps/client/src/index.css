@@ -1,0 +1,87 @@
+@import './styles/theme.css';
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+:root {
+  font: 18px/145% var(--sans);
+  letter-spacing: 0.18px;
+  color: var(--text);
+  color-scheme: dark;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  @media (max-width: 1024px) {
+    font-size: 16px;
+  }
+}
+
+body {
+  min-height: 100svh;
+  background: var(--bg-0);
+  background-image: var(--bg-grad);
+  background-attachment: fixed;
+  color: var(--text);
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100svh;
+  isolation: isolate;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--heading);
+  font-weight: 600;
+  color: var(--text-h);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+code,
+.mono {
+  font-family: var(--mono);
+}
+
+::selection {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Brand scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(170, 59, 255, 0.35);
+  border-radius: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+  }
+}

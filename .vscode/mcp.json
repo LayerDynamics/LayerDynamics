@@ -1,0 +1,16 @@
+{
+  "servers": {
+    "kicad": {
+      "type": "stdio",
+      "command": "npx",
+      "args": [
+        "@modelcontextprotocol/inspector",
+        "kicad-mcp-pro"
+      ],
+      "env": {
+        "KICAD_MCP_PROJECT_DIR": "/Users/ryanoboyle/LayerDynamics",
+        "KICAD_MCP_PROFILE": "full"
+      }
+    }
+  }
+}

@@ -1,0 +1,299 @@
+/* DOM chrome — nav, loader overlay, and the routed project-detail page.
+   The 3D landing renders to a full-viewport Canvas; these style the HTML
+   that sits over and around it. */
+
+/* ---- Nav ---------------------------------------------------------------- */
+.nav {
+  position: fixed;
+  inset: 0 0 auto 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px clamp(18px, 4vw, 48px);
+  pointer-events: none;
+}
+.nav > * {
+  pointer-events: auto;
+}
+.nav__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.nav__logo {
+  width: 22px;
+  height: auto;
+  filter: drop-shadow(0 0 10px rgba(170, 59, 255, 0.6));
+}
+.nav__name {
+  font-family: var(--mono);
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: var(--text-h);
+  font-weight: 600;
+}
+.nav__name-dim {
+  color: var(--accent);
+}
+.nav__links {
+  display: inline-flex;
+  align-items: center;
+  gap: 18px;
+}
+.nav__link {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  padding: 6px 12px;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(8px);
+  transition: color var(--dur) var(--ease), border-color var(--dur) var(--ease);
+}
+.nav__link:hover {
+  color: var(--text-h);
+  border-color: var(--accent);
+}
+
+/* ---- Loader overlay ----------------------------------------------------- */
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 22px;
+  background: var(--bg-0);
+  background-image: var(--bg-grad);
+  transition: opacity 0.7s var(--ease), visibility 0.7s var(--ease);
+}
+.loader[data-hidden] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.loader__mark {
+  width: 64px;
+  height: auto;
+  animation: loader-pulse 1.8s var(--ease) infinite;
+  filter: drop-shadow(0 0 24px rgba(170, 59, 255, 0.7));
+}
+@keyframes loader-pulse {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+    opacity: 0.85;
+  }
+  50% {
+    transform: translateY(-6px) scale(1.04);
+    opacity: 1;
+  }
+}
+.loader__bar {
+  width: min(220px, 50vw);
+  height: 3px;
+  border-radius: 3px;
+  background: rgba(170, 130, 255, 0.15);
+  overflow: hidden;
+}
+.loader__bar span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--violet), var(--cyan));
+  transition: width 0.3s var(--ease);
+}
+.loader__pct {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
+/* ---- Project detail page ------------------------------------------------ */
+.detail {
+  max-width: 920px;
+  margin: 0 auto;
+  padding: 120px clamp(20px, 6vw, 48px) 120px;
+}
+.detail__accent {
+  width: 100%;
+  height: 320px;
+  margin-bottom: 28px;
+  border-radius: 18px;
+  overflow: hidden;
+  border: 1px solid var(--glass-border);
+  background: rgba(12, 10, 20, 0.4);
+}
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity 0.7s var(--ease), transform 0.7s var(--ease);
+}
+.reveal[data-visible] {
+  opacity: 1;
+  transform: none;
+}
+.detail__tier {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 999px;
+  color: var(--text-h);
+}
+.detail__title {
+  font-size: clamp(40px, 8vw, 76px);
+  line-height: 1.02;
+  margin: 18px 0 10px;
+}
+.detail__langs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 8px;
+}
+.detail__lang {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text);
+  padding: 4px 10px;
+  border: 1px solid var(--glass-border);
+  border-radius: 8px;
+  background: var(--glass-bg);
+}
+.detail__tagline {
+  font-size: clamp(18px, 3vw, 24px);
+  color: var(--text-h);
+  margin: 8px 0 28px;
+}
+.detail__blurb {
+  font-size: 18px;
+  line-height: 1.65;
+  color: var(--text);
+  margin: 0 0 22px;
+}
+.detail__why {
+  border-left: 2px solid var(--accent);
+  padding: 4px 0 4px 20px;
+  margin: 0 0 36px;
+  color: var(--text);
+}
+.detail__why-label {
+  display: block;
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 8px;
+}
+.detail__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--mono);
+  font-size: 14px;
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s var(--ease),
+    border-color 0.3s var(--ease);
+}
+.btn--primary {
+  color: #fff;
+  background: linear-gradient(120deg, var(--violet-deep), var(--violet-soft));
+  box-shadow: 0 10px 30px -8px rgba(126, 20, 255, 0.6);
+}
+.btn--primary:hover {
+  transform: translateY(-2px);
+}
+.btn--ghost {
+  color: var(--text);
+  border-color: var(--glass-border);
+  background: var(--glass-bg);
+}
+.btn--ghost:hover {
+  color: var(--text-h);
+  border-color: var(--accent);
+}
+
+/* ---- Landing (3D canvas) ----------------------------------------------- */
+.landing {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.landing__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+}
+
+/* tier ↔ domain segmented control */
+.lens {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: inline-flex;
+  padding: 4px;
+  gap: 4px;
+  border-radius: 12px;
+  border: 1px solid var(--glass-border);
+  background: rgba(12, 10, 20, 0.55);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow);
+  opacity: 0;
+  transform: translateX(-50%) translateY(12px);
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease), transform 0.5s var(--ease);
+}
+.lens[data-visible] {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  pointer-events: auto;
+}
+.lens__btn {
+  font-family: var(--mono);
+  font-size: 13px;
+  color: var(--text);
+  padding: 8px 16px;
+  border: 0;
+  border-radius: 9px;
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.3s var(--ease), background 0.3s var(--ease);
+}
+.lens__btn:hover {
+  color: var(--text-h);
+}
+.lens__btn[data-active] {
+  color: #fff;
+  background: linear-gradient(120deg, var(--violet-deep), var(--violet-soft));
+}
+.lens__btn:focus-visible {
+  outline: 2px solid var(--accent-cyan);
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  .nav__name {
+    display: none;
+  }
+  .lens__btn {
+    padding: 8px 12px;
+    font-size: 12px;
+  }
+}
