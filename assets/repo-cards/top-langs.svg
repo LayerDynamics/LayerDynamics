@@ -24,7 +24,7 @@
     <text x="25" y="210" fill="#a9b1d6" font-size="12" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">TypeScript</text>
     <text x="355" y="210" fill="#a9b1d6" font-size="11" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif" text-anchor="end">7.4%</text>
     <rect x="25" y="215" width="310" height="8" rx="4" fill="#383d5f"/>
-    <rect x="25" y="215" width="23.0" height="8" rx="4" fill="#3178C6"/>
+    <rect x="25" y="215" width="23.1" height="8" rx="4" fill="#3178C6"/>
     <text x="25" y="242" fill="#a9b1d6" font-size="12" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif">C++</text>
     <text x="355" y="242" fill="#a9b1d6" font-size="11" font-family="Segoe UI, Ubuntu, Helvetica, Arial, sans-serif" text-anchor="end">6.2%</text>
     <rect x="25" y="247" width="310" height="8" rx="4" fill="#383d5f"/>
