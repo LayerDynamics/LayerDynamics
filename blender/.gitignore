@@ -1,0 +1,5 @@
+assets/*.STEP
+assets/*.IGS
+assets/*.blend
+assets/_renders/
+asset_gen/__pycache__/
