@@ -1,17 +1,15 @@
 # Railway deployment config for the LayerDynamics 3D portfolio (apps/client).
 #
-# This is a pnpm-workspace monorepo: the root package.json delegates to the
-# `client` app, which Vite builds to apps/client/dist. The deploy serves that
-# static build with Vite's preview server (its default SPA mode does the
-# history-API fallback react-router needs for /projects/:id deep links).
-# Railway injects $PORT; vite.config.ts allow-lists the *.railway.app host.
+# Built from the repo-root Dockerfile (multi-stage: pnpm/Vite build -> static
+# `serve -s dist`, which gives react-router its SPA history fallback). Docker is
+# used instead of Nixpacks because Nixpacks couldn't put pnpm on PATH for this
+# monorepo (no root deps), failing the build with exit 127 / $NIXPACKS_PATH
+# undefined. The container listens on $PORT, which Railway injects.
 
 [build]
-builder = "NIXPACKS"
-# Nixpacks auto-installs deps from pnpm-lock.yaml; this just runs the build.
-buildCommand = "pnpm install --frozen-lockfile && pnpm run build"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "pnpm --filter client preview --host 0.0.0.0 --port $PORT"
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 5

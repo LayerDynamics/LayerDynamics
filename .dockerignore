@@ -1,0 +1,13 @@
+# Keep the build context small and never ship host build artifacts/deps.
+.git
+**/node_modules
+node_modules
+**/dist
+dist
+**/target
+target
+*.log
+.vite
+.cache
+development/reference-only
+.DS_Store
