@@ -10,6 +10,16 @@ export const SCENE = {
   contactY: -22,
   /** Camera Y at scroll start (slightly above the hero, looking level). */
   cameraTopY: 1,
+  /** ScrollControls easing time-constant — how smoothly `scroll.offset` chases
+   *  the raw scroll position. */
+  scrollDamping: 0.3,
+  /** Hard cap on how fast `scroll.offset` may advance, in offset-units/second
+   *  (drei ScrollControls `maxSpeed`). The camera, the mesh-processing scrub and
+   *  every useScrollRange read off this single offset, so capping its velocity
+   *  rate-limits the whole experience: a violent fling can no longer outrun the
+   *  frame-damped render and skip/flash the intended sequence. ~0.4 ⇒ a full
+   *  end-to-end fling plays out over ≈2.5s instead of instantly. */
+  scrollMaxSpeed: 0.4,
 } as const
 
 /**

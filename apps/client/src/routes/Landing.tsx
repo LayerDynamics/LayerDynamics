@@ -27,7 +27,11 @@ export default function Landing() {
       >
         <fog attach="fog" args={[brand.bg0, 16, 42]} />
         <Suspense fallback={null}>
-          <ScrollControls pages={SCENE.pages} damping={0.25}>
+          <ScrollControls
+            pages={SCENE.pages}
+            damping={SCENE.scrollDamping}
+            maxSpeed={SCENE.scrollMaxSpeed}
+          >
             <SceneContent onOpen={onOpen} />
           </ScrollControls>
           <Preload all />
