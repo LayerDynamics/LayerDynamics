@@ -14,10 +14,24 @@ import { scrollProgress, setScroll } from '../stores/levelScroll'
 const WHEEL_SENS = 1 / 900   // ~one firm wheel gesture fills a level
 const TOUCH_SENS = 1 / 420
 const KEY_STEP = 0.34
+// Minimum wall-clock gap between level changes. Independent of the transition
+// duration so a level can never be skipped even when transitions are instant
+// (reduced-motion): a single fling advances exactly one level.
+const CHANGE_COOLDOWN = 650
 
 export default function LevelInput() {
   useEffect(() => {
     let touchY: number | null = null
+    let lastChange = 0
+
+    const change = (advance: boolean) => {
+      const now = performance.now()
+      if (now - lastChange < CHANGE_COOLDOWN) return
+      lastChange = now
+      const s = useLevels.getState()
+      if (advance) s.requestAdvance()
+      else s.requestReverse()
+    }
 
     const apply = (deltaForward: number) => {
       const s = useLevels.getState()
@@ -25,11 +39,11 @@ export default function LevelInput() {
       const before = scrollProgress.current
       const next = before + deltaForward
       if (deltaForward > 0 && before >= 1 - 1e-3) {
-        s.requestAdvance()
+        change(true)
         return
       }
       if (deltaForward < 0 && before <= 1e-3) {
-        s.requestReverse()
+        change(false)
         return
       }
       setScroll(next)
