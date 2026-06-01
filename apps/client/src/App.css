@@ -240,6 +240,55 @@
   display: block;
 }
 
+/* ---- Level system: transition curtain + progress indicator -------------- */
+.level-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  will-change: opacity;
+  transition: none; /* opacity is rAF-driven for exact wall-clock timing */
+}
+.level-indicator {
+  position: fixed;
+  left: 50%;
+  bottom: 26px;
+  transform: translateX(-50%);
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  padding: 8px 16px;
+  border-radius: 999px;
+  background: rgba(12, 10, 22, 0.5);
+  border: 1px solid rgba(170, 150, 230, 0.18);
+  backdrop-filter: blur(8px);
+  pointer-events: none;
+}
+.level-indicator__name {
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  color: #d9d3ec;
+}
+.level-indicator__count {
+  font-size: 11px;
+  color: #8a83a6;
+}
+.level-indicator__rail {
+  display: inline-flex;
+  gap: 6px;
+}
+.level-indicator__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(170, 150, 230, 0.28);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+.level-indicator__dot[data-on] {
+  background: var(--cyan, #5fd0d6);
+  transform: scale(1.35);
+}
+
 /* tier ↔ domain segmented control */
 .lens {
   position: fixed;

@@ -1,16 +1,11 @@
 import { useEffect, useRef } from 'react'
-import type { RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
 import { Group } from 'three'
 import { Model } from './Ender5Pro'
 import { scrubToClipTime } from './scrub'
+import { scrollProgress } from '../../../stores/levelScroll'
 import { useScene } from '../../../stores/useScene'
-
-interface PrintingLevelProps {
-  /** 0..1 progress through the level; drives the print clip playhead. */
-  scrollProgress: RefObject<number>
-}
 
 const GLB_URL = '/assets/objects/Ender5Pro.glb'
 
@@ -22,7 +17,7 @@ const GLB_URL = '/assets/objects/Ender5Pro.glb'
  * GPU resources are owned by drei's GLTF cache; the group disposes cleanly on
  * unmount (dispose={null} keeps the shared cached geometry intact for re-entry).
  */
-export default function PrintingLevel({ scrollProgress }: PrintingLevelProps) {
+export default function PrintingLevel() {
   const group = useRef<Group>(null)
   const reducedMotion = useScene((s) => s.reducedMotion)
   const { animations } = useGLTF(GLB_URL)
@@ -55,8 +50,10 @@ export default function PrintingLevel({ scrollProgress }: PrintingLevelProps) {
     if (touched) mixer.update(0)
   })
 
+  // The printer is modelled at real scale (~0.5 m tall, base on the floor).
+  // Scale it up to scene units so LevelCamera frames it like the other levels.
   return (
-    <group ref={group} dispose={null}>
+    <group ref={group} dispose={null} scale={6}>
       <Model />
     </group>
   )

@@ -1,21 +1,29 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
-import { ScrollControls, Preload } from '@react-three/drei'
+import { Preload } from '@react-three/drei'
 import { useNavigate } from 'react-router-dom'
-import { SceneContent } from '../components/scene/SceneContent'
-import LensToggle from '../components/LensToggle'
-import { SCENE } from '../components/scene/lib/layout'
-import { brand } from '../styles/brand'
+import LevelScene from '../components/scene/LevelScene/LevelScene'
+import LevelInput from '../components/LevelInput'
+import LevelTransitions from '../components/LevelTransitions'
+import LevelIndicator from '../components/LevelIndicator'
+import type { LevelCallbacks } from '../components/scene/levels'
+import { LEVELS } from '../stores/useLevels'
 
 /**
- * The scroll-driven 3D landing. The Canvas renders transparently over the CSS
- * gradient-depth body background; ScrollControls supplies scroll state that the
- * CameraRig reads to descend through the scene. `navigate` is captured here (DOM
- * side) and handed into the scene so cards can route without bridging context.
+ * The immersive levels landing. One transparent Canvas renders exactly one level
+ * at a time (LevelScene → LevelStage); the DOM siblings drive it: LevelInput maps
+ * scroll/touch/keys to in-level progress + advance/reverse, LevelTransitions plays
+ * the occluding curtain between levels, and LevelIndicator shows where you are.
+ * Router hooks live here (DOM side) and are handed to the scene as callbacks.
  */
 export default function Landing() {
   const navigate = useNavigate()
-  const onOpen = (id: string) => navigate(`/projects/${id}`)
+  const cb: LevelCallbacks = {
+    onOpen: (id) => navigate(`/projects/${id}`),
+    onHire: () => navigate('/hire'),
+  }
+
+  const start = LEVELS[0].camera
 
   return (
     <div className="landing">
@@ -23,22 +31,17 @@ export default function Landing() {
         className="landing__canvas"
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
-        camera={{ position: [0, SCENE.cameraTopY, 10], fov: 45 }}
+        camera={{ position: start.position, fov: start.fov }}
       >
-        <fog attach="fog" args={[brand.bg0, 16, 42]} />
         <Suspense fallback={null}>
-          <ScrollControls
-            pages={SCENE.pages}
-            damping={SCENE.scrollDamping}
-            maxSpeed={SCENE.scrollMaxSpeed}
-          >
-            <SceneContent onOpen={onOpen} />
-          </ScrollControls>
+          <LevelScene cb={cb} />
           <Preload all />
         </Suspense>
       </Canvas>
 
-      <LensToggle />
+      <LevelInput />
+      <LevelTransitions />
+      <LevelIndicator />
     </div>
   )
 }
