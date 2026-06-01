@@ -32,7 +32,21 @@ render under `assets/_renders/` for visual verification.
 
 ## Engine install (recorded)
 
-<!-- filled by Task 2 -->
+`cadquery-ocp` (OpenCASCADE 7.9.3.1.1) installed into Blender's Python 3.13:
+
+```bash
+/Applications/Blender.app/Contents/Resources/5.1/python/bin/python3.13 \
+  -m pip install cadquery-ocp cadquery-ocp-proxy
+```
+
+`--no-deps` is NOT viable: the `OCP.cpython-313-darwin.so` binary is dynamically
+linked against `libvtkWrappingPythonCore3.13.dylib`, so VTK (and its deps:
+matplotlib/pillow/contourpy/…) must be present. The full install resolves it.
+
+Verified: `import OCP` + all importer classes
+(`STEPCAFControl_Reader`, `XCAFDoc_DocumentTool`, `BRepMesh_IncrementalMesh`, …)
+load, and `XCAFDoc_DocumentTool.ShapeTool_s` / `XCAFApp_Application.GetApplication_s` /
+`TDataStd_Name.GetID_s` exist.
 
 ## Kinematic groups
 
