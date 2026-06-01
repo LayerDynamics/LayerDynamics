@@ -7,6 +7,7 @@ Saves ender5_raw.blend. Run via: blender --background --python this_file.
 """
 import bpy, sys, os
 from collections import defaultdict
+from mathutils import Vector
 
 sys.path.append(os.path.join(os.getcwd(), "blender", "scripts"))
 import lib_ender5 as L
@@ -118,6 +119,48 @@ def shape_to_object(name, shape):
     return ob
 
 
+def normalize_orientation():
+    """Stand the printer up in Blender's Z-up world and rest it on the floor.
+
+    The SolidWorks export is Y-up: the lead screw (the bed's vertical drive) runs
+    along world Y, so the assembly imports lying on its side. Rotate the whole
+    model so the lead-screw axis maps to +Z, then translate so it sits on Z=0 and
+    is centred in X/Y. This makes the rig axes natural (bed travels in Z) and the
+    glTF Z-up->Y-up export produce an upright model in Three.js.
+    """
+    meshes = [o for o in bpy.data.objects if o.type == 'MESH']
+    lead = None
+    for o in meshes:
+        if o.name.split(".")[0].lower() == "lead-screw" and not o.name.lower().startswith("lead-screw-nut"):
+            lead = o
+            break
+    if lead is None:
+        print("@@ORIENT WARN no lead-screw found; leaving orientation as-is")
+        return
+    d = [lead.dimensions.x, lead.dimensions.y, lead.dimensions.z]
+    up_idx = d.index(max(d))
+    up = Vector((0, 0, 0)); up[up_idx] = 1.0
+    rot = up.rotation_difference(Vector((0, 0, 1))).to_matrix().to_4x4()
+    for o in meshes:
+        o.data.transform(rot)
+        o.data.update()
+    # Drop to floor + centre X/Y.
+    mn = Vector((1e9, 1e9, 1e9)); mx = Vector((-1e9, -1e9, -1e9))
+    for o in meshes:
+        for c in o.bound_box:
+            w = o.matrix_world @ Vector(c)
+            for i in range(3):
+                mn[i] = min(mn[i], w[i]); mx[i] = max(mx[i], w[i])
+    shift = Vector((-(mn.x + mx.x) / 2, -(mn.y + mx.y) / 2, -mn.z))
+    move = Vector((shift.x, shift.y, shift.z))
+    import mathutils
+    tm = mathutils.Matrix.Translation(move)
+    for o in meshes:
+        o.data.transform(tm)
+        o.data.update()
+    print("@@ORIENT up_axis_was=%d -> +Z, dropped to floor, height=%.3f" % (up_idx, mx.z - mn.z))
+
+
 def main():
     bpy.ops.wm.read_factory_settings(use_empty=True)
     bpy.context.scene.unit_settings.system = 'METRIC'
@@ -131,6 +174,7 @@ def main():
             n += 1
     print("@@IMPORT objects=%d" % n)
     assert n > 100, "expected >100 leaf solids, got %d" % n
+    normalize_orientation()
     bpy.ops.wm.save_as_mainfile(filepath=os.path.abspath(L.BLEND_RAW))
     print("@@IMPORT saved=%s" % os.path.abspath(L.BLEND_RAW))
 
