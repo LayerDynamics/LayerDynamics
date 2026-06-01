@@ -1,41 +1,27 @@
-import { useRef } from 'react'
-import { useFrame } from '@react-three/fiber'
+import type { RefObject } from 'react'
 import { Text } from '@react-three/drei'
-import { MathUtils, type Group } from 'three'
-import LogoSpin from './LogoSpin'
-import { brand } from '../styles/brand'
-import { owner } from '../data/social'
-import { useScrollRange } from '../hooks/useScrollRange'
-import { useScene } from '../stores/useScene'
+import type { Group } from 'three'
+import { LogoSpin } from '../LogoSpin'
+import { brand } from '../../../styles/brand'
+import { owner } from '../../../data/social'
 
-// Bundled locally so the 3D type renders crisply and offline (drei <Text>
-// otherwise fetches a default Roboto from a CDN).
 const FONT_BOLD = '/fonts/SpaceGrotesk-Bold.woff'
 const FONT_MED = '/fonts/SpaceGrotesk-Medium.woff'
 
-/** Top of the scene: the layered-glass monolith over the name + tagline. Rises
- *  and recedes slightly as the camera scrolls past it (scroll-range reveal). */
-export default function Hero() {
-  const inner = useRef<Group>(null)
-  const exit = useScrollRange(0, 0.16)
-  const reducedMotion = useScene((s) => s.reducedMotion)
+export interface HeroLayoutProps {
+  /** The inner group the container animates (reveal/scale on scroll). */
+  innerRef: RefObject<Group | null>
+}
 
-  useFrame((_, delta) => {
-    const g = inner.current
-    if (!g) return
-    const p = exit.current
-    if (reducedMotion) {
-      g.position.y = 0
-      g.scale.setScalar(1)
-      return
-    }
-    g.position.y = MathUtils.damp(g.position.y, p * 1.6, 5, delta)
-    g.scale.setScalar(MathUtils.damp(g.scale.x, 1 - p * 0.08, 5, delta))
-  })
-
+/**
+ * Presentational hero scene-graph: the layered-glass monolith over the name +
+ * tagline. The container drives the `innerRef` group; this file only declares
+ * the structure.
+ */
+export default function HeroLayout({ innerRef }: HeroLayoutProps) {
   return (
     <group position={[0, 0, 0]}>
-      <group ref={inner}>
+      <group ref={innerRef}>
         <group position={[0, 2.0, 0]}>
           <LogoSpin scale={0.95} />
         </group>

@@ -26,7 +26,7 @@ export default defineConfig([
     // with the React Compiler's immutability/ref lints, which assume pure
     // render. Disable those two rules for the WebGL layer only; all DOM/React
     // code keeps them enabled.
-    files: ['src/three/**/*.{ts,tsx}'],
+    files: ['src/components/scene/**/*.{ts,tsx}'],
     rules: {
       'react-hooks/immutability': 'off',
       'react-hooks/refs': 'off',

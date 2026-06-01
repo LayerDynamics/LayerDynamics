@@ -1,9 +1,9 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
-import { AdditiveBlending, CanvasTexture, MathUtils, type Group } from 'three'
-import Starfield from './Starfield'
-import { brand } from '../styles/brand'
-import { useScene } from '../stores/useScene'
+import { CanvasTexture, MathUtils, type Group } from 'three'
+import { brand } from '../../../styles/brand'
+import { useScene } from '../../../stores/useScene'
+import LayeredBackdropLayout from './LayeredBackdropLayout'
 
 /** Builds a radial-gradient texture (bright center → transparent edge) used for
  *  the soft hero glow plane. */
@@ -23,7 +23,11 @@ function useRadialGlow(hex: string) {
   }, [hex])
 }
 
-export default function LayeredBackdrop() {
+/**
+ * Backdrop logic: builds the glow texture and applies pointer parallax to the
+ * whole backdrop group each frame. Hands both to the presentational layout.
+ */
+export default function LayeredBackdropContainer() {
   const group = useRef<Group>(null)
   const reducedMotion = useScene((s) => s.reducedMotion)
   const glow = useRadialGlow(brand.violet)
@@ -43,23 +47,5 @@ export default function LayeredBackdrop() {
     g.rotation.y = MathUtils.damp(g.rotation.y, px * 0.04, 3, delta)
   })
 
-  return (
-    <group ref={group}>
-      <Starfield />
-
-      {/* Soft radial halo sitting behind the hero so it glows out of the dark.
-          Kept focused and restrained so the frame stays dark and the monolith
-          holds contrast, rather than washing the screen flat-purple. */}
-      <mesh position={[0, 2.0, -7]}>
-        <planeGeometry args={[19, 19]} />
-        <meshBasicMaterial
-          map={glow}
-          transparent
-          opacity={0.32}
-          depthWrite={false}
-          blending={AdditiveBlending}
-        />
-      </mesh>
-    </group>
-  )
+  return <LayeredBackdropLayout groupRef={group} glow={glow} />
 }

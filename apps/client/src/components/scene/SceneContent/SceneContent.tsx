@@ -1,18 +1,19 @@
 import { useEffect } from 'react'
-import CameraRig from './CameraRig'
-import LayeredBackdrop from './LayeredBackdrop'
-import Hero from './Hero'
-import MeshProcessing from './MeshProcessing'
-import ProjectCollection from './ProjectCollection'
-import Contact from './Contact'
-import Effects from './Effects'
-import { brand } from '../styles/brand'
-import { useScene } from '../stores/useScene'
+import { CameraRig } from '../CameraRig'
+import { LayeredBackdrop } from '../LayeredBackdrop'
+import { Hero } from '../Hero'
+import { MeshProcessing } from '../MeshProcessing'
+import { ProjectCollection } from '../ProjectCollection'
+import { Contact } from '../Contact'
+import { Effects } from '../Effects'
+import { brand } from '../../../styles/brand'
+import { useScene } from '../../../stores/useScene'
 
 /**
- * Everything inside the Canvas/ScrollControls: lights, the camera rig, the
- * persistent depth field, and the three sections placed in world space (the
- * camera moves through them — the content itself does not scroll).
+ * Composition root for everything inside the Canvas/ScrollControls: lights, the
+ * camera rig, the persistent depth field, and the world-space sections the
+ * camera moves through. A pure composition — no logic beyond clearing the
+ * loader once mounted — so it stays a single entry file.
  */
 export default function SceneContent({ onOpen }: { onOpen: (id: string) => void }) {
   const setReady = useScene((s) => s.setReady)

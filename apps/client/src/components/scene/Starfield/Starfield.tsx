@@ -1,8 +1,8 @@
 import { useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { AdditiveBlending, Color, type Points } from 'three'
-import { brand } from '../styles/brand'
-import { useScene } from '../stores/useScene'
+import { brand } from '../../../styles/brand'
+import { useScene } from '../../../stores/useScene'
 
 /**
  * A deep, drifting field of brand-tinted points that fills the space the camera
@@ -10,6 +10,10 @@ import { useScene } from '../stores/useScene'
  * background reads as an intentional void with substance — not empty black.
  * Points fade with distance (sizeAttenuation) and a few are bright enough to
  * catch the bloom pass.
+ *
+ * Self-contained primitive: the point buffer (logic) and the drift are tightly
+ * coupled to the single <points>, so a Container/Layout split would be pure
+ * indirection — kept as one file.
  */
 const COUNT = 520
 
@@ -41,13 +45,10 @@ export default function Starfield() {
       new Color(brand.lavender),
     ]
     for (let i = 0; i < COUNT; i++) {
-      // Wide horizontal spread, tall vertical column matching the scroll depth,
-      // pushed mostly behind the content (negative-ish z, receding).
       positions[i * 3 + 0] = (rng() - 0.5) * 38
       positions[i * 3 + 1] = (rng() - 0.5) * 44 - 8
       positions[i * 3 + 2] = -rng() * 26 - 1
       const c = palette[(rng() * palette.length) | 0]
-      // A few hot points (brighter) so bloom has sparkles to grab.
       const hot = rng() < 0.12 ? 1.8 : 0.55
       colors[i * 3 + 0] = c.r * hot
       colors[i * 3 + 1] = c.g * hot
@@ -59,10 +60,9 @@ export default function Starfield() {
   useFrame((state, delta) => {
     const p = ref.current
     if (!p || reducedMotion) return
-    // Slow drift + gentle pointer parallax.
     p.rotation.y += delta * 0.01
-    p.position.x += ((-state.pointer.x * 0.8) - p.position.x) * Math.min(1, delta * 2)
-    p.position.y += ((-state.pointer.y * 0.5) - p.position.y) * Math.min(1, delta * 2)
+    p.position.x += (-state.pointer.x * 0.8 - p.position.x) * Math.min(1, delta * 2)
+    p.position.y += (-state.pointer.y * 0.5 - p.position.y) * Math.min(1, delta * 2)
   })
 
   return (

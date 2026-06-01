@@ -18,6 +18,9 @@ export interface GlassLayerProps {
  * The reusable translucent "glass" panel that the whole layered-depth aesthetic
  * is built from. A thin, emissive, transparent plane with a lit rim edge. Cheap
  * enough to stack many of (depthWrite off so panes blend without z-fighting).
+ *
+ * A pure presentational primitive — no logic, so no Container (per the project's
+ * pragmatic split): the file is the Layout.
  */
 export default function GlassLayer({
   width = 4,
@@ -44,12 +47,7 @@ export default function GlassLayer({
         side={DoubleSide}
       />
       <Edges>
-        <lineBasicMaterial
-          color={edge}
-          transparent
-          opacity={edgeOpacity}
-          depthWrite={false}
-        />
+        <lineBasicMaterial color={edge} transparent opacity={edgeOpacity} depthWrite={false} />
       </Edges>
     </mesh>
   )

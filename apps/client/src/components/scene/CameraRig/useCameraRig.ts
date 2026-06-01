@@ -1,15 +1,17 @@
 import { useFrame, useThree } from '@react-three/fiber'
 import { useScroll } from '@react-three/drei'
 import { MathUtils } from 'three'
-import { useScene, type Section } from '../stores/useScene'
-import { SCENE } from './layout'
+import { useScene, type Section } from '../../../stores/useScene'
+import { SCENE } from '../lib/layout'
 
 /**
- * Drives the camera down through the scene as the user scrolls (frame-damped,
- * no tween library) and reports the active section to the scene store. Pointer
- * adds a subtle parallax. Honors reduced-motion by snapping instead of damping.
+ * The camera's drive logic, isolated as a hook (CameraRig has no presentation —
+ * splitting a "Layout" off would be an empty stub). Descends the camera through
+ * the scene as the user scrolls (frame-damped, no tween library) and reports the
+ * active section to the store. Pointer adds subtle parallax. Honors
+ * reduced-motion by snapping instead of damping.
  */
-export default function CameraRig() {
+export function useCameraRig() {
   const scroll = useScroll()
   const camera = useThree((s) => s.camera)
   const setSection = useScene((s) => s.setSection)
@@ -45,6 +47,4 @@ export default function CameraRig() {
             : 'contact'
     setSection(section)
   })
-
-  return null
 }

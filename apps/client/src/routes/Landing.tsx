@@ -2,9 +2,9 @@ import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { ScrollControls, Preload } from '@react-three/drei'
 import { useNavigate } from 'react-router-dom'
-import SceneContent from '../three/SceneContent'
+import { SceneContent } from '../components/scene/SceneContent'
 import LensToggle from '../components/LensToggle'
-import { SCENE } from '../three/layout'
+import { SCENE } from '../components/scene/lib/layout'
 import { brand } from '../styles/brand'
 
 /**

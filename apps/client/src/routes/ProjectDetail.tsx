@@ -3,7 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { useParams, Navigate, Link } from 'react-router-dom'
 import { projectById, tierTitle } from '../data/projects'
 import { tierColor } from '../styles/brand'
-import ProjectAccent from '../three/ProjectAccent'
+import { ProjectAccent } from '../components/scene/ProjectAccent'
 import { useInViewport } from '../hooks/useInViewport'
 
 /**

@@ -2,8 +2,8 @@ import { useRef, useMemo } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { RoundedBox } from '@react-three/drei'
 import { Color, MathUtils, type Group } from 'three'
-import { brand } from '../styles/brand'
-import { useScene } from '../stores/useScene'
+import { brand } from '../../../styles/brand'
+import { useScene } from '../../../stores/useScene'
 
 /**
  * The hero focal object: a tower of stacked glass slabs that twist into a slow
@@ -29,13 +29,9 @@ function buildSlabs(): Slab[] {
   const span = 3.2 // total vertical height of the tower
   for (let i = 0; i < SLAB_COUNT; i++) {
     const t = i / (SLAB_COUNT - 1) // 0 (bottom) → 1 (top)
-    // Gentle barrel taper: widest in the middle, narrower at the ends, so the
-    // stack reads as one cohesive crystal rather than a pile of equal plates.
     const taper = 1 - Math.pow(Math.abs(t - 0.5) * 2, 1.7) * 0.34
     slabs.push({
       y: (t - 0.5) * span,
-      // Barely-there twist: just enough that the stacked faces catch the rim
-      // lights differently as the whole object turns, without looking jagged.
       rot: (t - 0.5) * Math.PI * 0.12,
       width: 2.7 * taper,
       depth: 1.6 * taper,
@@ -58,7 +54,6 @@ export default function LogoSpin({ scale = 1 }: { scale?: number }) {
       return
     }
     g.rotation.y += delta * 0.22
-    // Gentle breathing tilt so the helix catches the lights as it turns.
     g.rotation.x = MathUtils.damp(g.rotation.x, Math.sin(state.clock.elapsedTime * 0.3) * 0.06, 3, delta)
   })
 
@@ -66,7 +61,6 @@ export default function LogoSpin({ scale = 1 }: { scale?: number }) {
     <group ref={group} scale={scale}>
       {slabs.map((s, i) => (
         <group key={i} position={[0, s.y, 0]} rotation={[0, s.rot, 0]}>
-          {/* The glass slab body. */}
           <RoundedBox args={[s.width, 0.16, s.depth]} radius={0.07} smoothness={4} castShadow>
             <meshPhysicalMaterial
               color={brand.bg2}
@@ -81,15 +75,9 @@ export default function LogoSpin({ scale = 1 }: { scale?: number }) {
             />
           </RoundedBox>
 
-          {/* Thin bright cap bar — the bloom source for this layer. */}
           <mesh position={[0, 0.11, 0]}>
             <boxGeometry args={[s.width * 0.96, 0.022, s.depth * 0.96]} />
-            <meshStandardMaterial
-              color={s.glow}
-              emissive={s.glow}
-              emissiveIntensity={3.4}
-              toneMapped={false}
-            />
+            <meshStandardMaterial color={s.glow} emissive={s.glow} emissiveIntensity={3.4} toneMapped={false} />
           </mesh>
         </group>
       ))}
