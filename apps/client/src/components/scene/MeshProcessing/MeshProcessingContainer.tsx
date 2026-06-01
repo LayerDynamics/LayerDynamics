@@ -100,13 +100,21 @@ export default function MeshProcessingContainer() {
     // Local progress through the band, 0..1.
     const p = MathUtils.clamp((offset - bandStart) / band, 0, 1)
 
-    // --- self-hold: keep the section framed while the band is active ---
-    // Clamp the offset to the band, then evaluate the SAME lerp CameraRig uses.
-    // Inside the band the held Y tracks the camera (parked feel); outside, it
-    // pins to the band edge so the camera scrolls past it to/from hero/grid.
+    // --- self-hold: keep the object exactly centered while the band guides ---
+    // While grabbed (inside the band) pin the object to the camera's ACTUAL eye
+    // level so it sits exactly halfway up the viewport every frame — not the
+    // camera's *target* Y, which the frame-damped camera trails, leaving the
+    // object drifting off-center mid-scroll. Outside the band, rest at the
+    // band-edge world Y (derived from the same lerp the camera uses) so the
+    // object rises into the center on the way in and scrolls away on the way out.
     if (holdRef.current) {
-      const clamped = MathUtils.clamp(offset, bandStart, bandEnd)
-      holdRef.current.position.y = MathUtils.lerp(SCENE.cameraTopY, contactY, clamped)
+      if (offset <= bandStart) {
+        holdRef.current.position.y = MathUtils.lerp(SCENE.cameraTopY, contactY, bandStart)
+      } else if (offset >= bandEnd) {
+        holdRef.current.position.y = MathUtils.lerp(SCENE.cameraTopY, contactY, bandEnd)
+      } else {
+        holdRef.current.position.y = state.camera.position.y
+      }
     }
 
     // --- stage drivers (smoothstep windows over band progress p) ---
