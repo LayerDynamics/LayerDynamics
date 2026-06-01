@@ -1,0 +1,144 @@
+/* ============================================================================
+   Complete CSS reset — imported FIRST in main.tsx so it loads before every
+   other stylesheet. Brand defaults (fonts, colors, background) are applied
+   afterward by index.css / theme.css, which override anything set here.
+
+   Combines the battle-tested Josh Comeau "Custom CSS Reset" and Andy Bell
+   "Modern CSS Reset": a predictable box model, zeroed spacing, sane media/form
+   defaults, sensible text wrapping, and reduced-motion safety.
+   ========================================================================== */
+
+/* 1. Predictable box-sizing on every element + pseudo-element. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* 2. Remove all default margin and padding. */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* 3. Allow flex/grid children to shrink below their content size. */
+* {
+  min-width: 0;
+}
+
+/* 4. Document-level tuning: stop iOS text inflation, sane tab size. */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+  -moz-tab-size: 4;
+  tab-size: 4;
+}
+
+/* 5. Full-height, smoothly-rendered body with a readable default line-height. */
+html,
+body {
+  height: 100%;
+}
+body {
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+/* 6. Headings/paragraphs wrap instead of overflowing; balance heading lines. */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  overflow-wrap: break-word;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
+}
+
+/* 7. Media is block-level and never overflows its container. */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* 8. Form controls inherit typography + color instead of UA defaults. */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+  letter-spacing: inherit;
+}
+textarea {
+  resize: vertical;
+}
+
+/* 9. Buttons are bare by default (each component styles its own). */
+button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+button:disabled {
+  cursor: default;
+}
+
+/* 10. Links inherit color and carry no default underline (styled per use). */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* 11. Lists used for layout carry no marker. */
+ul,
+ol {
+  list-style: none;
+}
+
+/* 12. Tables collapse their borders. */
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+/* 13. Anchored scroll targets clear any fixed header. */
+:target {
+  scroll-margin-block: 64px;
+}
+
+/* 14. Isolate the app root so stacking contexts stay predictable. */
+#root {
+  isolation: isolate;
+}
+
+/* 15. Honor the OS reduced-motion preference: neutralize animation,
+   transitions, and smooth scrolling for everyone who asks for it. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
