@@ -6,7 +6,7 @@ Command: npx gltfjsx@6.5.3 public/assets/objects/Ender5Pro.glb --types --keepnam
 import * as THREE from 'three'
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
-import { GLTF } from 'three-stdlib'
+import type { GLTF } from 'three-stdlib'
 
 type GLTFResult = GLTF & {
   nodes: {
@@ -128,7 +128,7 @@ export function Model(props: React.JSX.IntrinsicElements['group']) {
   // Pure geometry: the GLB's named rig hierarchy (Bed_Z / GantryY / CarriageX)
   // is rendered here; PrintingLevel owns the single AnimationMixer that scrubs
   // the clips, so this component deliberately does NOT bind useAnimations.
-  const { nodes, materials } = useGLTF('/assets/objects/Ender5Pro.glb') as GLTFResult
+  const { nodes, materials } = useGLTF('/assets/objects/Ender5Pro.glb') as unknown as GLTFResult
   return (
     <group {...props} dispose={null}>
       <group name="Print">
