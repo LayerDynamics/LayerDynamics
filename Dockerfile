@@ -21,6 +21,16 @@ RUN corepack enable
 COPY . .
 RUN pnpm install --frozen-lockfile
 
+# Build-time public config. Vite inlines VITE_* at build, so these must be
+# present when `vite build` runs. Railway exposes service variables as Docker
+# build args automatically; declaring them as ARG + ENV bakes them into the
+# static bundle. (Both are safe to expose client-side: a Web3Forms access key is
+# a public submission key; the Discord webhook URL is a write-only post target.)
+ARG VITE_WEB3FORMS_KEY
+ARG VITE_DISCORD_WEBHOOK_URL
+ENV VITE_WEB3FORMS_KEY=$VITE_WEB3FORMS_KEY \
+    VITE_DISCORD_WEBHOOK_URL=$VITE_DISCORD_WEBHOOK_URL
+
 # Build the client (tsc -b && vite build -> apps/client/dist).
 RUN pnpm --filter client build
 
