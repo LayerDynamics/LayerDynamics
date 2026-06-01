@@ -27,8 +27,20 @@ workflows/build_ender5.sh export    # brand materials + Draco glTF -> apps/clien
 # or: workflows/build_ender5.sh all
 ```
 
-Each stage prints an `@@TAG` line with assertable counts/sizes and (where relevant) a
-render under `assets/_renders/` for visual verification.
+Each stage prints an `@@TAG` line with assertable counts/sizes. Render a framed
+thumbnail of any stage for visual verification:
+
+```bash
+workflows/build_ender5.sh render assets/ender5_raw.blend import   # -> assets/_renders/import.png
+```
+
+Renders use **Cycles/CPU** (EEVEE needs a live GPU context that `--background` lacks
+on macOS). All file-opening invocations pass `--factory-startup` to avoid the macOS
+background icon-preview GPU crash.
+
+**Import verification (recorded):** 392 leaf meshes, world bbox ≈ 0.678 × 0.505 × 0.485 m
+(matches the real Ender 5 Pro envelope ~0.55 × 0.49 × 0.51 m; the 0.678 is depth with
+the spool holder), all mover groups present. Render confirms a recognizable printer.
 
 ## Engine install (recorded)
 
