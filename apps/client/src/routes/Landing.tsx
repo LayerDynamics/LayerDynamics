@@ -32,6 +32,11 @@ export default function Landing() {
         dpr={[1, 2]}
         gl={{ antialias: true, alpha: true }}
         camera={{ position: start.position, fov: start.fov }}
+        onCreated={({ gl }) => {
+          // Required for material `clippingPlanes` — the Hero's printed name is
+          // revealed by a world clip plane at the build-plate's start height.
+          gl.localClippingEnabled = true
+        }}
       >
         <Suspense fallback={null}>
           <LevelScene cb={cb} />
