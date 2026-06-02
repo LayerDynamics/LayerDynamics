@@ -6,6 +6,7 @@ import LevelScene from '../components/scene/LevelScene/LevelScene'
 import LevelInput from '../components/LevelInput'
 import LevelTransitions from '../components/LevelTransitions'
 import LevelIndicator from '../components/LevelIndicator'
+import ScrollHint from '../components/ScrollHint'
 import type { LevelCallbacks } from '../components/scene/levels'
 import { LEVELS } from '../stores/useLevels'
 
@@ -47,6 +48,7 @@ export default function Landing() {
       <LevelInput />
       <LevelTransitions />
       <LevelIndicator />
+      <ScrollHint />
     </div>
   )
 }

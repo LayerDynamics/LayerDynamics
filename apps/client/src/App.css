@@ -289,6 +289,88 @@
   transform: scale(1.35);
 }
 
+/* ---- Scroll hint: one-time "VVV" cue, removed on first scroll ------------- */
+.scroll-hint {
+  position: fixed;
+  left: 50%;
+  bottom: 84px; /* sits just above the level-indicator (bottom: 26px) */
+  transform: translateX(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.22s ease;
+  animation: scroll-hint-in 0.6s ease both;
+  animation-delay: 0.9s; /* appear shortly after the scene settles */
+}
+/* Removed the instant they start scrolling. `animation: none` is required: the
+   entry animation fills forwards (opacity: 1), which would otherwise outrank this
+   rule and keep the hint visible — clearing it lets the opacity transition run. */
+.scroll-hint--hidden {
+  animation: none;
+  opacity: 0;
+}
+.scroll-hint__label {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: #8a83a6;
+}
+.scroll-hint__chevrons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.scroll-hint__chevrons svg {
+  width: 22px;
+  height: 11px;
+  margin-top: -5px; /* overlap the three chevrons into a tight VVV stack */
+  color: var(--cyan, #5fd0d6);
+  animation: scroll-hint-bounce 1.6s ease-in-out infinite;
+}
+.scroll-hint__chevrons svg:nth-child(1) {
+  opacity: 1;
+}
+.scroll-hint__chevrons svg:nth-child(2) {
+  opacity: 0.6;
+  animation-delay: 0.16s;
+}
+.scroll-hint__chevrons svg:nth-child(3) {
+  opacity: 0.32;
+  animation-delay: 0.32s;
+}
+
+@keyframes scroll-hint-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+@keyframes scroll-hint-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(4px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .scroll-hint {
+    animation: none;
+  }
+  .scroll-hint__chevrons svg {
+    animation: none;
+  }
+}
+
 /* tier ↔ domain segmented control */
 .lens {
   position: fixed;
