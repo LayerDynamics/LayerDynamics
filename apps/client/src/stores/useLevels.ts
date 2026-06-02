@@ -22,15 +22,23 @@ export interface LevelDef {
     position: [number, number, number]
     target: [number, number, number]
     fov: number
+    /** Head-on framing: the camera is dollied so a subject this wide fills the
+     *  viewport width. With `fitHeight` it instead CONTAINS that w×h box (fits
+     *  whichever dimension is limiting) so nothing clips on any aspect. */
     fitWidth?: number
+    fitHeight?: number
   }
   /** Transition accent shown when ENTERING this level (FR-16). */
   accent: string
 }
 
-/** World width the Ender 5 is scaled to; the printing camera fills the screen
- *  width with exactly this (printer centred at the origin, viewed head-on). */
+/** World width the Ender 5's frame is scaled to (centred at the origin, head-on).
+ *  The frame is ~square, so its scaled height ≈ width × FRAME_ASPECT; the printing
+ *  camera CONTAINS that box so the whole frame — and the print head — is always
+ *  visible (the cantilevered spool falls outside it, off-screen). */
 export const PRINTER_FIT_WIDTH = 6
+const FRAME_ASPECT = 1.15 // measured: full printer height (0.505) / frame width (0.44)
+export const PRINTER_FIT_HEIGHT = PRINTER_FIT_WIDTH * FRAME_ASPECT
 
 /**
  * Level registry — the single source of order + per-level framing. Adding a
@@ -40,7 +48,7 @@ export const PRINTER_FIT_WIDTH = 6
 export const LEVELS: LevelDef[] = [
   { id: 'hero', scrollMode: 'advance', camera: { position: [0, 0, 10], target: [0, -0.4, 0], fov: 45 }, accent: '#8b7bd8' },
   { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42 }, accent: '#5fd0d6' },
-  { id: 'printing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH }, accent: '#c08a4a' },
+  { id: 'printing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#c08a4a' },
   { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46 }, accent: '#8b7bd8' },
   { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 44 }, accent: '#5fd0d6' },
 ]

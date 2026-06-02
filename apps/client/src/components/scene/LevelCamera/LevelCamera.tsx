@@ -26,15 +26,18 @@ export default function LevelCamera() {
 
     let tx: number, ty: number, tz: number, fov: number
     if (def.fitWidth) {
-      // Head-on width fill: distance so the subject's world width spans (almost)
-      // the full viewport width, on any aspect. Looks "directly in front of you".
+      // Head-on framing. Width-fit distance so the subject fills the viewport
+      // width; if fitHeight is given, also a height-fit distance and take the
+      // larger (CONTAIN) so the whole subject — and the print head — stays on
+      // screen at any aspect. Pure width-fit otherwise ("directly in front").
       fov = def.fov
       const halfV = Math.tan((fov * Math.PI) / 360)
-      const FILL = 0.96 // subject occupies 96% of the viewport width
-      const d = def.fitWidth / FILL / (2 * aspect * halfV)
+      const FILL = def.fitHeight ? 0.84 : 0.96
+      const dW = def.fitWidth / FILL / (2 * aspect * halfV)
+      const dH = def.fitHeight ? def.fitHeight / FILL / (2 * halfV) : 0
       tx = px + state.pointer.x * 0.25
       ty = py + state.pointer.y * 0.15
-      tz = d
+      tz = Math.max(dW, dH)
     } else {
       // Pull back when narrower than the design aspect so nothing clips.
       const fit = aspect < DESIGN_ASPECT ? DESIGN_ASPECT / Math.max(aspect, 0.4) : 1
