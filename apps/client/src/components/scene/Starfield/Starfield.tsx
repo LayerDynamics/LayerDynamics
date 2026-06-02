@@ -11,11 +11,33 @@ import { useScene } from '../../../stores/useScene'
  * Points fade with distance (sizeAttenuation) and a few are bright enough to
  * catch the bloom pass.
  *
- * Self-contained primitive: the point buffer (logic) and the drift are tightly
- * coupled to the single <points>, so a Container/Layout split would be pure
- * indirection — kept as one file.
+ * Every visual/motion knob is a prop with the tuned default, so the field can be
+ * dialed in by changing a number.
  */
-const COUNT = 520
+export interface StarfieldProps {
+  /** Number of points. */
+  count?: number
+  /** Point size (world units, with size attenuation). */
+  size?: number
+  /** Base material opacity. */
+  opacity?: number
+  /** Field extent on X / Y / Z. */
+  spreadX?: number
+  spreadY?: number
+  spreadZ?: number
+  /** Slow auto-rotation speed (rad/s). */
+  driftSpeed?: number
+  /** Pointer parallax strength on X / Y. */
+  parallaxX?: number
+  parallaxY?: number
+  /** Fraction of points that are "hot" (extra-bright, catch the bloom). */
+  hotFraction?: number
+  /** Brightness multiplier for hot vs. ordinary points. */
+  hotIntensity?: number
+  dimIntensity?: number
+  /** PRNG seed — change to reshuffle the field deterministically. */
+  seed?: number
+}
 
 /** Deterministic PRNG (mulberry32) so the field is stable across renders — the
  *  React Compiler requires render to be pure, so no Math.random here. */
@@ -30,39 +52,53 @@ function makeRng(seed: number) {
   }
 }
 
-export default function Starfield() {
+export default function Starfield({
+  count = 520,
+  size = 0.07,
+  opacity = 0.9,
+  spreadX = 38,
+  spreadY = 44,
+  spreadZ = 26,
+  driftSpeed = 0.01,
+  parallaxX = 0.8,
+  parallaxY = 0.5,
+  hotFraction = 0.12,
+  hotIntensity = 1.8,
+  dimIntensity = 0.55,
+  seed = 0x1a7e5,
+}: StarfieldProps) {
   const ref = useRef<Points>(null)
   const reducedMotion = useScene((s) => s.reducedMotion)
 
   const { positions, colors } = useMemo(() => {
-    const rng = makeRng(0x1a7e5)
-    const positions = new Float32Array(COUNT * 3)
-    const colors = new Float32Array(COUNT * 3)
+    const rng = makeRng(seed)
+    const positions = new Float32Array(count * 3)
+    const colors = new Float32Array(count * 3)
     const palette = [
       new Color(brand.violet),
       new Color(brand.violetSoft),
       new Color(brand.cyan),
       new Color(brand.lavender),
     ]
-    for (let i = 0; i < COUNT; i++) {
-      positions[i * 3 + 0] = (rng() - 0.5) * 38
-      positions[i * 3 + 1] = (rng() - 0.5) * 44 - 8
-      positions[i * 3 + 2] = -rng() * 26 - 1
+    for (let i = 0; i < count; i++) {
+      positions[i * 3 + 0] = (rng() - 0.5) * spreadX
+      positions[i * 3 + 1] = (rng() - 0.5) * spreadY - 8
+      positions[i * 3 + 2] = -rng() * spreadZ - 1
       const c = palette[(rng() * palette.length) | 0]
-      const hot = rng() < 0.12 ? 1.8 : 0.55
+      const hot = rng() < hotFraction ? hotIntensity : dimIntensity
       colors[i * 3 + 0] = c.r * hot
       colors[i * 3 + 1] = c.g * hot
       colors[i * 3 + 2] = c.b * hot
     }
     return { positions, colors }
-  }, [])
+  }, [count, spreadX, spreadY, spreadZ, hotFraction, hotIntensity, dimIntensity, seed])
 
   useFrame((state, delta) => {
     const p = ref.current
     if (!p || reducedMotion) return
-    p.rotation.y += delta * 0.01
-    p.position.x += (-state.pointer.x * 0.8 - p.position.x) * Math.min(1, delta * 2)
-    p.position.y += (-state.pointer.y * 0.5 - p.position.y) * Math.min(1, delta * 2)
+    p.rotation.y += delta * driftSpeed
+    p.position.x += (-state.pointer.x * parallaxX - p.position.x) * Math.min(1, delta * 2)
+    p.position.y += (-state.pointer.y * parallaxY - p.position.y) * Math.min(1, delta * 2)
   })
 
   return (
@@ -72,11 +108,11 @@ export default function Starfield() {
         <bufferAttribute attach="attributes-color" args={[colors, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.07}
+        size={size}
         sizeAttenuation
         vertexColors
         transparent
-        opacity={0.9}
+        opacity={opacity}
         depthWrite={false}
         blending={AdditiveBlending}
       />

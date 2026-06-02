@@ -23,14 +23,38 @@ function useRadialGlow(hex: string) {
   }, [hex])
 }
 
+export interface LayeredBackdropContainerProps {
+  /** Pointer parallax shift of the whole backdrop on X / Y. */
+  parallaxX?: number
+  parallaxY?: number
+  /** Pointer-driven yaw of the backdrop. */
+  rotateAmount?: number
+  /** Frame-damping rate of the parallax (higher = snappier). */
+  dampRate?: number
+  /** Hue of the radial hero glow. */
+  glowColor?: string
+  /** Glow plane opacity / size (passed to the layout). */
+  glowOpacity?: number
+  glowSize?: number
+}
+
 /**
  * Backdrop logic: builds the glow texture and applies pointer parallax to the
- * whole backdrop group each frame. Hands both to the presentational layout.
+ * whole backdrop group each frame. Parallax strengths, damping, and the glow
+ * appearance are props (tuned defaults). Hands both to the presentational layout.
  */
-export default function LayeredBackdropContainer() {
+export default function LayeredBackdropContainer({
+  parallaxX = 1.2,
+  parallaxY = 0.7,
+  rotateAmount = 0.04,
+  dampRate = 3,
+  glowColor = brand.violet,
+  glowOpacity = 0.32,
+  glowSize = 19,
+}: LayeredBackdropContainerProps) {
   const group = useRef<Group>(null)
   const reducedMotion = useScene((s) => s.reducedMotion)
-  const glow = useRadialGlow(brand.violet)
+  const glow = useRadialGlow(glowColor)
 
   useFrame((state, delta) => {
     const g = group.current
@@ -42,10 +66,17 @@ export default function LayeredBackdropContainer() {
     }
     const px = state.pointer.x
     const py = state.pointer.y
-    g.position.x = MathUtils.damp(g.position.x, -px * 1.2, 3, delta)
-    g.position.y = MathUtils.damp(g.position.y, -py * 0.7, 3, delta)
-    g.rotation.y = MathUtils.damp(g.rotation.y, px * 0.04, 3, delta)
+    g.position.x = MathUtils.damp(g.position.x, -px * parallaxX, dampRate, delta)
+    g.position.y = MathUtils.damp(g.position.y, -py * parallaxY, dampRate, delta)
+    g.rotation.y = MathUtils.damp(g.rotation.y, px * rotateAmount, dampRate, delta)
   })
 
-  return <LayeredBackdropLayout groupRef={group} glow={glow} />
+  return (
+    <LayeredBackdropLayout
+      groupRef={group}
+      glow={glow}
+      glowOpacity={glowOpacity}
+      glowSize={glowSize}
+    />
+  )
 }

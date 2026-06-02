@@ -8,12 +8,14 @@ const LABELS: Record<string, string> = {
 }
 
 /**
- * Minimal level progress indicator: the active level's name, a NN / 05 counter,
+ * Minimal level progress indicator: the active level's name, a NN / NN counter,
  * and a dotted rail. Reads the live level index so it always agrees with the
  * scene (single source of truth: useLevels).
  */
 export default function LevelIndicator() {
-  const index = useLevels((s) => s.index)
+  const rawIndex = useLevels((s) => s.index)
+  // Clamp into range so a stray out-of-bounds index never crashes the indicator.
+  const index = Math.min(Math.max(rawIndex, 0), LEVEL_COUNT - 1)
   const id = LEVELS[index].id
 
   return (

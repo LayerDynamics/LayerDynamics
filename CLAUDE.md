@@ -36,9 +36,25 @@ pnpm --filter client build        # tsc -b && vite build
 pnpm --filter client preview      # serve the production build
 pnpm --filter client lint         # eslint .
 # equivalently: cd apps/client && pnpm dev | build | preview | lint
+
+# Storybook (every component has a colocated *.stories.tsx):
+pnpm --filter client storybook        # Storybook dev server on :6006
+pnpm --filter client build-storybook  # static build -> storybook-static/ (gitignored)
+
+# Tests (Vitest 4, two projects):
+pnpm --filter client test             # node unit + browser (Chromium) story tests
+pnpm --filter client test:unit        # node-only logic tests (e.g. scrub.test.ts)
+pnpm --filter client test:storybook   # browser story tests only
 ```
 
-There is **no test runner configured** anywhere yet — do not claim tests pass; there are none to run. If a task needs tests, set up the harness as part of the work.
+**Testing is configured** via Vitest 4 with two projects (`apps/client/vitest.config.ts`):
+a `unit` project (node env — the pre-existing logic tests like `scrub.test.ts`) and a
+`storybook` project that runs every `*.stories.tsx` as a real-browser test through
+`@storybook/addon-vitest` (Playwright/Chromium — this is where R3F/WebGL components
+actually render). Scene stories assert **smoke-mount** (renders without throwing), DOM
+stories run `play()` interactions + a11y. `pnpm test` clears the SB dep-optimizer cache
+first so runs are deterministic. See `apps/client/README.md` for the story conventions
+and `.storybook/` for the framework config + decorators.
 
 The Rust side has no working `Cargo.toml`, so `cargo build` will not work until the workspace and member crates are defined.
 

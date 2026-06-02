@@ -2,6 +2,39 @@
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
+## Storybook
+
+Every rendering component in `src/` has a colocated `*.stories.tsx`. Storybook 10
+(`@storybook/react-vite`) runs on the same bleeding-edge stack as the app (Vite 8,
+React 19 + React Compiler), and the stories double as a **real-browser regression
+test suite** via `@storybook/addon-vitest` (Vitest 4 browser mode, Playwright/Chromium).
+
+```bash
+pnpm storybook          # dev server on :6006
+pnpm build-storybook    # static build -> storybook-static/ (gitignored)
+
+pnpm test               # both Vitest projects: node unit + browser story tests
+pnpm test:unit          # node-only logic tests (e.g. scrub.test.ts)
+pnpm test:storybook     # browser story tests only (Chromium)
+```
+
+Conventions:
+
+- **DOM components** (`Nav`, `HireMe/*`, `Loader`, `LensToggle`, `Level{Input,Transitions,Indicator}`)
+  get interaction (`play`) assertions and `@storybook/addon-a11y` axe checks.
+- **R3F scene components** mount in a real `<Canvas frameloop="always">` via the
+  `withCanvas` decorator and assert **smoke-mount** (renders without throwing; live
+  `<canvas>` produced) — not pixel diffs, since headless WebGL may software-render.
+  The Ender 5 / logo GLTF stories additionally decode their **Draco** model
+  end-to-end through the self-hosted decoder in `public/draco/`.
+- Decorators live in `.storybook/decorators.tsx`: `withRouter`, `withStore`
+  (zustand `useScene`), `withLevels` (`useLevels`), `withCanvas` (+ optional drei
+  `ScrollControls`). The smoke-test contract is `.storybook/sceneTest.ts`.
+
+> Note: `pnpm test` / `pnpm test:storybook` clear the Storybook dep-optimizer
+> cache first (`rimraf node_modules/.cache/storybook`) so adding stories can't
+> trigger a mid-run re-optimize that flakily fails the first run.
+
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)

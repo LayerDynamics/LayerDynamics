@@ -6,8 +6,23 @@ import { tierColor } from '../../../styles/brand'
 import { useScene } from '../../../stores/useScene'
 import ProjectAccentLayout from './ProjectAccentLayout'
 
-/** ProjectAccent logic: slow rotate + drift of the glass group. */
-export default function ProjectAccentContainer({ tier }: { tier: Tier }) {
+export interface ProjectAccentContainerProps {
+  tier: Tier
+  /** Continuous roll speed of the glass group (rad/s). */
+  rotateSpeed?: number
+  /** Horizontal drift amplitude. */
+  driftAmplitude?: number
+  /** Horizontal drift speed. */
+  driftSpeed?: number
+}
+
+/** ProjectAccent logic: slow rotate + drift of the glass group (tuned defaults). */
+export default function ProjectAccentContainer({
+  tier,
+  rotateSpeed = 0.05,
+  driftAmplitude = 0.2,
+  driftSpeed = 0.3,
+}: ProjectAccentContainerProps) {
   const group = useRef<Group>(null)
   const reducedMotion = useScene((s) => s.reducedMotion)
   const color = tierColor[tier]
@@ -15,8 +30,8 @@ export default function ProjectAccentContainer({ tier }: { tier: Tier }) {
   useFrame((state, delta) => {
     const g = group.current
     if (!g || reducedMotion) return
-    g.rotation.z += delta * 0.05
-    g.position.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.2
+    g.rotation.z += delta * rotateSpeed
+    g.position.x = Math.sin(state.clock.elapsedTime * driftSpeed) * driftAmplitude
   })
 
   return <ProjectAccentLayout groupRef={group} color={color} />
