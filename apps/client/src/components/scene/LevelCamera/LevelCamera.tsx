@@ -22,15 +22,30 @@ export default function LevelCamera() {
   useFrame((state, delta) => {
     const def = LEVELS[index].camera
     const aspect = size.width / size.height
-    // Pull back when narrower than the design aspect so nothing clips.
-    const fit = aspect < DESIGN_ASPECT ? DESIGN_ASPECT / Math.max(aspect, 0.4) : 1
     const [px, py, pz] = def.position
-    const tx = px + state.pointer.x * 0.4
-    const ty = py + state.pointer.y * 0.2
-    const tz = pz * fit
+
+    let tx: number, ty: number, tz: number, fov: number
+    if (def.fitWidth) {
+      // Head-on width fill: distance so the subject's world width spans (almost)
+      // the full viewport width, on any aspect. Looks "directly in front of you".
+      fov = def.fov
+      const halfV = Math.tan((fov * Math.PI) / 360)
+      const FILL = 0.96 // subject occupies 96% of the viewport width
+      const d = def.fitWidth / FILL / (2 * aspect * halfV)
+      tx = px + state.pointer.x * 0.25
+      ty = py + state.pointer.y * 0.15
+      tz = d
+    } else {
+      // Pull back when narrower than the design aspect so nothing clips.
+      const fit = aspect < DESIGN_ASPECT ? DESIGN_ASPECT / Math.max(aspect, 0.4) : 1
+      tx = px + state.pointer.x * 0.4
+      ty = py + state.pointer.y * 0.2
+      tz = pz * fit
+      fov = def.fov * fit
+    }
 
     if (reducedMotion) {
-      camera.position.set(px, py, tz)
+      camera.position.set(tx, ty, tz)
     } else {
       camera.position.x = MathUtils.damp(camera.position.x, tx, 4, delta)
       camera.position.y = MathUtils.damp(camera.position.y, ty, 4, delta)
@@ -40,7 +55,6 @@ export default function LevelCamera() {
     target.set(def.target[0], def.target[1], def.target[2])
     camera.lookAt(target)
 
-    const fov = def.fov * fit
     if (Math.abs(camera.fov - fov) > 0.01) {
       camera.fov = reducedMotion ? fov : MathUtils.damp(camera.fov, fov, 4, delta)
       camera.updateProjectionMatrix()

@@ -15,11 +15,22 @@ export type ScrollMode = 'scrub' | 'advance'
 export interface LevelDef {
   id: LevelId
   scrollMode: ScrollMode
-  /** Per-level camera framing consumed by LevelCamera (world units). */
-  camera: { position: [number, number, number]; target: [number, number, number]; fov: number }
+  /** Per-level camera framing consumed by LevelCamera (world units). `fitWidth`,
+   *  when set, frames the camera head-on so a subject of that world-width fills
+   *  the viewport WIDTH on any aspect ratio (overrides position.z). */
+  camera: {
+    position: [number, number, number]
+    target: [number, number, number]
+    fov: number
+    fitWidth?: number
+  }
   /** Transition accent shown when ENTERING this level (FR-16). */
   accent: string
 }
+
+/** World width the Ender 5 is scaled to; the printing camera fills the screen
+ *  width with exactly this (printer centred at the origin, viewed head-on). */
+export const PRINTER_FIT_WIDTH = 6
 
 /**
  * Level registry — the single source of order + per-level framing. Adding a
@@ -29,7 +40,7 @@ export interface LevelDef {
 export const LEVELS: LevelDef[] = [
   { id: 'hero', scrollMode: 'advance', camera: { position: [0, 0, 10], target: [0, -0.4, 0], fov: 45 }, accent: '#8b7bd8' },
   { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42 }, accent: '#5fd0d6' },
-  { id: 'printing', scrollMode: 'scrub', camera: { position: [4.2, 3.4, 5.6], target: [0, 1.4, 0], fov: 38 }, accent: '#c08a4a' },
+  { id: 'printing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH }, accent: '#c08a4a' },
   { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46 }, accent: '#8b7bd8' },
   { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 44 }, accent: '#5fd0d6' },
 ]

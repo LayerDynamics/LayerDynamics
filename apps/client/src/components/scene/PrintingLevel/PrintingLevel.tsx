@@ -1,11 +1,12 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
-import { Group } from 'three'
+import { Box3, Group, Vector3 } from 'three'
 import { Model } from './Ender5Pro'
 import { scrubToClipTime } from './scrub'
 import { scrollProgress } from '../../../stores/levelScroll'
 import { useScene } from '../../../stores/useScene'
+import { PRINTER_FIT_WIDTH } from '../../../stores/useLevels'
 
 const GLB_URL = '/assets/objects/Ender5Pro.glb'
 
@@ -20,8 +21,31 @@ const GLB_URL = '/assets/objects/Ender5Pro.glb'
 export default function PrintingLevel() {
   const group = useRef<Group>(null)
   const reducedMotion = useScene((s) => s.reducedMotion)
-  const { animations } = useGLTF(GLB_URL)
+  const { scene, animations } = useGLTF(GLB_URL)
   const { actions, mixer, names } = useAnimations(animations, group)
+
+  // Frame the FRAME (the aluminium cube), not the whole model: the cantilevered
+  // filament spool (plas) skews the full bbox to one side. Measure only the
+  // `alu`-material geometry — the frame extrusions/brackets — and scale+centre on
+  // that so the cube sits centred and fills the screen width, with the spool
+  // intentionally running off the edge. Falls back to the full bbox if no `alu`.
+  const { scale, offset } = useMemo(() => {
+    scene.updateMatrixWorld(true)
+    const frame = new Box3()
+    scene.traverse((o) => {
+      const mesh = o as { isMesh?: boolean; material?: { name?: string } | { name?: string }[] }
+      if (!mesh.isMesh) return
+      const mat = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material
+      if (mat?.name === 'alu') frame.expandByObject(o as Parameters<Box3['expandByObject']>[0])
+    })
+    const box = frame.isEmpty() ? new Box3().setFromObject(scene) : frame
+    const size = new Vector3()
+    const center = new Vector3()
+    box.getSize(size)
+    box.getCenter(center)
+    const s = PRINTER_FIT_WIDTH / size.x
+    return { scale: s, offset: [-center.x * s, -center.y * s, -center.z * s] as [number, number, number] }
+  }, [scene])
 
   useEffect(() => {
     for (const name of names) {
@@ -50,11 +74,14 @@ export default function PrintingLevel() {
     if (touched) mixer.update(0)
   })
 
-  // The printer is modelled at real scale (~0.5 m tall, base on the floor).
-  // Scale it up to scene units so LevelCamera frames it like the other levels.
+  // `group` is the AnimationMixer root (clips target Bed_Z/GantryY/CarriageX by
+  // name underneath it). The inner group applies the measured fit transform so
+  // the printer is PRINTER_FIT_WIDTH wide and centred at the origin, head-on.
   return (
-    <group ref={group} dispose={null} scale={6}>
-      <Model />
+    <group ref={group} dispose={null}>
+      <group scale={scale} position={offset}>
+        <Model />
+      </group>
     </group>
   )
 }
