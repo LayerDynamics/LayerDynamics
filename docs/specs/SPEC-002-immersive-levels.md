@@ -68,7 +68,7 @@ The portfolio *is* a portfolio piece. A scattered continuous scroll undersells t
 
 | ID | Priority | Requirement |
 |----|----------|-------------|
-| FR-1 | MUST | The landing MUST present exactly five non-transition levels in order: `hero`, `processing`, `printing`, `otherWork`, `hireMe`. |
+| FR-1 | MUST | The landing MUST present exactly four non-transition levels in order: `hero`, `processing`, `otherWork`, `hireMe`. **The Hero IS the printer** — the Ender 5 prints the owner's name (no separate standalone printing level; see Decision Log 2026-06-02). |
 | FR-2 | MUST | At any instant the system MUST have **at most one** non-transition level mounted in the scene graph; advancing or reversing MUST unmount the outgoing level's heavy content before the incoming level begins running its own animation. |
 | FR-3 | MUST | Between two adjacent levels the system MUST play a **transition** that fully occludes/clears the viewport such that no element of either the outgoing or incoming level is visible or audibly/visually "running" during the swap. |
 | FR-4 | MUST | A transition MUST run for a **fixed wall-clock duration** (configured in code, e.g. ~900 ms) that is **independent of screen size, aspect ratio, pixel ratio, and frame rate**. |
@@ -509,3 +509,5 @@ Repeatable, committed pipeline under `blender/scripts/` + `blender/workflows/`
 | 2026-06-01 | Ender 5 motion = **baked glTF clips** scrubbed via `useAnimations`, not runtime node math | Owner choice; rig still authored in Blender to produce the clips. Exporter emits one translation clip per mover (all 10 s), played in lockstep. |
 | 2026-06-01 | STEP→mesh via `cadquery-ocp` (OpenCASCADE) inside Blender's Python | Blender 5.1 has no STEP importer + no FreeCAD; OCP recovers the 151 SolidWorks part names that make auto-rigging tractable. |
 | 2026-06-01 | Web optimization via **gltfjsx `-T -S`** (gltf-transform), not Blender decimate+Draco | Canonical pmndrs workflow: Blender authors raw, gltf-transform joins meshes (105→12 draw calls), meshopt-simplifies, palettes materials, prunes, Draco — better + one step. Animation-aware join keeps the rig clips intact. |
+| 2026-06-02 | Self-host the Draco decoder (`public/draco/` via `src/draco.ts`), drop the gstatic CDN | drei defaults the decoder to Google's CDN; the Ender 5 GLB was fetching it cross-origin. Verified zero gstatic. |
+| 2026-06-02 | **Hero IS the printer printing the owner's name; remove the standalone `printing` level → 4 levels** | The printer is the marquee intro. The name is a converted glTF (`Title.step`→Draco `Title.glb`) sitting on the build plate, descending with it; a fixed world clip plane at the plate's start height reveals it bottom-up ("printing"). Reusable `Printer` rig (bed descent + head raster from scroll) + `PrintedTitle` (plate-linked clip). `localClippingEnabled` on the Canvas. Bed driven directly (not the tiny baked clip) so it starts at the top. |
