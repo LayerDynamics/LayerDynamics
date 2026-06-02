@@ -1,7 +1,8 @@
 import { create } from 'zustand'
 
-/** The five immersive levels, in scroll order (SPEC-002). */
-export type LevelId = 'hero' | 'processing' | 'printing' | 'otherWork' | 'hireMe'
+/** The four immersive levels, in scroll order (SPEC-002). The hero IS the printer
+ *  (printing the owner's name), so there is no separate standalone printing level. */
+export type LevelId = 'hero' | 'processing' | 'otherWork' | 'hireMe'
 
 /** Whether the active level is live or a transition is playing. */
 export type Phase = 'live' | 'transition'
@@ -48,7 +49,6 @@ export const PRINTER_FIT_HEIGHT = PRINTER_FIT_WIDTH * FRAME_ASPECT
 export const LEVELS: LevelDef[] = [
   { id: 'hero', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#c08a4a' },
   { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42 }, accent: '#5fd0d6' },
-  { id: 'printing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#c08a4a' },
   { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46 }, accent: '#8b7bd8' },
   { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 44 }, accent: '#5fd0d6' },
 ]

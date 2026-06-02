@@ -1,7 +1,6 @@
 import type { LevelId } from '../../../stores/useLevels'
 import HeroLevel from './HeroLevel'
 import ProcessingLevel from './ProcessingLevel'
-import { PrintingLevel } from '../PrintingLevel'
 import OtherWorkLevel from './OtherWorkLevel'
 import HireMeLevel from './HireMeLevel'
 
@@ -22,8 +21,6 @@ export default function LevelView({ id, cb }: { id: LevelId; cb: LevelCallbacks 
       return <HeroLevel />
     case 'processing':
       return <ProcessingLevel />
-    case 'printing':
-      return <PrintingLevel />
     case 'otherWork':
       return <OtherWorkLevel onOpen={cb.onOpen} />
     case 'hireMe':

@@ -3,7 +3,6 @@ import { useLevels, LEVELS, LEVEL_COUNT } from '../stores/useLevels'
 const LABELS: Record<string, string> = {
   hero: 'Layer Dynamics',
   processing: '3D Processing',
-  printing: '3D Printing',
   otherWork: 'Other Work',
   hireMe: 'Hire Me',
 }
