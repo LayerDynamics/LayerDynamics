@@ -43,14 +43,25 @@ export const PRINTER_FIT_HEIGHT = PRINTER_FIT_WIDTH * FRAME_ASPECT
 
 /**
  * Level registry — the single source of order + per-level framing. Adding a
- * level is a data edit here, not an orchestrator change. Cameras frame each
- * level's content (all authored around the origin) so only one need be live.
+ * level is a data edit here, not an orchestrator change.
+ *
+ * EVERY level frames its content with `fitWidth` + `fitHeight` (the CONTAIN path
+ * in LevelCamera): the camera dollies so the level's content box fits whichever
+ * dimension is limiting on the current aspect. On a wide desktop that's a
+ * height-fit; on a narrow phone it becomes a width-fit, so the content fills the
+ * screen instead of shrinking into the middle. The boxes are each level's
+ * measured content extent (NOT a loose desktop frame) so the subject stays
+ * legible on mobile — the same reason the printer fills the screen.
  */
 export const LEVELS: LevelDef[] = [
+  // Printer frame: ~square, contained so the whole rig + print head stay on screen.
   { id: 'hero', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#c08a4a' },
-  { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42 }, accent: '#5fd0d6' },
-  { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46 }, accent: '#8b7bd8' },
-  { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 44 }, accent: '#5fd0d6' },
+  // Point-cloud logo normalized to radius 1.55, expands under variation → ~5.6 box.
+  { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42, fitWidth: 5.6, fitHeight: 5.6 }, accent: '#5fd0d6' },
+  // Project grid: 4 cols ≈ 12 wide; VIEW_SPAN 9.5 visible tall (see OtherWorkLevel).
+  { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46, fitWidth: 12.6, fitHeight: 9.5 }, accent: '#8b7bd8' },
+  // Contact block: maxWidth 8.5 text, headline→links span ≈ 6.6 tall, centred ~−0.4.
+  { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, -0.4, 9], target: [0, -0.4, 0], fov: 44, fitWidth: 9, fitHeight: 6.6 }, accent: '#5fd0d6' },
 ]
 
 export const LEVEL_COUNT = LEVELS.length

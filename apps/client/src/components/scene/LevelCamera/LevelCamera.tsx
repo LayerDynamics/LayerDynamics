@@ -3,15 +3,20 @@ import { MathUtils, PerspectiveCamera, Vector3 } from 'three'
 import { useLevels, LEVELS } from '../../../stores/useLevels'
 
 const target = new Vector3()
-/** Aspect the camera framings were tuned for; narrower viewports dolly back. */
+/** Aspect the legacy (no fit box) framing was tuned for; narrower viewports dolly back. */
 const DESIGN_ASPECT = 16 / 9
 
 /**
  * Per-level camera framing — replaces the old continuous CameraRig descent. Each
  * level's content is authored around its own spot; this damps the camera to that
- * level's framing (position/target/fov) when the active level changes, adds a
- * little pointer parallax, and dollies back on portrait/narrow viewports so the
- * subject stays fully framed on any aspect ratio. Reduced-motion snaps.
+ * level's framing when the active level changes and adds a little pointer parallax.
+ *
+ * Every level defines a `fitWidth` + `fitHeight` content box, so framing always
+ * takes the CONTAIN path: the camera dollies so that box fits whichever dimension
+ * is limiting on the current aspect. Wide desktop → height-fit; narrow phone →
+ * width-fit, which keeps the subject filling the screen instead of shrinking. The
+ * legacy `else` branch (distance-only dolly-back, fixed fov) is a safe fallback
+ * for any level without a fit box. Reduced-motion snaps.
  */
 export default function LevelCamera() {
   const index = useLevels((s) => s.index)
@@ -39,12 +44,15 @@ export default function LevelCamera() {
       ty = py + state.pointer.y * 0.15
       tz = Math.max(dW, dH)
     } else {
-      // Pull back when narrower than the design aspect so nothing clips.
+      // Legacy fallback (no fit box): dolly straight back when narrower than the
+      // design aspect so the same world-WIDTH stays framed. The fov is held fixed
+      // — scaling it too would compound the pull-back into a fisheye that shrinks
+      // everything to nothing on portrait.
       const fit = aspect < DESIGN_ASPECT ? DESIGN_ASPECT / Math.max(aspect, 0.4) : 1
       tx = px + state.pointer.x * 0.4
       ty = py + state.pointer.y * 0.2
       tz = pz * fit
-      fov = def.fov * fit
+      fov = def.fov
     }
 
     if (reducedMotion) {
