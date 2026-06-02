@@ -1,4 +1,5 @@
 import './styles/css_reset.css'
+import './draco' // self-host the Draco decoder — MUST precede the App import (see draco.ts)
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Globals } from '@react-spring/web'
