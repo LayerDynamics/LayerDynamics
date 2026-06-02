@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
-import { Box3, Group, Vector3 } from 'three'
+import { Box3, Group } from 'three'
 import { Model } from './Ender5Pro'
 import { scrubToClipTime } from './scrub'
 import { scrollProgress } from '../../../stores/levelScroll'
@@ -24,27 +24,36 @@ export default function PrintingLevel() {
   const { scene, animations } = useGLTF(GLB_URL)
   const { actions, mixer, names } = useAnimations(animations, group)
 
-  // Frame the FRAME (the aluminium cube), not the whole model: the cantilevered
-  // filament spool (plas) skews the full bbox to one side. Measure only the
-  // `alu`-material geometry — the frame extrusions/brackets — and scale+centre on
-  // that so the cube sits centred and fills the screen width, with the spool
-  // intentionally running off the edge. Falls back to the full bbox if no `alu`.
+  // Centre + size on the FRAME, not the model bbox. The model is asymmetric: the
+  // filament spool (and its alu bracket arm) cantilevers off one side, so neither
+  // the full bbox NOR the alu bbox is centred on the cube. The gantry beam
+  // (`x-axis-strut`) spans the frame post-to-post and is centred on it, so it
+  // gives the true horizontal centre + width; the `alu` cube box gives the
+  // (un-skewed) vertical/depth centre. Scaling to PRINTER_FIT_WIDTH then makes the
+  // frame fill the viewport width with the spool intentionally off the edge.
   const { scale, offset } = useMemo(() => {
     scene.updateMatrixWorld(true)
-    const frame = new Box3()
+    const expand = (box: Box3, o: object) => box.expandByObject(o as Parameters<Box3['expandByObject']>[0])
+    const alu = new Box3()
+    const strut = new Box3()
     scene.traverse((o) => {
-      const mesh = o as { isMesh?: boolean; material?: { name?: string } | { name?: string }[] }
+      const mesh = o as { isMesh?: boolean; name?: string; material?: { name?: string } | { name?: string }[] }
       if (!mesh.isMesh) return
       const mat = Array.isArray(mesh.material) ? mesh.material[0] : mesh.material
-      if (mat?.name === 'alu') frame.expandByObject(o as Parameters<Box3['expandByObject']>[0])
+      if (mat?.name === 'alu') expand(alu, o)
+      if (mesh.name === 'x-axis-strut') expand(strut, o)
     })
-    const box = frame.isEmpty() ? new Box3().setFromObject(scene) : frame
-    const size = new Vector3()
-    const center = new Vector3()
-    box.getSize(size)
-    box.getCenter(center)
-    const s = PRINTER_FIT_WIDTH / size.x
-    return { scale: s, offset: [-center.x * s, -center.y * s, -center.z * s] as [number, number, number] }
+    const vbox = alu.isEmpty() ? new Box3().setFromObject(scene) : alu
+    let cx = (vbox.min.x + vbox.max.x) / 2
+    let width = vbox.max.x - vbox.min.x
+    if (!strut.isEmpty()) {
+      cx = (strut.min.x + strut.max.x) / 2
+      width = strut.max.x - strut.min.x
+    }
+    const cy = (vbox.min.y + vbox.max.y) / 2
+    const cz = (vbox.min.z + vbox.max.z) / 2
+    const s = PRINTER_FIT_WIDTH / width
+    return { scale: s, offset: [-cx * s, -cy * s, -cz * s] as [number, number, number] }
   }, [scene])
 
   useEffect(() => {
