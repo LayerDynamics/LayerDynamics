@@ -18,6 +18,7 @@ stage() { echo "── $* ──"; }
 case "${1:-all}" in
   deps)    stage "install OCP";     "$PYBL" -m pip install --no-deps cadquery-ocp cadquery-ocp-proxy ;;
   import)  stage "STEP→meshes";     $BL --python blender/scripts/10_import_step.py ;;
+  title)   stage "Title STEP→raw glb"; $BL --python blender/scripts/title_convert.py ;;
   group)   stage "cull+group";      $BL blender/assets/ender5_raw.blend --python blender/scripts/20_cull_group.py ;;
   reassign) stage "reassign";       $BL blender/assets/ender5_raw.blend --python blender/scripts/21_reassign.py ;;
   rig)     stage "rig";             $BL blender/assets/ender5_raw.blend --python blender/scripts/30_rig.py ;;
