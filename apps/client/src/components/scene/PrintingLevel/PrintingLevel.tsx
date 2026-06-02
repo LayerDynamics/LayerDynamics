@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF, useAnimations } from '@react-three/drei'
-import { Box3, Group } from 'three'
+import { Box3, Group, MathUtils } from 'three'
 import { Model } from './Ender5Pro'
 import { scrubToClipTime } from './scrub'
 import { scrollProgress } from '../../../stores/levelScroll'
@@ -19,6 +19,11 @@ const GLB_URL = '/assets/objects/Ender5Pro.glb'
  * scroll; it parks when idle. One AnimationMixer; Ender5Pro/Model is pure geometry.
  */
 const RASTER_LOOPS = 2   // full plays of the 6-sweep clip over the descent (~12 sweeps)
+// Bed_Z node local-Y travel (model metres). At the top the bed surface sits just
+// under the nozzle (hotend bottom ≈ 0.433; bed surface at node-Y 0.405 reaches it);
+// it descends ~0.30 toward the base. Replaces the baked clip's tiny mid-frame nudge.
+const BED_TOP_Y = 0.405
+const BED_BOTTOM_Y = 0.105
 export default function PrintingLevel() {
   const group = useRef<Group>(null)
   const { scene, animations } = useGLTF(GLB_URL)
@@ -62,9 +67,10 @@ export default function PrintingLevel() {
   }, [scene])
 
   useEffect(() => {
-    // Every clip is played but PAUSED — we drive each one's `.time` explicitly from
-    // scroll and apply with mixer.update(0).
-    for (const name of names) {
+    // Play GantryY + CarriageX (paused — we scrub their `.time`). Bed_Z is NOT
+    // played: its baked clip only nudges the plate within mid-frame, so we drive
+    // the bed's height directly (see useFrame) for a full top→bottom travel.
+    for (const name of ['GantryY', 'CarriageX']) {
       const action = actions[name]
       if (!action) continue
       action.play()
@@ -78,11 +84,8 @@ export default function PrintingLevel() {
 
   useFrame(() => {
     const p = scrollProgress.current ?? 0
-    const bed = actions['Bed_Z']
     const gantry = actions['GantryY']
     const carriage = actions['CarriageX']
-    // Bed + gantry: one play over the scroll — the bed descends from the top.
-    if (bed) bed.time = scrubToClipTime(p, bed.getClip().duration)
     if (gantry) gantry.time = scrubToClipTime(p, gantry.getClip().duration)
     // Head sweep COUPLED to the descent: cycle the 6-sweep clip RASTER_LOOPS times
     // across the scroll, so it rasters rapidly as the bed lowers, only while
@@ -93,6 +96,10 @@ export default function PrintingLevel() {
       carriage.time = (p * dur * RASTER_LOOPS) % dur
     }
     mixer.update(0)
+    // Build plate: starts at the TOP (just under the nozzle) at p=0 and descends
+    // the full travel as you scroll. Driven directly (the mixer doesn't touch it).
+    const bedNode = group.current?.getObjectByName('Bed_Z')
+    if (bedNode) bedNode.position.y = MathUtils.lerp(BED_TOP_Y, BED_BOTTOM_Y, p)
   })
 
   // `group` is the AnimationMixer root (clips target Bed_Z/GantryY/CarriageX by
