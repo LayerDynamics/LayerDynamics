@@ -29,11 +29,11 @@ export interface EffectsProps {
 
 export default function Effects({
   bloomIntensity = 1.15,
-  bloomThreshold = 0.55,
+  bloomThreshold = 0.62,
   bloomSmoothing = 0.18,
   bloomRadius = 0.85,
-  vignetteOffset = 0.3,
-  vignetteDarkness = 0.55,
+  vignetteOffset = 0.28,
+  vignetteDarkness = 0.7,
   multisampling = 4,
 }: EffectsProps) {
   return (

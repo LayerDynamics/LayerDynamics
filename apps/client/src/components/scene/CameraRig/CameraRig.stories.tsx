@@ -27,10 +27,10 @@ export const Default: Story = {
     <>
       <ambientLight intensity={0.6} />
       <directionalLight position={[3, 4, 5]} intensity={1} />
-      <gridHelper args={[20, 20, '#863bff', '#2a2440']} />
+      <gridHelper args={[20, 20, '#ff6750', '#1a1a1f']} />
       <mesh position={[0, 0, 0]}>
         <boxGeometry args={[1.5, 1.5, 1.5]} />
-        <meshStandardMaterial color="#47bfff" />
+        <meshStandardMaterial color="#ffffff" />
       </mesh>
       <CameraRig />
     </>

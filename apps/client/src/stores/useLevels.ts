@@ -55,13 +55,13 @@ export const PRINTER_FIT_HEIGHT = PRINTER_FIT_WIDTH * FRAME_ASPECT
  */
 export const LEVELS: LevelDef[] = [
   // Printer frame: ~square, contained so the whole rig + print head stay on screen.
-  { id: 'hero', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#c08a4a' },
+  { id: 'hero', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#ff6750' },
   // Point-cloud logo normalized to radius 1.55, expands under variation → ~5.6 box.
-  { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42, fitWidth: 5.6, fitHeight: 5.6 }, accent: '#5fd0d6' },
+  { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42, fitWidth: 5.6, fitHeight: 5.6 }, accent: '#ff9d8a' },
   // Project grid: 4 cols ≈ 12 wide; VIEW_SPAN 9.5 visible tall (see OtherWorkLevel).
-  { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46, fitWidth: 12.6, fitHeight: 9.5 }, accent: '#8b7bd8' },
+  { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46, fitWidth: 12.6, fitHeight: 9.5 }, accent: '#ffffff' },
   // Contact block: maxWidth 8.5 text, headline→links span ≈ 6.6 tall, centred ~−0.4.
-  { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, -0.4, 9], target: [0, -0.4, 0], fov: 44, fitWidth: 9, fitHeight: 6.6 }, accent: '#5fd0d6' },
+  { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, -0.4, 9], target: [0, -0.4, 0], fov: 44, fitWidth: 9, fitHeight: 6.6 }, accent: '#ff6750' },
 ]
 
 export const LEVEL_COUNT = LEVELS.length

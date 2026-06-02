@@ -74,7 +74,7 @@ export default function MeshProcessingContainer() {
           uAppear: { value: 0 },
           uSize: { value: 0.95 },
           uPixelRatio: { value: Math.min(2, typeof window !== 'undefined' ? window.devicePixelRatio : 1) },
-          uMono: { value: new Color('#5b5690') },
+          uMono: { value: new Color('#a85c4e') },
         },
         vertexShader: VERTEX,
         fragmentShader: FRAGMENT,

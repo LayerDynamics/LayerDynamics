@@ -22,9 +22,9 @@ const meta = {
   args: {
     width: 4,
     height: 2.4,
-    color: '#863bff',
+    color: '#ff6750',
     opacity: 0.1,
-    edge: '#ede6ff',
+    edge: '#ffffff',
     edgeOpacity: 0.35,
     position: [0, 0, 0],
     rotation: [0, 0, 0],
@@ -57,7 +57,7 @@ export const Default: Story = { play: sceneSmokeTest }
 
 /** Cyan-tinted, more opaque variant. */
 export const Cyan: Story = {
-  args: { color: '#47bfff', opacity: 0.22, edge: '#47bfff', edgeOpacity: 0.6 },
+  args: { color: '#ffffff', opacity: 0.22, edge: '#ffffff', edgeOpacity: 0.6 },
   play: sceneSmokeTest,
 }
 

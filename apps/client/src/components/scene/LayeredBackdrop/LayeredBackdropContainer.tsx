@@ -49,7 +49,10 @@ export default function LayeredBackdropContainer({
   rotateAmount = 0.04,
   dampRate = 3,
   glowColor = brand.violet,
-  glowOpacity = 0.32,
+  // Background is pure black (with the starfield) — the additive coral halo is
+  // bloom-amplified into a wash, so it's switched off. The Starfield + parallax
+  // remain; the coral accent comes from the subjects, not a backdrop glow.
+  glowOpacity = 0,
   glowSize = 19,
 }: LayeredBackdropContainerProps) {
   const group = useRef<Group>(null)

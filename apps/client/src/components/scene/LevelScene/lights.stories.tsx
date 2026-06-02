@@ -21,7 +21,7 @@ const meta = {
   args: {
     ambientIntensity: 0.35,
     keyIntensity: 120,
-    keyColor: '#ede6ff',
+    keyColor: '#ffffff',
     keyAngle: 0.5,
     keyPenumbra: 0.8,
     rimCyanIntensity: 45,

@@ -3,18 +3,18 @@
 import type { Tier } from '../data/projects'
 
 export const brand = {
-  bg0: '#0b0a14',
-  bg1: '#12101f',
-  bg2: '#171526',
-  violetDeep: '#7e14ff',
-  violet: '#863bff',
-  violetSoft: '#aa3bff',
-  lavender: '#ede6ff',
-  cyan: '#47bfff',
+  bg0: '#000000',
+  bg1: '#050507',
+  bg2: '#0c0c10',
+  violetDeep: '#e0452e', // deep coral
+  violet: '#ff6750', // the accent
+  violetSoft: '#ff9d8a', // light coral
+  lavender: '#ffffff', // secondary highlight → white
+  cyan: '#ffffff', // secondary accent → white
 } as const
 
 export const tierColor: Record<Tier, string> = {
-  flagship: '#aa3bff',
-  strong: '#6b6bff',
-  notable: '#47bfff',
+  flagship: '#ff6750',
+  strong: '#ff9d8a',
+  notable: '#d8d8e0',
 }

@@ -355,11 +355,13 @@ function computeSegmentation(
     }
   }
 
-  // Map cluster id → a distinct color (spread hues around the brand violet/cyan).
+  // Map cluster id → a distinct color, fanned across a warm band around the coral
+  // accent (#ff6750 ≈ hue 0.025): pink-red → coral → amber, so the segments stay
+  // distinguishable without leaving the black/white/coral scheme.
   const palette: Array<[number, number, number]> = []
   for (let c = 0; c < k; c++) {
-    const h = (0.55 + (c / k) * 0.8) % 1 // start near cyan/violet, fan out
-    palette.push(hslToRgb(h, 0.6, 0.52))
+    const h = (0.96 + (c / k) * 0.13) % 1 // pink-red → coral → amber
+    palette.push(hslToRgb(h, 0.62, 0.58))
   }
 
   const segColor = new Float32Array(count * 3)

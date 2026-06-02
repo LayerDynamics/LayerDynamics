@@ -34,7 +34,7 @@ const meta = {
       <>
         <ambientLight intensity={0.5} />
         <pointLight position={[4, 4, 6]} intensity={60} distance={30} />
-        <pointLight position={[-4, -2, 5]} intensity={40} distance={30} color="#47bfff" />
+        <pointLight position={[-4, -2, 5]} intensity={40} distance={30} color="#ffffff" />
         <HeroLevel />
       </>
     )

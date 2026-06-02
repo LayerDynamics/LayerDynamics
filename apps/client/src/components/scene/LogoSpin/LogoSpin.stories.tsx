@@ -32,8 +32,8 @@ const meta = {
     glowIntensity: 3.4,
     bodyEmissive: 0.25,
     opacity: 0.92,
-    colorBottom: '#7e14ff',
-    colorTop: '#47bfff',
+    colorBottom: '#e0452e',
+    colorTop: '#ffffff',
   },
   argTypes: {
     scale: { control: { type: 'range', min: 0.3, max: 2, step: 0.05 } },
@@ -57,7 +57,7 @@ const meta = {
     <>
       <ambientLight intensity={0.4} />
       <pointLight position={[4, 4, 6]} intensity={60} distance={30} />
-      <pointLight position={[-4, -2, 5]} intensity={40} distance={30} color="#47bfff" />
+      <pointLight position={[-4, -2, 5]} intensity={40} distance={30} color="#ffffff" />
       <LogoSpin {...args} />
     </>
   ),

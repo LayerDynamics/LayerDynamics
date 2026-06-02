@@ -25,9 +25,9 @@ export interface GlassLayerProps {
 export default function GlassLayer({
   width = 4,
   height = 2.4,
-  color = '#863bff',
+  color = '#ff6750',
   opacity = 0.1,
-  edge = '#ede6ff',
+  edge = '#ffffff',
   edgeOpacity = 0.35,
   position = [0, 0, 0],
   rotation = [0, 0, 0],

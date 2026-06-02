@@ -24,7 +24,7 @@
 .nav__logo {
   width: 22px;
   height: auto;
-  filter: drop-shadow(0 0 10px rgba(170, 59, 255, 0.6));
+  filter: drop-shadow(0 0 10px rgba(255, 103, 80, 0.6));
 }
 .nav__name {
   font-family: var(--mono);
@@ -80,7 +80,7 @@
   width: 64px;
   height: auto;
   animation: loader-pulse 1.8s var(--ease) infinite;
-  filter: drop-shadow(0 0 24px rgba(170, 59, 255, 0.7));
+  filter: drop-shadow(0 0 24px rgba(255, 103, 80, 0.7));
 }
 @keyframes loader-pulse {
   0%,
@@ -97,7 +97,7 @@
   width: min(220px, 50vw);
   height: 3px;
   border-radius: 3px;
-  background: rgba(170, 130, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   overflow: hidden;
 }
 .loader__bar span {
@@ -125,7 +125,7 @@
   border-radius: 18px;
   overflow: hidden;
   border: 1px solid var(--glass-border);
-  background: rgba(12, 10, 20, 0.4);
+  background: rgba(8, 8, 10, 0.4);
 }
 .reveal {
   opacity: 0;
@@ -212,7 +212,7 @@
 .btn--primary {
   color: #fff;
   background: linear-gradient(120deg, var(--violet-deep), var(--violet-soft));
-  box-shadow: 0 10px 30px -8px rgba(126, 20, 255, 0.6);
+  box-shadow: 0 10px 30px -8px rgba(255, 103, 80, 0.55);
 }
 .btn--primary:hover {
   transform: translateY(-2px);
@@ -259,19 +259,19 @@
   gap: 14px;
   padding: 8px 16px;
   border-radius: 999px;
-  background: rgba(12, 10, 22, 0.5);
-  border: 1px solid rgba(170, 150, 230, 0.18);
+  background: rgba(8, 8, 10, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   backdrop-filter: blur(8px);
   pointer-events: none;
 }
 .level-indicator__name {
   font-size: 13px;
   letter-spacing: 0.02em;
-  color: #d9d3ec;
+  color: #e6e6ec;
 }
 .level-indicator__count {
   font-size: 11px;
-  color: #8a83a6;
+  color: #8a8a93;
 }
 .level-indicator__rail {
   display: inline-flex;
@@ -281,11 +281,11 @@
   width: 6px;
   height: 6px;
   border-radius: 50%;
-  background: rgba(170, 150, 230, 0.28);
+  background: rgba(255, 255, 255, 0.26);
   transition: background 0.3s ease, transform 0.3s ease;
 }
 .level-indicator__dot[data-on] {
-  background: var(--cyan, #5fd0d6);
+  background: var(--accent, #ff6750);
   transform: scale(1.35);
 }
 
@@ -317,7 +317,7 @@
   font-size: 10px;
   letter-spacing: 0.28em;
   text-transform: uppercase;
-  color: #8a83a6;
+  color: #8a8a93;
 }
 .scroll-hint__chevrons {
   display: flex;
@@ -328,7 +328,7 @@
   width: 22px;
   height: 11px;
   margin-top: -5px; /* overlap the three chevrons into a tight VVV stack */
-  color: var(--cyan, #5fd0d6);
+  color: var(--accent, #ff6750);
   animation: scroll-hint-bounce 1.6s ease-in-out infinite;
 }
 .scroll-hint__chevrons svg:nth-child(1) {
@@ -383,7 +383,7 @@
   gap: 4px;
   border-radius: 12px;
   border: 1px solid var(--glass-border);
-  background: rgba(12, 10, 20, 0.55);
+  background: rgba(8, 8, 10, 0.55);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow);
   opacity: 0;

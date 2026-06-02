@@ -21,7 +21,7 @@ const meta = {
             <Route
               index
               element={
-                <main style={{ padding: '6rem 2rem', color: '#ede6ff' }}>
+                <main style={{ padding: '6rem 2rem', color: '#ffffff' }}>
                   <h1>Routed page content (Outlet)</h1>
                   <p>Nav above, loader overlay behind, this is the routed child.</p>
                 </main>

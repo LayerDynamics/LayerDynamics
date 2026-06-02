@@ -24,7 +24,7 @@ const meta = {
     parallaxY: 0.7,
     rotateAmount: 0.04,
     dampRate: 3,
-    glowColor: '#863bff',
+    glowColor: '#ff6750',
     glowOpacity: 0.32,
     glowSize: 19,
   },

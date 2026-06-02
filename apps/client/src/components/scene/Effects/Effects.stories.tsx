@@ -49,8 +49,8 @@ export const Default: Story = {
       <mesh position={[0, 0, 0]}>
         <icosahedronGeometry args={[1.1, 1]} />
         <meshStandardMaterial
-          color="#863bff"
-          emissive="#aa3bff"
+          color="#ff6750"
+          emissive="#ff9d8a"
           emissiveIntensity={3}
           toneMapped={false}
         />

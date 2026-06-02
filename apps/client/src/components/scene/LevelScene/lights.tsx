@@ -30,8 +30,10 @@ export function CameraRigless({
   keyAngle = 0.5,
   keyPenumbra = 0.8,
   rimCyanIntensity = 45,
-  rimVioletSoftIntensity = 42,
-  rimVioletIntensity = 30,
+  // Coral rims kept low so they read as an accent edge, not a wash — the white
+  // key + white rim do the lighting, the background stays black.
+  rimVioletSoftIntensity = 14,
+  rimVioletIntensity = 10,
 }: CameraRiglessProps) {
   return (
     <>
