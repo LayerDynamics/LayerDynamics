@@ -11,13 +11,15 @@ import { PRINTER_FIT_WIDTH } from '../../../stores/useLevels'
 const GLB_URL = '/assets/objects/Ender5Pro.glb'
 
 /**
- * The 3D Printing level: a rigged Ender 5 Pro whose baked print clips (Bed_Z /
- * GantryY / CarriageX) are scrubbed by the level's scroll progress, so the head
- * rasters and the bed descends as the user scrolls. One AnimationMixer lives here
- * (Ender5Pro/Model is pure geometry); reduced-motion pins a representative pose.
- * GPU resources are owned by drei's GLTF cache; the group disposes cleanly on
- * unmount (dispose={null} keeps the shared cached geometry intact for re-entry).
+ * The 3D Printing level: a rigged Ender 5 Pro. Split animation drivers give it a
+ * "live print" read — the **bed descends with scroll** (Bed_Z + GantryY scrubbed
+ * by scroll progress, starting at the upmost position) while the **print head
+ * rasters back and forth continuously on its own** (CarriageX plays a looping,
+ * time-driven clip). One AnimationMixer lives here (Ender5Pro/Model is pure
+ * geometry). Reduced-motion drops the autonomous raster (head pinned) but keeps
+ * the bed responding to scroll, since that's user-initiated, not auto-playing.
  */
+const CARRIAGE_SPEED = 1.5   // raster passes faster than the baked 6-per-clip rate
 export default function PrintingLevel() {
   const group = useRef<Group>(null)
   const reducedMotion = useScene((s) => s.reducedMotion)
@@ -57,30 +59,37 @@ export default function PrintingLevel() {
   }, [scene])
 
   useEffect(() => {
+    // Every clip is played but PAUSED — we drive each one's `.time` explicitly and
+    // apply with mixer.update(0). (Letting the mixer delta-advance one action while
+    // manually setting times on others desyncs them.)
     for (const name of names) {
       const action = actions[name]
       if (!action) continue
       action.play()
       action.paused = true
-      if (reducedMotion) action.time = action.getClip().duration * 0.5
     }
+    const carriage = actions['CarriageX']
+    if (carriage && reducedMotion) carriage.time = carriage.getClip().duration * 0.25
     mixer.update(0)
     return () => {
       for (const name of names) actions[name]?.stop()
     }
   }, [actions, names, mixer, reducedMotion])
 
-  useFrame(() => {
-    if (reducedMotion) return
+  useFrame((state) => {
     const p = scrollProgress.current ?? 0
-    let touched = false
-    for (const name of names) {
-      const action = actions[name]
-      if (!action) continue
-      action.time = scrubToClipTime(p, action.getClip().duration)
-      touched = true
+    const bed = actions['Bed_Z']
+    const gantry = actions['GantryY']
+    const carriage = actions['CarriageX']
+    // Bed + gantry follow scroll (bed descends from the top as you scroll).
+    if (bed) bed.time = scrubToClipTime(p, bed.getClip().duration)
+    if (gantry) gantry.time = scrubToClipTime(p, gantry.getClip().duration)
+    // Head rasters continuously on its own — clock-driven, looped via modulo.
+    if (carriage && !reducedMotion) {
+      const dur = carriage.getClip().duration
+      carriage.time = (state.clock.elapsedTime * CARRIAGE_SPEED) % dur
     }
-    if (touched) mixer.update(0)
+    mixer.update(0)
   })
 
   // `group` is the AnimationMixer root (clips target Bed_Z/GantryY/CarriageX by
