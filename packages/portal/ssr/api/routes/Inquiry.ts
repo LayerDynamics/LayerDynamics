@@ -56,11 +56,12 @@ export function registerInquiryRoute(app: FastifyInstance): void {
       if (!isInquiryPayload(req.body)) {
         return reply.code(400).send({ error: 'invalid inquiry payload' })
       }
-
       const res = await fetch(webhook, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(buildEmbed(req.body)),
+        signal: AbortSignal.timeout(10000),
+      })
       })
       if (!res.ok) {
         req.log.error(`Discord webhook rejected the inquiry (${res.status})`)
