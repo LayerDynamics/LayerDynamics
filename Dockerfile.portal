@@ -1,0 +1,28 @@
+# syntax=docker/dockerfile:1
+#
+# Production image for the @layerdynamics/portal PROVIDER (the Fastify server in
+# packages/portal/ssr). Deployed as its own Railway service alongside the static
+# apps/client site. It hosts POST /api/inquiry — the server-side Discord proxy
+# that keeps the write-capable webhook URL out of the client bundle — plus the
+# portal provider's app-serving/streaming routes.
+#
+# The package builds with `tsc -b --noEmit` (type-check only) and imports .ts
+# directly, so there is no JS emit step: the server runs through `tsx`, exactly
+# like the `dev:server` script. A single COPY brings in the whole pnpm workspace
+# (the lockfile resolves every workspace manifest); .dockerignore keeps
+# node_modules/dist/.git out of the context.
+
+FROM node:22-slim
+WORKDIR /app
+
+# Corepack pins the pnpm version from package.json#packageManager.
+RUN corepack enable
+
+COPY . .
+RUN pnpm install --frozen-lockfile
+
+# Railway injects $PORT; server.ts reads it (falling back to PORTAL_PORT/5179).
+# DISCORD_WEBHOOK_URL and PORTAL_ALLOWED_ORIGIN are set as Railway service vars
+# (server-side only — NOT build args, NOT VITE_ vars).
+EXPOSE 5179
+CMD ["pnpm", "--filter", "@layerdynamics/portal", "exec", "tsx", "ssr/api/server.ts"]

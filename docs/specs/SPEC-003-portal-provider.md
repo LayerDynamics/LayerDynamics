@@ -6,7 +6,7 @@
 |-------|-------|
 | **Spec ID** | SPEC-003 |
 | **Slug** | `portal-provider` |
-| **Status** | Draft — owner discovery captured 2026-06-03; awaiting approval before implementation |
+| **Status** | Implemented (M0–M4) — `tsc -b` + ESLint clean, 85 unit/browser tests + 2 full-stack Playwright E2E green; two owner-gated items remain: M4.0 register the owner's real app(s) (OQ-5) and M4.6 actual Railway deploy (config written + boot-verified). Built on branch `feat/portal-provider` per `docs/plans/2026-06-03-portal-m0..m4.md`. |
 | **Owner** | Ryan O'Boyle (Layer Dynamics) — `layerdynamics@proton.me` |
 | **Target** | `packages/portal` (`@layerdynamics/portal`) — pnpm workspace package: R3F client library **+** Node provider server (`ssr/`) |
 | **Author** | Drafted with Claude Code (`/lore:project-spec-writer`), corrected via owner discovery |

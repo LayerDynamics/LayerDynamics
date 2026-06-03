@@ -60,7 +60,11 @@ export default function HireMeLayout({
   })
 
   // Cross-fade the panel body between the form and the success confirmation.
-  const bodyTransition = useTransition(status === 'sent', {
+  // Both delivery outcomes ('sent' and the 'mailto' draft fallback) swap to a
+  // confirmation panel, but each gets its own copy (see below) so the draft
+  // fallback never claims a confirmed send.
+  const isResolved = status === 'sent' || status === 'mailto'
+  const bodyTransition = useTransition(isResolved, {
     from: { opacity: 0, y: 16 },
     enter: { opacity: 1, y: 0 },
     leave: { opacity: 0, y: -16 },
@@ -98,13 +102,26 @@ export default function HireMeLayout({
           ) : null,
         )}
 
-        {bodyTransition((style, sent) =>
-          sent ? (
+        {bodyTransition((style, resolved) =>
+          resolved ? (
             <animated.div className="hireme__swap hireme__success" style={rise(style)} role="status">
-              <h2 className="hireme__success-title">Message ready to send</h2>
-              <p className="hireme__success-body">
-                Thanks — your inquiry is on its way. I'll get back to you at the email you provided.
-              </p>
+              {status === 'mailto' ? (
+                <>
+                  <h2 className="hireme__success-title">Finish in your mail client</h2>
+                  <p className="hireme__success-body">
+                    We've opened a pre-filled email for you — please hit <strong>send</strong> there
+                    to deliver your inquiry. Nothing reaches me until you do.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <h2 className="hireme__success-title">Message sent</h2>
+                  <p className="hireme__success-body">
+                    Thanks — your inquiry is on its way. I'll get back to you at the email you
+                    provided.
+                  </p>
+                </>
+              )}
               <button type="button" className="hireme__reset" onClick={onReset}>
                 Send another
               </button>

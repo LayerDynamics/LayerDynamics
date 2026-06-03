@@ -19,6 +19,11 @@ target/
 .vitest-attachments/
 **/__screenshots__/
 
+# Playwright E2E artifacts
+test-results/
+playwright-report/
+.playwright/
+
 # OS / editor noise
 .DS_Store
 *.local

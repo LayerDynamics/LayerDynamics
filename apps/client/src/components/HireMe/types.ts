@@ -17,8 +17,11 @@ export type HireMeField = keyof HireMeValues
 /** Per-field validation messages; a field is absent when it's valid. */
 export type HireMeErrors = Partial<Record<HireMeField, string>>
 
-/** Lifecycle of a submission. */
-export type SubmitStatus = 'idle' | 'submitting' | 'sent' | 'error'
+/** Lifecycle of a submission.
+ *  - `sent`   — delivered to a configured channel (Web3Forms / Discord). Confirmed.
+ *  - `mailto` — no channel configured, so we only opened a prefilled mail draft;
+ *               nothing is delivered until the visitor hits send. NOT confirmed. */
+export type SubmitStatus = 'idle' | 'submitting' | 'sent' | 'mailto' | 'error'
 
 export interface ProjectTypeOption {
   value: ProjectType

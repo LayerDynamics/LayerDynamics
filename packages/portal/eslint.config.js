@@ -6,7 +6,22 @@ import tseslint from 'typescript-eslint'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist', 'node_modules', 'ssr/fixtures']),
+  globalIgnores(['dist', 'node_modules', 'ssr/fixtures', 'e2e', 'playwright.config.ts']),
+
+  // Honor the universal "underscore prefix = intentionally unused" convention for
+  // args and caught errors (e.g. `(_url, _init) => …` placeholder mock signatures),
+  // matching TS's own `noUnusedParameters` handling. The plugin is bound here so
+  // the rule resolves regardless of which extends-block a file falls under.
+  {
+    files: ['**/*.{ts,tsx}'],
+    plugins: { '@typescript-eslint': tseslint.plugin },
+    rules: {
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        { argsIgnorePattern: '^_', varsIgnorePattern: '^_', caughtErrorsIgnorePattern: '^_' },
+      ],
+    },
+  },
 
   // Client (browser / React Three Fiber) code under src/.
   {

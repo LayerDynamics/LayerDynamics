@@ -55,6 +55,10 @@ function handle(
         send(ws, { type: 'error', portalId: msg.portalId, message: 'unregistered app' })
         return
       }
+      // Acquire/resume the guest runtime and mark it running (enforces the cap,
+      // suspending the least-recently-engaged guest if over MAX_LIVE).
+      manager.warm(msg.appId)
+      manager.markRunning(msg.appId)
       const display = sessions.get(msg.portalId) ?? new PortalDisplay(msg.portalId, msg.appId)
       display.setTransport(transport)
       display.setState('live')
@@ -68,11 +72,16 @@ function handle(
       break
     }
     case 'idle': {
-      sessions.get(msg.portalId)?.setState('idle')
+      const display = sessions.get(msg.portalId)
+      display?.setState('idle')
+      // Release the guest's compute (the engagement-gated contract).
+      if (display) manager.suspend(display.appId)
       send(ws, { type: 'state', portalId: msg.portalId, state: 'idle' })
       break
     }
     case 'dispose': {
+      const display = sessions.get(msg.portalId)
+      if (display) manager.dispose(display.appId)
       sessions.delete(msg.portalId)
       break
     }

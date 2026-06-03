@@ -47,8 +47,10 @@ export function useHireMeForm(): UseHireMeForm {
     setStatus('submitting')
     setErrorMessage(undefined)
     try {
-      await deliverInquiry(values)
-      setStatus('sent')
+      // 'sent' = a channel confirmed delivery; 'mailto' = only a draft was
+      // opened (nothing delivered yet). The layout shows distinct copy per case.
+      const outcome = await deliverInquiry(values)
+      setStatus(outcome)
     } catch (err) {
       setStatus('error')
       setErrorMessage(

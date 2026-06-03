@@ -20,6 +20,11 @@ describe('negotiateTransport', () => {
   it('native → stencil', () => {
     expect(negotiateTransport(m, 'demo-native')).toMatchObject({ transport: 'stencil', native: true })
   })
+  it('direct → dom-window pointing at the app\'s own origin (no proxy)', () => {
+    const t = negotiateTransport(m, 'wasmos')
+    expect(t).toMatchObject({ transport: 'dom-window', url: 'https://wasmos-production.up.railway.app' })
+    expect(t?.sandbox).toContain('allow-same-origin')
+  })
   it('unregistered → null (never negotiate an unknown origin)', () => {
     expect(negotiateTransport(m, 'evil')).toBeNull()
   })

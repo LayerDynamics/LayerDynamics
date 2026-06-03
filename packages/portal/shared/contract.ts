@@ -11,7 +11,10 @@ export type PresenterKind = (typeof PRESENTER_KINDS)[number]
 export const PORTAL_STATES = ['dormant', 'warming', 'live', 'idle'] as const
 export type PortalState = (typeof PORTAL_STATES)[number]
 
-export type ServeStrategy = 'static' | 'dynamic' | 'stream' | 'native'
+// 'direct' embeds a framing-permissive external app at its own origin (no proxy)
+// — required for SPAs with absolute asset paths that a path-prefix proxy would
+// break, and safe only when the app sets no X-Frame-Options/CSP frame-ancestors.
+export type ServeStrategy = 'static' | 'dynamic' | 'direct' | 'stream' | 'native'
 
 /** Iframe sandbox tokens (subset we use). */
 export type SandboxToken =
@@ -83,6 +86,29 @@ export interface ForwardedInput {
   code?: string
 }
 
+/** Stream frame header (sent as JSON, immediately followed by a binary bitmap
+ *  blob) over the /stream WS — the texture presenter's frame transport (OQ-4). */
+export interface StreamFrameMeta {
+  type: 'frame'
+  portalId: string
+  w: number
+  h: number
+  seq: number
+}
+
+/** Runtime guard for a stream frame header. */
+export function isStreamFrame(v: unknown): v is StreamFrameMeta {
+  if (typeof v !== 'object' || v === null) return false
+  const o = v as Record<string, unknown>
+  return (
+    o.type === 'frame' &&
+    typeof o.portalId === 'string' &&
+    typeof o.w === 'number' &&
+    typeof o.h === 'number' &&
+    typeof o.seq === 'number'
+  )
+}
+
 /** Control-channel message union (host↔provider, validated targetOrigin). */
 export type PortalMessage =
   | { type: 'negotiate'; portalId: string; appId: string }
@@ -94,9 +120,40 @@ export type PortalMessage =
   | { type: 'state'; portalId: string; state: PortalState }
   | { type: 'error'; portalId: string; message: string }
 
+/**
+ * A contact-form inquiry forwarded to the provider's `/api/inquiry` endpoint.
+ * The provider holds the Discord webhook server-side and builds the embed, so
+ * the write-capable webhook URL never reaches the client bundle. All fields are
+ * already human-readable strings (the client resolves project-type labels).
+ */
+export interface InquiryPayload {
+  name: string
+  email: string
+  /** Human-readable project-type label (resolved client-side). */
+  projectType: string
+  /** Free-text budget, or '' when not provided. */
+  budget: string
+  message: string
+}
+
+/** Runtime guard for an inbound inquiry — rejects malformed bodies server-side. */
+export function isInquiryPayload(value: unknown): value is InquiryPayload {
+  if (typeof value !== 'object' || value === null) return false
+  const v = value as Record<string, unknown>
+  return (
+    typeof v.name === 'string' &&
+    typeof v.email === 'string' &&
+    typeof v.projectType === 'string' &&
+    typeof v.budget === 'string' &&
+    typeof v.message === 'string'
+  )
+}
+
 /** Canonical route templates. Functions take an id and return the concrete path. */
 export const ROUTES = {
   config: '/config',
+  /** Contact-form proxy: client POSTs an InquiryPayload; provider forwards to Discord. */
+  inquiry: '/api/inquiry',
   portal: (id: string) => `/portal/${id}`,
   appPortal: (appId: string, action: 'warm' | 'suspend' | 'dispose') =>
     `/app-portal/${appId}/${action}`,

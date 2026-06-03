@@ -16,6 +16,12 @@ export function negotiateTransport(
       return { transport: 'dom-window', url: `${ROUTES.static(appId)}/`, sandbox: app.sandbox, dims: pxDims(app.defaultSize) }
     case 'dynamic':
       return { transport: 'dom-window', url: `${ROUTES.dynamic(appId)}/`, sandbox: app.sandbox, dims: pxDims(app.defaultSize) }
+    case 'direct':
+      // Embed the framing-permissive app at its own origin — no proxy, so its
+      // absolute asset paths resolve against its real host (a path-prefix proxy
+      // would break them). Cross-origin iframes are fully interactive; only
+      // pixel-readback (texture) is blocked, which dom-window doesn't use.
+      return { transport: 'dom-window', url: app.origin, sandbox: app.sandbox, dims: pxDims(app.defaultSize) }
     case 'stream':
       return { transport: 'texture', streamEndpoint: ROUTES.stream(appId), dims: pxDims(app.defaultSize) }
     case 'native':

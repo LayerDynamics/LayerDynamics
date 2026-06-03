@@ -30,7 +30,7 @@ const meta = {
   argTypes: {
     status: {
       control: 'inline-radio',
-      options: ['idle', 'submitting', 'sent', 'error'],
+      options: ['idle', 'submitting', 'sent', 'mailto', 'error'],
       description: 'Submission lifecycle — drives which panel body is shown.',
     },
     eyebrow: { control: 'text' },
@@ -53,13 +53,27 @@ export const Idle: Story = {
   },
 }
 
-/** Success confirmation after a send — body cross-fades to the "sent" state. */
+/** Confirmed send — a channel (Web3Forms/Discord) accepted the inquiry. */
 export const Sent: Story = {
   args: { status: 'sent' },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    expect(await canvas.findByText(/message ready to send/i)).toBeInTheDocument()
+    expect(await canvas.findByText(/message sent/i)).toBeInTheDocument()
+    expect(canvas.getByText(/on its way/i)).toBeInTheDocument()
     expect(canvas.getByRole('button', { name: /send another/i })).toBeInTheDocument()
+  },
+}
+
+/** Mailto fallback — no channel configured, so only a draft was opened. The copy
+ *  must NOT claim a confirmed send: it asks the visitor to hit send themselves. */
+export const Mailto: Story = {
+  args: { status: 'mailto' },
+  play: async ({ canvasElement }) => {
+    const canvas = within(canvasElement)
+    expect(await canvas.findByText(/finish in your mail client/i)).toBeInTheDocument()
+    expect(canvas.getByText(/nothing reaches me until you do/i)).toBeInTheDocument()
+    // Guard against regressing to the false-confirmation copy.
+    expect(canvas.queryByText(/on its way/i)).not.toBeInTheDocument()
   },
 }
 

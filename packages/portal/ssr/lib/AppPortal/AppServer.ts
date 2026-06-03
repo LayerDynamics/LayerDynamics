@@ -1,9 +1,10 @@
 import type { AppPortalConfigEntry } from '../../../shared/contract'
 
-export type AppServerStatus = 'idle' | 'warming' | 'running' | 'errored'
+export type AppServerStatus = 'idle' | 'warming' | 'running' | 'suspended' | 'errored'
 
-/** Represents one guest app's serve session. M1: reachability + status.
- *  M2 extends this with suspend/resume for the engagement-gated lifecycle. */
+/** Represents one guest app's serve session. Tracks the lifecycle status the
+ *  provider uses to decide whether a guest's resources are held (running) or
+ *  released (suspended) — the server side of the engagement-gated contract. */
 export class AppServer {
   readonly entry: AppPortalConfigEntry
   status: AppServerStatus = 'idle'
@@ -18,6 +19,16 @@ export class AppServer {
 
   markRunning(): void {
     this.status = 'running'
+  }
+
+  /** Release the guest's compute when no portal holds it live. */
+  suspend(): void {
+    if (this.status === 'running' || this.status === 'warming') this.status = 'suspended'
+  }
+
+  /** Re-acquire a suspended guest when a portal re-engages. */
+  resume(): void {
+    if (this.status === 'suspended') this.status = 'running'
   }
 
   markErrored(): void {

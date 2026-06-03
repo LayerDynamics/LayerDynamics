@@ -1,15 +1,21 @@
 import { buildApp } from './app'
 import { attachPortalSocket } from '../lib/Portal/PortalServer'
+import { attachStreamSocket } from '../lib/AppPortal/Stream/APSocketStream'
+import { AppPortalManager } from '../lib/AppPortal/AppPortalManager'
 
-const PORT = Number(process.env.PORTAL_PORT ?? 5179)
+// Railway (and most PaaS) inject $PORT; fall back to PORTAL_PORT then a dev default.
+const PORT = Number(process.env.PORT ?? process.env.PORTAL_PORT ?? 5179)
 const ALLOWED_ORIGIN = process.env.PORTAL_ALLOWED_ORIGIN
 
+// One manager shared by the HTTP routes' lifecycle and both WS channels.
+const manager = new AppPortalManager()
 const app = buildApp({ allowedOrigin: ALLOWED_ORIGIN })
 
-// WebSocket lifecycle channel shares the same HTTP server. Attach after the
-// instance exists but it only binds once Fastify's server is listening.
+// Both WebSocket channels share the HTTP server: the lifecycle channel (/portal)
+// and the frame stream (/stream). Each upgrade handler ignores non-matching paths.
 await app.ready()
-attachPortalSocket(app.server)
+attachPortalSocket(app.server, manager)
+attachStreamSocket(app.server, manager)
 
 app
   .listen({ port: PORT, host: '0.0.0.0' })

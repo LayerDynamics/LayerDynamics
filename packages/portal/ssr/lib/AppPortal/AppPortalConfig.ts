@@ -3,6 +3,29 @@ import type { AppPortalConfigEntry } from '../../../shared/contract'
 /** The allowlist. Nothing outside this array may be served, proxied, or streamed. */
 export const REGISTERED_APPS: AppPortalConfigEntry[] = [
   {
+    // WASM_OS — a real owner-built app, embedded directly at its own origin
+    // (it sets no X-Frame-Options/CSP, and its absolute /spa-assets paths would
+    // break under a path-prefix proxy). allow-same-origin lets the cross-origin
+    // app keep its own origin for storage/WASM; safe because it is NOT same-origin
+    // with the host. allow-pointer-lock supports its OS-style interactions.
+    id: 'wasmos',
+    label: 'WASM_OS',
+    kind: 'dynamic',
+    origin: 'https://wasmos-production.up.railway.app',
+    serveStrategy: 'direct',
+    preferredPresenter: 'dom-window',
+    sandbox: [
+      'allow-scripts',
+      'allow-forms',
+      'allow-popups',
+      'allow-modals',
+      'allow-pointer-lock',
+      'allow-downloads',
+      'allow-same-origin',
+    ],
+    defaultSize: [4, 2.6],
+  },
+  {
     id: 'demo-static',
     label: 'Demo Static Build',
     kind: 'static',

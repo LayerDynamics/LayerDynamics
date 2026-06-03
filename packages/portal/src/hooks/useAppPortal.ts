@@ -11,6 +11,9 @@ export interface UseAppPortal {
   transport: TransportDescriptor | null
   engage: () => void
   idle: () => void
+  /** Called by the visibility driver: demotes/suspends when off-screen, resumes
+   *  only a previously-engaged (idle) portal when back on-screen. */
+  notifyVisibility: (visible: boolean) => void
 }
 
 /** Orchestrates one portal: registers it, negotiates its transport over HTTP,
@@ -19,7 +22,7 @@ export interface UseAppPortal {
 export function useAppPortal(appId: string, providerOrigin: string): UseAppPortal {
   const id = useId()
   const register = usePortalStore((s) => s.register)
-  const setState = usePortalStore((s) => s.setState)
+  const transition = usePortalStore((s) => s.transition)
   const setTransport = usePortalStore((s) => s.setTransport)
   const remove = usePortalStore((s) => s.remove)
   const setConnStatus = useConnectorStore((s) => s.setStatus)
@@ -34,8 +37,9 @@ export function useAppPortal(appId: string, providerOrigin: string): UseAppPorta
     setConnStatus(id, 'connecting')
 
     const off = client.on((msg) => {
-      if (msg.type === 'state') setState(id, msg.state)
-      else if (msg.type === 'error') setState(id, 'dormant')
+      // Provider confirms the guest is live → complete warming→live.
+      if (msg.type === 'state' && msg.state === 'live') transition(id, 'ready')
+      else if (msg.type === 'error') transition(id, 'disengage')
     })
 
     void negotiate(providerOrigin, id, appId)
@@ -58,17 +62,37 @@ export function useAppPortal(appId: string, providerOrigin: string): UseAppPorta
       clientRef.current = null
       remove(id)
     }
-  }, [id, appId, providerOrigin, register, setState, setTransport, remove, setConnStatus])
+  }, [id, appId, providerOrigin, register, transition, setTransport, remove, setConnStatus])
 
   const engage = useCallback(() => {
-    setState(id, 'warming')
+    transition(id, 'engage')
     clientRef.current?.send({ type: 'warm', portalId: id, appId })
-  }, [id, appId, setState])
+  }, [id, appId, transition])
 
   const idle = useCallback(() => {
-    setState(id, 'idle')
+    transition(id, 'disengage')
     clientRef.current?.send({ type: 'idle', portalId: id })
-  }, [id, setState])
+  }, [id, transition])
+
+  const notifyVisibility = useCallback(
+    (visible: boolean) => {
+      const cur = usePortalStore.getState().portals[id]?.state
+      if (visible) {
+        // Resume only a portal that was engaged then idled (never auto-run a
+        // dormant one — that would violate "only running when engaged").
+        if (cur === 'idle') {
+          transition(id, 'onscreen')
+          clientRef.current?.send({ type: 'warm', portalId: id, appId })
+        }
+      } else if (cur === 'live' || cur === 'warming') {
+        transition(id, 'offscreen')
+        clientRef.current?.send({ type: 'idle', portalId: id })
+      } else if (cur === 'idle') {
+        transition(id, 'offscreen') // idle → dormant, fully releases
+      }
+    },
+    [id, appId, transition],
+  )
 
   return {
     id,
@@ -76,5 +100,6 @@ export function useAppPortal(appId: string, providerOrigin: string): UseAppPorta
     transport: instance?.transport ?? null,
     engage,
     idle,
+    notifyVisibility,
   }
 }

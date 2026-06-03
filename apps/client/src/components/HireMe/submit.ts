@@ -1,15 +1,25 @@
 // HireMe submission delivery. Each inquiry is sent to every configured channel:
-//   • Web3Forms  → emails the submission to the owner (record of truth)
-//   • Discord    → posts a formatted alert to a channel webhook (instant ping)
-// Both are real client-side integrations (no backend). If NEITHER is configured
-// (e.g. local dev without keys), it falls back to opening a prefilled mail draft
-// so the form is never a dead end. Keys come from Vite env (see .env.example).
+//   • Web3Forms  → emails the submission to the owner (record of truth). The
+//     access key is a genuine public submission key, so it's fine client-side.
+//   • Discord    → posted via the portal provider's /api/inquiry endpoint, which
+//     holds the Discord webhook server-side. The webhook is a WRITE-CAPABLE
+//     secret and must NOT ship in the client bundle, so we never read it here;
+//     the client only knows the provider origin (VITE_PORTAL_ORIGIN).
+// If NEITHER channel is configured (e.g. local dev without keys / no provider),
+// it falls back to opening a prefilled mail draft so the form is never a dead
+// end. Config comes from Vite env (see .env.example).
 
 import { PROJECT_TYPES, type HireMeValues, type ProjectType } from './types'
 import { social } from '../../data/social'
 
 const WEB3FORMS_KEY = import.meta.env.VITE_WEB3FORMS_KEY as string | undefined
-const DISCORD_WEBHOOK_URL = import.meta.env.VITE_DISCORD_WEBHOOK_URL as string | undefined
+// Origin of the deployed portal provider (e.g. https://portal.example.com). When
+// set, Discord delivery goes through ${PORTAL_ORIGIN}/api/inquiry. Unset → the
+// Discord channel is simply skipped (Web3Forms still captures the inquiry).
+const PORTAL_ORIGIN = import.meta.env.VITE_PORTAL_ORIGIN as string | undefined
+// Mirrors ROUTES.inquiry in @layerdynamics/portal/contract (kept inline to avoid
+// coupling the client build to the provider package).
+const INQUIRY_PATH = '/api/inquiry'
 
 const CONTACT_EMAIL =
   social.find((s) => s.id === 'email')?.value ?? 'layerdynamics@proton.me'
@@ -60,48 +70,47 @@ async function sendWeb3Forms(values: HireMeValues): Promise<void> {
   }
 }
 
-/** Post the submission to a Discord channel webhook as a rich embed. Throws on
- *  a non-2xx response. */
+/** Send the inquiry to the portal provider's /api/inquiry endpoint, which holds
+ *  the Discord webhook server-side and posts the rich embed. We send only the
+ *  raw field values (the provider builds the embed and truncates). Throws on a
+ *  non-2xx response. */
 async function sendDiscord(values: HireMeValues): Promise<void> {
-  // Discord embed field values cap at 1024 chars.
-  const message = values.message.length > 1000 ? `${values.message.slice(0, 1000)}…` : values.message
-  const res = await fetch(DISCORD_WEBHOOK_URL!, {
+  const res = await fetch(`${PORTAL_ORIGIN}${INQUIRY_PATH}`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      username: 'Layer Dynamics — Hire Me',
-      embeds: [
-        {
-          title: `New inquiry — ${values.name}`,
-          color: 0x863bff,
-          fields: [
-            { name: 'Name', value: values.name || '—', inline: true },
-            { name: 'Email', value: values.email || '—', inline: true },
-            { name: 'Project type', value: projectTypeLabel(values.projectType), inline: true },
-            { name: 'Budget', value: values.budget || '—', inline: true },
-            { name: 'Message', value: message || '—' },
-          ],
-          timestamp: new Date().toISOString(),
-        },
-      ],
+      name: values.name,
+      email: values.email,
+      projectType: projectTypeLabel(values.projectType),
+      budget: values.budget || '',
+      message: values.message,
     }),
   })
   if (!res.ok) throw new Error(`Discord alert failed (${res.status})`)
 }
+
+/** Outcome of a delivery attempt. `sent` means a configured channel actually
+ *  accepted the inquiry; `mailto` means no channel was configured so we only
+ *  opened a prefilled mail draft — delivery is NOT confirmed until the visitor
+ *  sends it. The caller must surface these differently. */
+export type DeliveryOutcome = 'sent' | 'mailto'
 
 /**
  * Deliver an inquiry to every configured channel. Web3Forms (the emailed record
  * of truth) must succeed; when it's also on, a Discord failure is logged but does
  * not fail the submission (the email already captured it). With only Discord
  * configured, Discord must succeed. With neither, fall back to a mail draft.
+ *
+ * Returns which path ran so the UI never claims a confirmed send for the draft
+ * fallback (where nothing leaves the browser until the visitor hits send).
  */
-export async function deliverInquiry(values: HireMeValues): Promise<void> {
+export async function deliverInquiry(values: HireMeValues): Promise<DeliveryOutcome> {
   const haveEmail = !!WEB3FORMS_KEY
-  const haveDiscord = !!DISCORD_WEBHOOK_URL
+  const haveDiscord = !!PORTAL_ORIGIN
 
   if (!haveEmail && !haveDiscord) {
     window.location.href = buildMailto(values)
-    return
+    return 'mailto'
   }
 
   const jobs: Promise<void>[] = []
@@ -115,4 +124,5 @@ export async function deliverInquiry(values: HireMeValues): Promise<void> {
     )
   }
   await Promise.all(jobs)
+  return 'sent'
 }
