@@ -64,7 +64,7 @@ export function DomWindowPresenter({
     const q = projectQuad({ width, height }, mesh.matrixWorld, camera, size.width, size.height)
     onVisible?.(q.visible)
     iframe.style.pointerEvents = engaged ? 'auto' : 'none'
-    if (!q.visible || q.w <= 0 || q.h <= 0) {
+    if (!engaged || !q.visible || q.w <= 0 || q.h <= 0) {
       iframe.style.display = 'none'
       return
     }
