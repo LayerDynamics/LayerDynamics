@@ -7,7 +7,6 @@ import HireMeLevel from './HireMeLevel'
 /** Callbacks the levels may need from the DOM/router side. */
 export interface LevelCallbacks {
   onOpen: (id: string) => void
-  onHire: () => void
 }
 
 /**
@@ -24,6 +23,6 @@ export default function LevelView({ id, cb }: { id: LevelId; cb: LevelCallbacks 
     case 'otherWork':
       return <OtherWorkLevel onOpen={cb.onOpen} />
     case 'hireMe':
-      return <HireMeLevel onHire={cb.onHire} />
+      return <HireMeLevel />
   }
 }

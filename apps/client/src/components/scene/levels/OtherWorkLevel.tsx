@@ -4,6 +4,7 @@ import { MathUtils, type Group } from 'three'
 import { Text } from '@react-three/drei'
 import { projectsByTier, tiers, tierTitle } from '../../../data/projects'
 import { ProjectCard, type CardTarget } from '../ProjectCard'
+import { PortalShowcase } from '../PortalShowcase/PortalShowcase'
 import { scrollProgress } from '../../../stores/levelScroll'
 import { useScene } from '../../../stores/useScene'
 import { brand } from '../../../styles/brand'
@@ -101,8 +102,13 @@ export default function OtherWorkLevel({ onOpen }: { onOpen: (id: string) => voi
   })
 
   return (
-    <group ref={groupRef} position={[0, TOP_Y, 0]}>
-      {placed.map((pl) => (
+    <>
+      {/* Consumer #1 of @layerdynamics/portal — a registered live app windowed
+          into the level. Inert unless a provider origin + app id are configured
+          (VITE_PORTAL_ORIGIN / VITE_PORTAL_APP), so production is unchanged. */}
+      <PortalShowcase />
+      <group ref={groupRef} position={[0, TOP_Y, 0]}>
+        {placed.map((pl) => (
         <Text
           key={pl.key}
           font={FONT_MED}
@@ -123,6 +129,7 @@ export default function OtherWorkLevel({ onOpen }: { onOpen: (id: string) => voi
           return <ProjectCard key={p.id} project={p} target={target} onOpen={onOpen} cardScale={cardScale} />
         }),
       )}
-    </group>
+      </group>
+    </>
   )
 }

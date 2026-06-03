@@ -7,7 +7,7 @@ import { useLevels } from '../../../stores/useLevels'
 import { withCanvas, withLevels, withStore } from '../../../../.storybook/decorators'
 import { sceneSmokeTest } from '../../../../.storybook/sceneTest'
 
-const cb: LevelCallbacks = { onOpen: fn(), onHire: fn() }
+const cb: LevelCallbacks = { onOpen: fn() }
 
 /**
  * In-Canvas composition root for the level system: background + fog, the brand

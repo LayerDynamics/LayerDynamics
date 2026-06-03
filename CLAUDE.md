@@ -79,6 +79,19 @@ The Rust side has no working `Cargo.toml`, so `cargo build` will not work until 
 - **Lint nuance:** `eslint.config.js` disables `react-hooks/immutability` + `react-hooks/refs` **only for `src/three/**`** — R3F's per-frame mutation of three objects is intentional and conflicts with the React-Compiler lints. Keep those rules on everywhere else.
 - The empty `packages/*` are the future home for extracted primitives (`shaders`, `particles`, `stylekit`, …); the `@react-three/offscreen`, `cannon`, `uikit`, and `crates/*` WASM tracks are deferred (spec §10).
 
+## Design & UI requirements (non-negotiable)
+
+These apply to **every** UI change in `apps/client` — DOM overlays and in-Canvas R3F alike. A change that violates either is not done.
+
+- **Mobile-optimized by default.** Every design must be legible and usable on a phone (target a ~390×844 portrait viewport), not just desktop. Don't tune a layout only at desktop width and assume it scales down — narrow/portrait aspects are a first-class case, not an afterthought.
+  - For R3F levels, frame content with the **contain-fit** path (`fitWidth`/`fitHeight` in `stores/useLevels.ts` → `LevelCamera`) so the subject fills the screen on any aspect; never scale fov by the aspect (it fisheyes on portrait).
+  - For grids/collections, make the **column count responsive to aspect** and keep the content's world width ~constant so the camera framing holds and cards scale up instead of crushing (see `OtherWorkLevel` → `responsiveGrid`).
+  - **Verify on a real mobile viewport before claiming done** — use the headless-Chrome/Playwright rig to render each affected screen at ~390×844 *and* a desktop width; don't judge mobile by math.
+
+- **Every UI element ships with a Storybook story.** Each component gets a colocated `*.stories.tsx` (the Vitest `storybook` project runs them as real-browser tests — see the Storybook section above). Adding a component without a story, or leaving one without a story, is incomplete work.
+  - DOM components: a `play()` story asserting real behavior + a11y. Scene/R3F components: at minimum a smoke-mount story (renders without throwing); add control-driven stories for tunable props.
+  - When you add or change a component's props/states, update or add the story so it stays the source of truth, and keep `pnpm --filter client test` green.
+
 ## development/reference-only — vendored study material, do not edit or commit
 
 `.gitignore` ignores exactly one path: `development/reference-only`. It holds large **cloned third-party repos kept as reference** while building the portfolio: `gltfjsx`, `uikit`, `react-three-offscreen`, `portfolio`, `mohitvirli.github.io`. These are read-only examples to learn patterns from. Never modify them, never stage them, and don't treat their code as part of this project's source.

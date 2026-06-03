@@ -24,12 +24,19 @@ RUN pnpm install --frozen-lockfile
 # Build-time public config. Vite inlines VITE_* at build, so these must be
 # present when `vite build` runs. Railway exposes service variables as Docker
 # build args automatically; declaring them as ARG + ENV bakes them into the
-# static bundle. (Both are safe to expose client-side: a Web3Forms access key is
-# a public submission key; the Discord webhook URL is a write-only post target.)
+# static bundle. Both values here are genuinely safe to expose client-side:
+#   • VITE_WEB3FORMS_KEY  — a public submission key (designed for client use).
+#   • VITE_PORTAL_ORIGIN  — the portal provider's public URL; Discord delivery
+#     is proxied through it so the write-capable webhook secret stays server-side
+#     and never enters the bundle. (The webhook URL is NOT a build arg anymore.)
+#   • VITE_PORTAL_APP     — id of the registered guest app the OtherWork level
+#     windows in via PortalShowcase (e.g. `wasmos`). Unset → the showcase is inert.
 ARG VITE_WEB3FORMS_KEY
-ARG VITE_DISCORD_WEBHOOK_URL
+ARG VITE_PORTAL_ORIGIN
+ARG VITE_PORTAL_APP
 ENV VITE_WEB3FORMS_KEY=$VITE_WEB3FORMS_KEY \
-    VITE_DISCORD_WEBHOOK_URL=$VITE_DISCORD_WEBHOOK_URL
+    VITE_PORTAL_ORIGIN=$VITE_PORTAL_ORIGIN \
+    VITE_PORTAL_APP=$VITE_PORTAL_APP
 
 # Build the client (tsc -b && vite build -> apps/client/dist).
 RUN pnpm --filter client build

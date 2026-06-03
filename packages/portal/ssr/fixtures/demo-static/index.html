@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Demo Static</title>
+    <style>
+      body { font: 16px system-ui; margin: 0; display: grid; place-items: center; height: 100vh; background: #111; color: #fff }
+      button { font-size: 24px; padding: 12px 20px }
+      #out { margin-top: 16px }
+    </style>
+  </head>
+  <body>
+    <button id="b">clicks: <span id="n">0</span></button>
+    <input id="t" placeholder="type here" />
+    <div id="out"></div>
+    <script>
+      let n = 0
+      document.getElementById('b').onclick = () => { document.getElementById('n').textContent = String(++n) }
+      document.getElementById('t').oninput = (e) => { document.getElementById('out').textContent = e.target.value }
+    </script>
+  </body>
+</html>

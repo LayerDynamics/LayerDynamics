@@ -11,3 +11,26 @@ target
 .cache
 development/reference-only
 .DS_Store
+
+# Secrets & local config — NEVER copy into the build context/image.
+# COPY . . in the Dockerfiles grabs untracked files too; the portal provider
+# image is single-stage, so anything here would ship in the running container.
+# Root .env holds CLOUDFLARE_API_TOKEN / DISCORD_WEBHOOK_URL etc. — real secrets.
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+.claude
+.claude/
+*.pem
+*.key
+
+# Test / report artifacts (also keep the context small).
+**/.vitest-attachments
+**/__screenshots__
+**/test-results
+**/playwright-report
+**/storybook-static
+**/coverage

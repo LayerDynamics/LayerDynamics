@@ -18,6 +18,10 @@ export default function LevelIndicator() {
   const index = Math.min(Math.max(rawIndex, 0), LEVEL_COUNT - 1)
   const id = LEVELS[index].id
 
+  // The contact (last) level is the full-screen Hire-Me form (HireMeOverlay);
+  // the fixed indicator would float over the form's fields, so hide it there.
+  if (index === LEVEL_COUNT - 1) return null
+
   return (
     <div className="level-indicator" aria-live="polite">
       <span className="level-indicator__name">{LABELS[id]}</span>

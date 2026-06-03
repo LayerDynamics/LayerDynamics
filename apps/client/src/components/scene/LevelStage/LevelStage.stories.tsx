@@ -7,7 +7,7 @@ import { useLevels } from '../../../stores/useLevels'
 import { withCanvas, withLevels } from '../../../../.storybook/decorators'
 import { sceneSmokeTest } from '../../../../.storybook/sceneTest'
 
-const cb: LevelCallbacks = { onOpen: fn(), onHire: fn() }
+const cb: LevelCallbacks = { onOpen: fn() }
 
 /**
  * In-Canvas mount point for exactly ONE level at a time, keyed by the active

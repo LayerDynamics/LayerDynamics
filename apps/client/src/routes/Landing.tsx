@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
 import { useNavigate } from 'react-router-dom'
 import LevelScene from '../components/scene/LevelScene/LevelScene'
+import HireMeOverlay from '../components/scene/HireMeOverlay'
 import LevelInput from '../components/LevelInput'
 import LevelTransitions from '../components/LevelTransitions'
 import LevelIndicator from '../components/LevelIndicator'
@@ -21,7 +22,6 @@ export default function Landing() {
   const navigate = useNavigate()
   const cb: LevelCallbacks = {
     onOpen: (id) => navigate(`/projects/${id}`),
-    onHire: () => navigate('/hire'),
   }
 
   const start = LEVELS[0].camera
@@ -45,6 +45,7 @@ export default function Landing() {
         </Suspense>
       </Canvas>
 
+      <HireMeOverlay />
       <LevelInput />
       <LevelTransitions />
       <LevelIndicator />

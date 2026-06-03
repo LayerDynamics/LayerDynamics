@@ -15,6 +15,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@layerdynamics/portal": "workspace:*",
     "@pmndrs/cannon-worker-api": "^2.4.0",
     "@react-spring/three": "^10.1.0",
     "@react-spring/web": "^10.1.0",

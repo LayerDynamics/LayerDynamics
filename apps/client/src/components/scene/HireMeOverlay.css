@@ -1,0 +1,43 @@
+/* The Hire-Me form overlaid on the landing's final level: DOM over the R3F
+   canvas. Transparent so the persistent 3D backdrop shows through; scrolls
+   internally (the form can exceed the viewport, especially on mobile). Sits
+   above the canvas but below the nav (z 20) and the transition curtain (z 40),
+   so the brand link stays clickable and level transitions still occlude it. */
+.hire-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  justify-content: center;
+}
+
+.hire-overlay__inner {
+  width: 100%;
+  max-width: 760px;
+  /* .hireme (the form) supplies its own page padding + panel centering. */
+}
+
+/* GitHub / email — carried over from the old 3D contact close. */
+.hire-overlay__social {
+  list-style: none;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+  justify-content: center;
+  margin: 4px auto 96px;
+  padding: 0 clamp(20px, 6vw, 48px);
+}
+.hire-overlay__link {
+  font-family: var(--mono);
+  font-size: 14px;
+  letter-spacing: 0.02em;
+  color: var(--cyan);
+  text-decoration: none;
+  transition: color var(--dur) var(--ease);
+}
+.hire-overlay__link:hover {
+  color: var(--text-h);
+}
