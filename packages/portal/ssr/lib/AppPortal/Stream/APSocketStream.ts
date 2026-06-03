@@ -48,6 +48,7 @@ export function attachStreamSocket(
 function join(ws: WebSocket, r: Room, role: string): void {
   const set = role === 'producer' ? r.producers : r.consumers
   set.add(ws)
+  ws.on('error', () => {}) // Prevent unhandled socket error crashes
   ws.on('close', () => set.delete(ws))
   if (role === 'producer') {
     // Producer → all consumers (frame headers + binary blobs).
