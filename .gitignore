@@ -15,6 +15,10 @@ target/
 .vite/
 .cache/
 
+# Vitest browser test artifacts (failure screenshots / attachments)
+.vitest-attachments/
+**/__screenshots__/
+
 # OS / editor noise
 .DS_Store
 *.local
