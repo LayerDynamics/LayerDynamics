@@ -40,8 +40,9 @@ export function Portal({
   const { id, state, transport, engage, notifyVisibility } = useAppPortal(app, providerOrigin)
   const [domWindowFailed, setDomWindowFailed] = useState(false)
 
+  const active = state === 'live' || state === 'idle'
   const live = state === 'live'
-  const choice = live && transport ? selectPresenter(transport, { domWindowFailed }) : null
+  const choice = active && transport ? selectPresenter(transport, { domWindowFailed }) : null
 
   return (
     <group position={position} rotation={rotation}>
