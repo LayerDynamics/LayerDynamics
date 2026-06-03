@@ -22,7 +22,7 @@ export class AppPortalManager {
   }
 
   get(id: string): AppPortalConfigEntry | undefined {
-    return this.apps.get(id) ?? getApp(id)
+    return this.apps.get(id)
   }
 
   list(): AppPortalConfigEntry[] {
