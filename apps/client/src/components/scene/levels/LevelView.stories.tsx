@@ -6,7 +6,7 @@ import { setScroll } from '../../../stores/levelScroll'
 import { withCanvas, withLevels } from '../../../../.storybook/decorators'
 import { sceneSmokeTest } from '../../../../.storybook/sceneTest'
 
-const cb: LevelCallbacks = { onOpen: fn(), onHire: fn() }
+const cb: LevelCallbacks = { onOpen: fn() }
 
 /**
  * Maps the active level id → its component (the id→component switch lives here so

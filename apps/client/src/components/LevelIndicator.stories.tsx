@@ -54,12 +54,14 @@ export const Processing: Story = {
   },
 }
 
-/** Terminal level (Hire Me). */
+/** Terminal level (Hire Me): the indicator hides itself — that level is the
+ *  full-screen Hire-Me form (HireMeOverlay), so the fixed counter would float
+ *  over the form's fields. */
 export const HireMe: Story = {
   args: { level: 3 },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    expect(canvas.getByText(/hire me/i)).toBeInTheDocument()
-    expect(canvas.getByText('04 / 04')).toBeInTheDocument()
+    expect(canvas.queryByText('04 / 04')).not.toBeInTheDocument()
+    expect(canvasElement.querySelector('.level-indicator')).toBeNull()
   },
 }

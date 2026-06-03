@@ -1,4 +1,17 @@
 import { Link, useLocation } from 'react-router-dom'
+import { useLevels, LEVEL_COUNT } from '../stores/useLevels'
+
+/** Jump straight to the Hire-Me form, which lives on the landing's final
+ *  (contact) level. The Link navigates home (no-op if already there) and this
+ *  snaps the level store to that level so HireMeOverlay shows. */
+const goToHire = () =>
+  useLevels.setState({
+    index: LEVEL_COUNT - 1,
+    phase: 'live',
+    direction: null,
+    locked: false,
+    swapped: false,
+  })
 
 export default function Nav() {
   const onDetail = useLocation().pathname.startsWith('/projects/')
@@ -16,7 +29,7 @@ export default function Nav() {
             ← All work
           </Link>
         )}
-        <Link to="/hire" className="nav__link">
+        <Link to="/" className="nav__link" onClick={goToHire}>
           Hire me
         </Link>
         <a

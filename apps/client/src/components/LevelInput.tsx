@@ -49,8 +49,20 @@ export default function LevelInput() {
       setScroll(next)
     }
 
+    // A scrollable DOM overlay (the Hire-Me form on the contact level) owns its
+    // own scroll/keys. Forward intent and any back-intent while the overlay can
+    // still scroll up stay inside it; only a back-intent once it's pinned at the
+    // top reaches the level system (overscroll-to-navigate back a level).
+    const overlayCaptures = (target: EventTarget | null, deltaForward: number): boolean => {
+      const ov = (target as Element | null)?.closest?.('[data-level-overlay]') as HTMLElement | null
+      if (!ov) return false
+      return deltaForward >= 0 || ov.scrollTop > 0
+    }
+
     const onWheel = (e: WheelEvent) => {
-      apply(e.deltaY * WHEEL_SENS)
+      const d = e.deltaY * WHEEL_SENS
+      if (overlayCaptures(e.target, d)) return
+      apply(d)
     }
     const onTouchStart = (e: TouchEvent) => {
       touchY = e.touches[0]?.clientY ?? null
@@ -58,13 +70,18 @@ export default function LevelInput() {
     const onTouchMove = (e: TouchEvent) => {
       if (touchY === null) return
       const y = e.touches[0]?.clientY ?? touchY
-      apply((touchY - y) * TOUCH_SENS)
+      const d = (touchY - y) * TOUCH_SENS
       touchY = y
+      if (overlayCaptures(e.target, d)) return
+      apply(d)
     }
     const onTouchEnd = () => {
       touchY = null
     }
     const onKey = (e: KeyboardEvent) => {
+      // Typing/cursor keys inside the form overlay must reach the input, not move
+      // levels (otherwise Space/Arrows would be hijacked).
+      if ((e.target as Element | null)?.closest?.('[data-level-overlay]')) return
       if (['ArrowDown', 'PageDown', ' '].includes(e.key)) {
         e.preventDefault()
         apply(KEY_STEP)
