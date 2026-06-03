@@ -1,7 +1,6 @@
 import { Suspense } from 'react'
 import { Canvas } from '@react-three/fiber'
 import { Preload } from '@react-three/drei'
-import { useNavigate } from 'react-router-dom'
 import LevelScene from '../components/scene/LevelScene/LevelScene'
 import HireMeOverlay from '../components/scene/HireMeOverlay'
 import PortalOverlay from '../components/scene/PortalOverlay'
@@ -9,7 +8,6 @@ import LevelInput from '../components/LevelInput'
 import LevelTransitions from '../components/LevelTransitions'
 import LevelIndicator from '../components/LevelIndicator'
 import ScrollHint from '../components/ScrollHint'
-import type { LevelCallbacks } from '../components/scene/levels'
 import { LEVELS } from '../stores/useLevels'
 
 /**
@@ -20,11 +18,6 @@ import { LEVELS } from '../stores/useLevels'
  * Router hooks live here (DOM side) and are handed to the scene as callbacks.
  */
 export default function Landing() {
-  const navigate = useNavigate()
-  const cb: LevelCallbacks = {
-    onOpen: (id) => navigate(`/projects/${id}`),
-  }
-
   const start = LEVELS[0].camera
 
   return (
@@ -41,7 +34,7 @@ export default function Landing() {
         }}
       >
         <Suspense fallback={null}>
-          <LevelScene cb={cb} />
+          <LevelScene />
           <Preload all />
         </Suspense>
       </Canvas>

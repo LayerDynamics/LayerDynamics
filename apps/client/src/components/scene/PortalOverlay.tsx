@@ -22,35 +22,44 @@ export default function PortalOverlay() {
   const close = usePortalOverlay((s) => s.close)
   const negotiateId = useId()
 
-  const [phase, setPhase] = useState<Phase>('loading')
-  const [url, setUrl] = useState<string | null>(null)
-  const [sandbox, setSandbox] = useState('')
+  // One async result keyed by the app it was negotiated for. phase/url/sandbox are
+  // DERIVED (loading until the result matches the currently-open app), so the
+  // effect only calls setState inside its async callbacks — never synchronously.
+  const [result, setResult] = useState<{
+    app: string
+    ok: boolean
+    url?: string
+    sandbox?: string
+  } | null>(null)
 
   // Negotiate the site URL whenever a new app is opened.
   useEffect(() => {
     if (!openApp || !providerOrigin) return
     let cancelled = false
-    setPhase('loading')
-    setUrl(null)
     negotiate(providerOrigin, negotiateId, openApp)
       .then((t) => {
         if (cancelled) return
         const resolved = t ? resolveUrl(providerOrigin, t) : undefined
-        if (!resolved) {
-          setPhase('error')
-          return
-        }
-        setUrl(resolved)
-        setSandbox((t!.sandbox ?? []).join(' '))
-        setPhase('ready')
+        setResult({
+          app: openApp,
+          ok: !!resolved,
+          url: resolved,
+          sandbox: (t?.sandbox ?? []).join(' '),
+        })
       })
       .catch(() => {
-        if (!cancelled) setPhase('error')
+        if (!cancelled) setResult({ app: openApp, ok: false })
       })
     return () => {
       cancelled = true
     }
   }, [openApp, providerOrigin, negotiateId])
+
+  // Derived view state — no setState during render or synchronously in an effect.
+  const current = result && result.app === openApp ? result : null
+  const phase: Phase = current ? (current.ok ? 'ready' : 'error') : 'loading'
+  const url = current?.url ?? null
+  const sandbox = current?.sandbox ?? ''
 
   // Esc closes; lock body scroll while open.
   useEffect(() => {

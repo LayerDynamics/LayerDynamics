@@ -26,8 +26,8 @@ const meta = {
   argTypes: {
     level: {
       control: 'inline-radio',
-      options: [0, 1, 2, 3],
-      description: '0 hero · 1 processing · 2 otherWork · 3 hireMe',
+      options: [0, 1, 2],
+      description: '0 hero · 1 otherWork · 2 hireMe',
     },
   },
   render: (args: CameraArgs) => {
@@ -52,5 +52,5 @@ type Story = StoryObj<CameraArgs>
 
 /** Hero framing (index 0). */
 export const HeroFraming: Story = { args: { level: 0 }, play: sceneSmokeTest }
-/** Other Work framing (index 2) — an off-axis camera position. */
-export const OtherWorkFraming: Story = { args: { level: 2 }, play: sceneSmokeTest }
+/** Other Work framing (index 1) — the portals level camera. */
+export const OtherWorkFraming: Story = { args: { level: 1 }, play: sceneSmokeTest }

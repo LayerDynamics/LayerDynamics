@@ -6,7 +6,6 @@ import LevelCamera from '../LevelCamera/LevelCamera'
 import LevelStage from '../LevelStage/LevelStage'
 import { brand } from '../../../styles/brand'
 import { useScene } from '../../../stores/useScene'
-import type { LevelCallbacks } from '../levels'
 
 /**
  * In-Canvas composition root for the level system: background, lights, the
@@ -14,7 +13,7 @@ import type { LevelCallbacks } from '../levels'
  * level (LevelStage), and post-processing. Replaces the old continuous
  * SceneContent (CameraRig + all sections mounted at once).
  */
-export default function LevelScene({ cb }: { cb: LevelCallbacks }) {
+export default function LevelScene() {
   const setReady = useScene((s) => s.setReady)
 
   useEffect(() => {
@@ -29,7 +28,7 @@ export default function LevelScene({ cb }: { cb: LevelCallbacks }) {
       <CameraRigless />
       <LayeredBackdrop />
       <LevelCamera />
-      <LevelStage cb={cb} />
+      <LevelStage />
       <Effects />
     </>
   )

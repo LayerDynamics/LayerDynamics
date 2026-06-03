@@ -5,7 +5,7 @@ import { withLevels } from '../../.storybook/decorators'
 import { useLevels } from '../stores/useLevels'
 
 /**
- * Minimal level-progress indicator: the active level's name, an NN / 04 counter,
+ * Minimal level-progress indicator: the active level's name, an NN / 03 counter,
  * and a dotted rail. Reads the live `useLevels` index (single source of truth).
  * `level` is an interactive control here (drives the store index); withLevels
  * resets it between stories.
@@ -21,8 +21,8 @@ const meta = {
   argTypes: {
     level: {
       control: 'inline-radio',
-      options: [0, 1, 2, 3],
-      description: '0 hero · 1 processing · 2 otherWork · 3 hireMe',
+      options: [0, 1, 2],
+      description: '0 hero · 1 otherWork · 2 hireMe',
     },
   },
   render: (args: IndicatorArgs) => {
@@ -40,17 +40,17 @@ export const Hero: Story = {
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
     expect(canvas.getByText(/layer dynamics/i)).toBeInTheDocument()
-    expect(canvas.getByText('01 / 04')).toBeInTheDocument()
+    expect(canvas.getByText('01 / 03')).toBeInTheDocument()
   },
 }
 
-/** Middle level (3D Processing). */
-export const Processing: Story = {
+/** Middle level (Other Work — the portals). */
+export const OtherWork: Story = {
   args: { level: 1 },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    expect(canvas.getByText(/3d processing/i)).toBeInTheDocument()
-    expect(canvas.getByText('02 / 04')).toBeInTheDocument()
+    expect(canvas.getByText(/other work/i)).toBeInTheDocument()
+    expect(canvas.getByText('02 / 03')).toBeInTheDocument()
   },
 }
 
@@ -58,10 +58,10 @@ export const Processing: Story = {
  *  full-screen Hire-Me form (HireMeOverlay), so the fixed counter would float
  *  over the form's fields. */
 export const HireMe: Story = {
-  args: { level: 3 },
+  args: { level: 2 },
   play: async ({ canvasElement }) => {
     const canvas = within(canvasElement)
-    expect(canvas.queryByText('04 / 04')).not.toBeInTheDocument()
+    expect(canvas.queryByText('03 / 03')).not.toBeInTheDocument()
     expect(canvasElement.querySelector('.level-indicator')).toBeNull()
   },
 }

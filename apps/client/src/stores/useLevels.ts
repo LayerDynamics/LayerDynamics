@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 
-/** The four immersive levels, in scroll order (SPEC-002). The hero IS the printer
+/** The immersive levels, in scroll order (SPEC-002). The hero IS the printer
  *  (printing the owner's name), so there is no separate standalone printing level. */
-export type LevelId = 'hero' | 'processing' | 'otherWork' | 'hireMe'
+export type LevelId = 'hero' | 'otherWork' | 'hireMe'
 
 /** Whether the active level is live or a transition is playing. */
 export type Phase = 'live' | 'transition'
@@ -56,9 +56,8 @@ export const PRINTER_FIT_HEIGHT = PRINTER_FIT_WIDTH * FRAME_ASPECT
 export const LEVELS: LevelDef[] = [
   // Printer frame: ~square, contained so the whole rig + print head stay on screen.
   { id: 'hero', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#ff6750' },
-  // Point-cloud logo normalized to radius 1.55, expands under variation → ~5.6 box.
-  { id: 'processing', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 42, fitWidth: 5.6, fitHeight: 5.6 }, accent: '#ff9d8a' },
-  // Project grid: 4 cols ≈ 12 wide; VIEW_SPAN 9.5 visible tall (see OtherWorkLevel).
+  // Other Work: portals (live windowed apps). Framed wide enough for the portal
+  // launch elements; content world-width ≈ 12 (matches the portal showcase sizing).
   { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46, fitWidth: 12.6, fitHeight: 9.5 }, accent: '#ffffff' },
   // Contact block: maxWidth 8.5 text, headline→links span ≈ 6.6 tall, centred ~−0.4.
   { id: 'hireMe', scrollMode: 'advance', camera: { position: [0, -0.4, 9], target: [0, -0.4, 0], fov: 44, fitWidth: 9, fitHeight: 6.6 }, accent: '#ff6750' },

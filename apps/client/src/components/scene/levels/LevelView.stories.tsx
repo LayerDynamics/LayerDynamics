@@ -1,12 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/react-vite'
-import { fn } from 'storybook/test'
-import LevelView, { type LevelCallbacks } from './LevelView'
+import LevelView from './LevelView'
 import type { LevelId } from '../../../stores/useLevels'
 import { setScroll } from '../../../stores/levelScroll'
 import { withCanvas, withLevels } from '../../../../.storybook/decorators'
 import { sceneSmokeTest } from '../../../../.storybook/sceneTest'
-
-const cb: LevelCallbacks = { onOpen: fn() }
 
 /**
  * Maps the active level id → its component (the id→component switch lives here so
@@ -23,8 +20,7 @@ const meta = {
     a11y: { test: 'off' },
   },
   argTypes: {
-    id: { control: 'inline-radio', options: ['hero', 'processing', 'otherWork', 'hireMe'] satisfies LevelId[] },
-    cb: { control: false },
+    id: { control: 'inline-radio', options: ['hero', 'otherWork', 'hireMe'] satisfies LevelId[] },
   },
 } satisfies Meta<typeof LevelView>
 
@@ -33,7 +29,7 @@ type Story = StoryObj<typeof LevelView>
 
 function lit(id: LevelId): Story {
   return {
-    args: { id, cb },
+    args: { id },
     render: (args) => {
       setScroll(0)
       return (
@@ -50,6 +46,5 @@ function lit(id: LevelId): Story {
 }
 
 export const Hero = lit('hero')
-export const Processing = lit('processing')
 export const OtherWork = lit('otherWork')
 export const HireMe = lit('hireMe')
