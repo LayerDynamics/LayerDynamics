@@ -36,10 +36,15 @@ export class StreamClient {
       return
     }
     if (data instanceof Blob && this.pendingMeta) {
-      const bitmap = await createImageBitmap(data)
-      const meta = this.pendingMeta
-      this.pendingMeta = null
-      for (const l of this.frameListeners) l({ bitmap, meta })
+      try {
+        const bitmap = await createImageBitmap(data)
+        const meta = this.pendingMeta
+        this.pendingMeta = null
+        for (const l of this.frameListeners) l({ bitmap, meta })
+      } catch (err) {
+        console.error('[StreamClient] Failed to decode frame bitmap:', err)
+        this.pendingMeta = null
+      }
     }
   }
 
