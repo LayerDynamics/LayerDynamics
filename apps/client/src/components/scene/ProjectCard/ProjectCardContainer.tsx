@@ -9,6 +9,9 @@ export interface ProjectCardContainerProps {
   project: Project
   target: CardTarget
   onOpen: (id: string) => void
+  /** Uniform size multiplier for the whole tile (mesh + text). Lets a responsive
+   *  grid enlarge the cards when it drops to fewer columns on narrow screens. */
+  cardScale?: number
 }
 
 /**
@@ -18,7 +21,7 @@ export interface ProjectCardContainerProps {
  * spring toward their target when the lens changes, lift/brighten on hover, and
  * dim when another card is focused.
  */
-export default function ProjectCardContainer({ project, target, onOpen }: ProjectCardContainerProps) {
+export default function ProjectCardContainer({ project, target, onOpen, cardScale = 1 }: ProjectCardContainerProps) {
   const hoveredId = useScene((s) => s.hovered)
   const setHoveredId = useScene((s) => s.setHovered)
   const reducedMotion = useScene((s) => s.reducedMotion)
@@ -26,12 +29,13 @@ export default function ProjectCardContainer({ project, target, onOpen }: Projec
   const isHovered = hoveredId === project.id
   const dimmed = hoveredId !== null && !isHovered
   const [tx, ty, tz] = target.position
-  const lift = isHovered ? 0.55 : 0
+  // Hover lift scales with the tile so the pop reads the same on big (mobile) cards.
+  const lift = (isHovered ? 0.55 : 0) * cardScale
 
   const spring = useSpring({
     position: [tx, ty, tz + lift] as [number, number, number],
     rotationY: target.rotationY,
-    scale: isHovered ? 1.06 : dimmed ? 0.97 : 1,
+    scale: (isHovered ? 1.06 : dimmed ? 0.97 : 1) * cardScale,
     faceOpacity: isHovered ? 0.72 : dimmed ? 0.32 : 0.5,
     barEmissive: isHovered ? 4.5 : dimmed ? 1.2 : 2.6,
     immediate: reducedMotion,
