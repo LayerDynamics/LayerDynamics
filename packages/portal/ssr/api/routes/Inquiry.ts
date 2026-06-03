@@ -62,7 +62,6 @@ export function registerInquiryRoute(app: FastifyInstance): void {
         body: JSON.stringify(buildEmbed(req.body)),
         signal: AbortSignal.timeout(10000),
       })
-      })
       if (!res.ok) {
         req.log.error(`Discord webhook rejected the inquiry (${res.status})`)
         return reply.code(502).send({ error: `discord delivery failed (${res.status})` })

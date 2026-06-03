@@ -1,0 +1,142 @@
+/* Large centered modal that shows a registered site live within the portfolio.
+   Brand: black / white / coral (#ff6750). Mobile-first — near-full on a phone,
+   a framed panel on larger screens. */
+
+.portal-overlay {
+  position: fixed;
+  inset: 0;
+  /* Portaled to <body>; sits above the Nav (20), curtain (40), loader (50). */
+  z-index: 200;
+  display: grid;
+  place-items: center;
+  padding: clamp(8px, 3vw, 40px);
+  background: rgba(0, 0, 0, 0.72);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  animation: portal-overlay-fade 180ms ease-out;
+}
+
+@keyframes portal-overlay-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.portal-overlay__panel {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 1280px);
+  height: min(100%, 860px);
+  background: #0c0c10;
+  border: 1px solid rgba(255, 103, 80, 0.5);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgba(0, 0, 0, 0.6),
+    0 24px 80px rgba(0, 0, 0, 0.6),
+    0 0 60px rgba(255, 103, 80, 0.18);
+  overflow: hidden;
+  animation: portal-overlay-rise 220ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes portal-overlay-rise {
+  from {
+    transform: translateY(16px) scale(0.985);
+    opacity: 0;
+  }
+  to {
+    transform: none;
+    opacity: 1;
+  }
+}
+
+.portal-overlay__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px 10px 16px;
+  background: #050507;
+  border-bottom: 1px solid rgba(255, 103, 80, 0.35);
+  flex: 0 0 auto;
+}
+
+.portal-overlay__title {
+  font:
+    600 15px/1.2 'Space Grotesk',
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.06em;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.portal-overlay__close {
+  appearance: none;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: transparent;
+  color: #fff;
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  font-size: 22px;
+  line-height: 1;
+  cursor: pointer;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.portal-overlay__close:hover,
+.portal-overlay__close:focus-visible {
+  background: #ff6750;
+  border-color: #ff6750;
+  color: #050507;
+  outline: none;
+}
+
+.portal-overlay__body {
+  position: relative;
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #050507;
+}
+
+.portal-overlay__frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.portal-overlay__msg {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  margin: 0;
+  padding: 24px;
+  text-align: center;
+  font:
+    500 15px/1.5 'Space Grotesk',
+    system-ui,
+    sans-serif;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Phone: drop the rounded frame to edge-to-edge so the site gets every pixel. */
+@media (max-width: 540px) {
+  .portal-overlay {
+    padding: 0;
+  }
+  .portal-overlay__panel {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    border-radius: 0;
+  }
+}

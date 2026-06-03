@@ -1,5 +1,5 @@
 import type { AppPortalConfigEntry } from '../../../shared/contract'
-import { REGISTERED_APPS, getApp } from './AppPortalConfig'
+import { REGISTERED_APPS } from './AppPortalConfig'
 import { AppServer } from './AppServer'
 
 /** Registry + lifecycle owner for guest apps. Holds the allowlist (registration

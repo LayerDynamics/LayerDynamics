@@ -4,6 +4,7 @@ import { Preload } from '@react-three/drei'
 import { useNavigate } from 'react-router-dom'
 import LevelScene from '../components/scene/LevelScene/LevelScene'
 import HireMeOverlay from '../components/scene/HireMeOverlay'
+import PortalOverlay from '../components/scene/PortalOverlay'
 import LevelInput from '../components/LevelInput'
 import LevelTransitions from '../components/LevelTransitions'
 import LevelIndicator from '../components/LevelIndicator'
@@ -46,6 +47,7 @@ export default function Landing() {
       </Canvas>
 
       <HireMeOverlay />
+      <PortalOverlay />
       <LevelInput />
       <LevelTransitions />
       <LevelIndicator />
