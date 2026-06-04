@@ -1,24 +1,33 @@
 import { useMemo, useRef, type RefObject } from 'react'
 import { useFrame } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
-import { Color, Group, Mesh, MeshStandardMaterial, Plane, Vector3 } from 'three'
+import { Box3, Color, Group, Mesh, MeshStandardMaterial, Plane, Vector3 } from 'three'
 import { BED_TOP_Y, type BedState } from './Printer'
 import { brand } from '../../../styles/brand'
 
-const TITLE_URL = '/assets/objects/Title.glb'
+const TITLE_URL = '/assets/objects/PrintedName.glb'
 // Bed_Z node X/Z (model space) = the build-plate centre — the name sits here.
 const BED_X = -0.096
 const BED_Z = -0.001
 // Bed_Z node-Y → plate top SURFACE (node 0.257 → surface ≈ 0.285).
 const PLATE_SURFACE_OFFSET = 0.028
+// Height (bed model space) the printed mark is fit to. The bottom-up clip reveal
+// completes once the bed descends by this height, so keeping it equal to the
+// original Title.glb height preserves the exact same reveal timing for any artwork.
+const PRINT_HEIGHT = 0.0555
 
 /**
- * The owner's name "printed" on the build plate. The Title sits on the plate and
- * descends WITH it (its Y tracks the bed). A fixed world-space clip plane at the
- * plate's INITIAL (top) surface height hides everything above that line, so at the
- * start the name is invisible and it reveals BOTTOM-UP as the bed lowers — the
- * print "growing" off the plate. Filament-violet, emissive (blooms like fresh
- * extrusion). Renders inside Printer's scaled/centred group (bed model space).
+ * The owner's name/mark "printed" on the build plate (the extruded PrintedName GLB).
+ * It sits on the plate and descends WITH it (its Y tracks the bed). A fixed
+ * world-space clip plane at the plate's INITIAL (top) surface height hides everything
+ * above that line, so at the start it is invisible and reveals BOTTOM-UP as the bed
+ * lowers — the print "growing" off the plate. Filament-violet, emissive (blooms like
+ * fresh extrusion). Renders inside Printer's scaled/centred group (bed model space).
+ *
+ * The GLB is normalized/centred at its own origin, so it is fit at load time to
+ * PRINT_HEIGHT with its bottom on the plate and centred in X/Z — this makes the
+ * reveal behave identically for any artwork swapped in (the source of truth is the
+ * fit, not the GLB's intrinsic transform).
  */
 export default function PrintedTitle({ bed }: { bed: RefObject<BedState | null> }) {
   const ref = useRef<Group>(null)
@@ -39,6 +48,15 @@ export default function PrintedTitle({ bed }: { bed: RefObject<BedState | null> 
     object.traverse((o) => {
       if ((o as Mesh).isMesh) (o as Mesh).material = mat
     })
+    // Fit to PRINT_HEIGHT, bottom on the plate (min Y = 0), centred in X/Z. Computed
+    // from the cloned object's own bounds so it works for any GLB normalization.
+    object.updateMatrixWorld(true)
+    const box = new Box3().setFromObject(object)
+    const size = box.getSize(new Vector3())
+    const center = box.getCenter(new Vector3())
+    const s = size.y > 0 ? PRINT_HEIGHT / size.y : 1
+    object.scale.setScalar(s)
+    object.position.set(-center.x * s, -box.min.y * s, -center.z * s)
     return { object, clip }
   }, [scene])
 

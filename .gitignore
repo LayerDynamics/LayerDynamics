@@ -28,3 +28,4 @@ playwright-report/
 .DS_Store
 *.local
 .env
+.claude

@@ -1,8 +1,9 @@
 import { create } from 'zustand'
 
 /** The immersive levels, in scroll order (SPEC-002). The hero IS the printer
- *  (printing the owner's name), so there is no separate standalone printing level. */
-export type LevelId = 'hero' | 'otherWork' | 'hireMe'
+ *  (printing the owner's name), so there is no separate standalone printing level.
+ *  `languages` sits directly under the printer: the five extruded tech-logo GLBs. */
+export type LevelId = 'hero' | 'languages' | 'otherWork' | 'hireMe'
 
 /** Whether the active level is live or a transition is playing. */
 export type Phase = 'live' | 'transition'
@@ -56,6 +57,11 @@ export const PRINTER_FIT_HEIGHT = PRINTER_FIT_WIDTH * FRAME_ASPECT
 export const LEVELS: LevelDef[] = [
   // Printer frame: ~square, contained so the whole rig + print head stay on screen.
   { id: 'hero', scrollMode: 'scrub', camera: { position: [0, 0, 9], target: [0, 0, 0], fov: 40, fitWidth: PRINTER_FIT_WIDTH, fitHeight: PRINTER_FIT_HEIGHT }, accent: '#ff6750' },
+  // Languages: the five brand-colored logo GLBs in a responsive row/grid. The box
+  // is much wider than any screen, so framing is width-driven on every aspect — the
+  // logos fill ~80% of the width on desktop AND portrait (LanguagesLevel reflows the
+  // column count, keeping the world width ~constant so they scale up, never crush).
+  { id: 'languages', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 44, fitWidth: 10, fitHeight: 3.5 }, accent: '#654ff0' },
   // Other Work: portals (live windowed apps). Framed wide enough for the portal
   // launch elements; content world-width ≈ 12 (matches the portal showcase sizing).
   { id: 'otherWork', scrollMode: 'advance', camera: { position: [0, 0, 12], target: [0, 0, 0], fov: 46, fitWidth: 12.6, fitHeight: 9.5 }, accent: '#ffffff' },

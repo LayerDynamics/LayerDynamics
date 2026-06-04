@@ -2,6 +2,7 @@ import { useLevels, LEVELS, LEVEL_COUNT } from '../stores/useLevels'
 
 const LABELS: Record<string, string> = {
   hero: 'Layer Dynamics',
+  languages: 'Languages',
   otherWork: 'Other Work',
   hireMe: 'Hire Me',
 }

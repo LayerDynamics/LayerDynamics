@@ -24,8 +24,8 @@ const meta = {
   argTypes: {
     level: {
       control: 'inline-radio',
-      options: [0, 1, 2],
-      description: '0 hero · 1 otherWork · 2 hireMe',
+      options: [0, 1, 2, 3],
+      description: '0 hero · 1 languages · 2 otherWork · 3 hireMe',
     },
   },
   render: (args: LandingArgs) => {
@@ -45,16 +45,17 @@ export const HeroLevel: Story = {
     const canvas = within(canvasElement)
     // The DOM indicator agrees with the active level.
     expect(canvas.getByText(/layer dynamics/i)).toBeInTheDocument()
-    expect(canvas.getByText('01 / 03')).toBeInTheDocument()
+    expect(canvas.getByText('01 / 04')).toBeInTheDocument()
   },
 }
 
-/** Other Work level (index 1) — the portals level inside the full landing. */
-export const OtherWorkLevel: Story = {
+/** Languages level (index 1) — the logo gallery inside the full landing. */
+export const LanguagesLevel: Story = {
   args: { level: 1 },
   play: async ({ canvasElement }) => {
     await sceneSmokeTest({ canvasElement })
     const canvas = within(canvasElement)
-    expect(canvas.getByText('02 / 03')).toBeInTheDocument()
+    expect(canvas.getByText(/languages/i)).toBeInTheDocument()
+    expect(canvas.getByText('02 / 04')).toBeInTheDocument()
   },
 }

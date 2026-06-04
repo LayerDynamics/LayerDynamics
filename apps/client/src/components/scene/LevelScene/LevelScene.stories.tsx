@@ -28,8 +28,8 @@ const meta = {
   argTypes: {
     level: {
       control: 'inline-radio',
-      options: [0, 1, 2],
-      description: '0 hero · 1 otherWork · 2 hireMe',
+      options: [0, 1, 2, 3],
+      description: '0 hero · 1 languages · 2 otherWork · 3 hireMe',
     },
     progress: {
       control: { type: 'range', min: 0, max: 1, step: 0.01 },
@@ -49,5 +49,8 @@ type Story = StoryObj<SceneArgs>
 /** Hero level active (index 0) — the full in-Canvas stack. */
 export const HeroActive: Story = { args: { level: 0, progress: 0 }, play: sceneSmokeTest }
 
-/** Other Work level active (index 1) — portals in the full scene. */
-export const OtherWorkActive: Story = { args: { level: 1, progress: 0.3 }, play: sceneSmokeTest }
+/** Languages level active (index 1) — the five logo GLBs framed by LevelCamera. */
+export const LanguagesActive: Story = { args: { level: 1, progress: 0 }, play: sceneSmokeTest }
+
+/** Other Work level active (index 2) — portals in the full scene. */
+export const OtherWorkActive: Story = { args: { level: 2, progress: 0.3 }, play: sceneSmokeTest }

@@ -25,8 +25,8 @@ const meta = {
   argTypes: {
     level: {
       control: 'inline-radio',
-      options: [0, 1, 2],
-      description: '0 hero · 1 otherWork · 2 hireMe',
+      options: [0, 1, 2, 3],
+      description: '0 hero · 1 languages · 2 otherWork · 3 hireMe',
     },
   },
   render: (args: StageArgs) => {
@@ -48,5 +48,7 @@ type Story = StoryObj<StageArgs>
 
 /** Mounts the hero level (index 0). */
 export const HeroMounted: Story = { args: { level: 0 }, play: sceneSmokeTest }
-/** Mounts the other-work level (index 1). */
-export const OtherWorkMounted: Story = { args: { level: 1 }, play: sceneSmokeTest }
+/** Mounts the languages level (index 1). */
+export const LanguagesMounted: Story = { args: { level: 1 }, play: sceneSmokeTest }
+/** Mounts the other-work level (index 2). */
+export const OtherWorkMounted: Story = { args: { level: 2 }, play: sceneSmokeTest }

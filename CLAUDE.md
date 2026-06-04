@@ -2,6 +2,27 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Rules
+
+### Code Reviews
+
+When asked for a code review or codebase review, ALWAYS review the entire codebase/all packages by default, not just one package. Write findings to Review.md unless told otherwise.
+
+### Specs & Planning
+
+Before running spec-writer or planning skills, do discovery WITH the user (ask clarifying questions) instead of one-shotting from your own assumptions.
+
+### Workflow
+
+Follow TDD: write the spec/plan first, then implement sequentially with passing tests, lint, and typecheck verified before declaring done.
+Add under a ## Specs & Planning section\n\nProduce a separate plan file per milestone (M0, M1, ...) when generating milestone implementation plans.
+
+### Output Conventions
+
+Keep individual responses concise to avoid hitting output token limits; break large outputs into chunks or write to files instead of dumping inline.
+
+-------
+
 ## What this repository is
 
 This is the `LayerDynamics/LayerDynamics` **GitHub profile repository** (Ryan O'Boyle / "Layer Dynamics") in the middle of a migration. It currently serves two purposes at once:

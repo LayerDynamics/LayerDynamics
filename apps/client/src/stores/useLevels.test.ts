@@ -1,8 +1,22 @@
 import { describe, it, expect, beforeEach } from 'vitest'
-import { useLevels, LEVEL_COUNT } from './useLevels'
+import { useLevels, LEVEL_COUNT, LEVELS } from './useLevels'
 
 const reset = () =>
   useLevels.setState({ index: 0, phase: 'live', direction: null, locked: false, swapped: false })
+
+describe('LEVELS registry', () => {
+  it('orders the levels hero → languages → otherWork → hireMe', () => {
+    expect(LEVELS.map((l) => l.id)).toEqual(['hero', 'languages', 'otherWork', 'hireMe'])
+    expect(LEVEL_COUNT).toBe(4)
+  })
+
+  it('advancing once from the printer lands on the languages level', () => {
+    useLevels.setState({ index: 0, phase: 'live', direction: null, locked: false, swapped: false })
+    useLevels.getState().requestAdvance()
+    useLevels.getState().swap()
+    expect(LEVELS[useLevels.getState().index].id).toBe('languages')
+  })
+})
 
 describe('useLevels reducer', () => {
   beforeEach(reset)

@@ -1,5 +1,6 @@
 import type { LevelId } from '../../../stores/useLevels'
 import HeroLevel from './HeroLevel'
+import LanguagesLevel from '../Languages/LanguagesLevel'
 import OtherWorkLevel from './OtherWorkLevel'
 import HireMeLevel from './HireMeLevel'
 
@@ -12,6 +13,8 @@ export default function LevelView({ id }: { id: LevelId }) {
   switch (id) {
     case 'hero':
       return <HeroLevel />
+    case 'languages':
+      return <LanguagesLevel />
     case 'otherWork':
       return <OtherWorkLevel />
     case 'hireMe':
