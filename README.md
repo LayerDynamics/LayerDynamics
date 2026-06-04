@@ -28,23 +28,44 @@ I like building things from scratch — runtimes, frameworks, CLI tools, whateve
 ## Featured Projects
 
 <div align="center">
-<a href="https://github.com/LayerDynamics/BrowserX">
-  <img src="./assets/repo-cards/BrowserX.svg" alt="BrowserX" width="400" />
+<a href="https://github.com/LayerDynamics/auto_dep">
+  <img src="./assets/repo-cards/auto_dep.svg" alt="auto_dep" width="400" />
+</a>
+<a href="https://github.com/LayerDynamics/scriptic">
+  <img src="./assets/repo-cards/scriptic.svg" alt="scriptic" width="400" />
+</a>
+<a href="https://github.com/LayerDynamics/logly">
+  <img src="./assets/repo-cards/logly.svg" alt="logly" width="400" />
+</a>
+<a href="https://github.com/LayerDynamics/mechx">
+  <img src="./assets/repo-cards/mechx.svg" alt="mechx" width="400" />
 </a>
 <a href="https://github.com/LayerDynamics/forge">
   <img src="./assets/repo-cards/forge.svg" alt="forge" width="400" />
 </a>
-<a href="https://github.com/LayerDynamics/node-rust-pty">
-  <img src="./assets/repo-cards/node-rust-pty.svg" alt="node-rust-pty" width="400" />
+<a href="https://github.com/LayerDynamics/micro_machines">
+  <img src="./assets/repo-cards/micro_machines.svg" alt="micro_machines" width="400" />
 </a>
-<a href="https://github.com/LayerDynamics/Echelon">
-  <img src="./assets/repo-cards/Echelon.svg" alt="Echelon" width="400" />
+<a href="https://github.com/LayerDynamics/pellucid">
+  <img src="./assets/repo-cards/pellucid.svg" alt="pellucid" width="400" />
 </a>
-<a href="https://github.com/LayerDynamics/smlx">
-  <img src="./assets/repo-cards/smlx.svg" alt="smlx" width="400" />
+<a href="https://github.com/LayerDynamics/KiClaude">
+  <img src="./assets/repo-cards/KiClaude.svg" alt="KiClaude" width="400" />
 </a>
-<a href="https://github.com/LayerDynamics/stega">
-  <img src="./assets/repo-cards/stega.svg" alt="stega" width="400" />
+<a href="https://github.com/LayerDynamics/tgc">
+  <img src="./assets/repo-cards/tgc.svg" alt="tgc" width="400" />
+</a>
+<a href="https://github.com/LayerDynamics/mdx-to-json">
+  <img src="./assets/repo-cards/mdx-to-json.svg" alt="mdx-to-json" width="400" />
+</a>
+<a href="https://github.com/LayerDynamics/BrowserX">
+  <img src="./assets/repo-cards/BrowserX.svg" alt="BrowserX" width="400" />
+</a>
+<a href="https://github.com/LayerDynamics/rex-orm">
+  <img src="./assets/repo-cards/rex-orm.svg" alt="rex-orm" width="400" />
+</a>
+<a href="https://github.com/LayerDynamics/wasm_os">
+  <img src="./assets/repo-cards/wasm_os.svg" alt="wasm_os" width="400" />
 </a>
 </div>
 

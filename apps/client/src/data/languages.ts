@@ -82,6 +82,14 @@ export const languages: LanguageDef[] = [
         stars: 0,
       },
       {
+        name: 'forge',
+        description:
+          'Forge is an Electron-like desktop application framework using Rust and Deno. Apps are 100% TypeScript/JavaScript — no per-app Rust required. The runtime provides native system access through a secure, capability-based API.',
+        url: `${GH}/forge`,
+        primaryLang: 'Rust',
+        stars: 3,
+      },
+      {
         name: 'micro_machines',
         description:
           'A KVM-based virtual machine monitor (VMM) in Rust that runs secure, multi-tenant microVMs with a container UX — the same microVM lineage as Firecracker, but shipping the batteries a typical dev/deploy workflow needs out of the box. `mm run` an OCI image to get a hardware-isolated VM that boots in well under a second.',

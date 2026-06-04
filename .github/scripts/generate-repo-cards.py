@@ -8,13 +8,23 @@ import urllib.request
 GITHUB_TOKEN = os.environ.get("GITHUB_TOKEN", "")
 USERNAME = "LayerDynamics"
 
+# Featured repos — kept in sync with the interactive portfolio's Languages level
+# (apps/client/src/data/languages.ts), grouped Python -> Rust -> TypeScript ->
+# Deno -> WebAssembly. Update both together.
 REPOS = [
-    "BrowserX",
+    "auto_dep",
+    "scriptic",
+    "logly",
+    "mechx",
     "forge",
-    "node-rust-pty",
-    "Echelon",
-    "smlx",
-    "stega",
+    "micro_machines",
+    "pellucid",
+    "KiClaude",
+    "tgc",
+    "mdx-to-json",
+    "BrowserX",
+    "rex-orm",
+    "wasm_os",
 ]
 
 LANG_COLORS = {
