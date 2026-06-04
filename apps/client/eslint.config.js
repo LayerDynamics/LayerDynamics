@@ -17,6 +17,13 @@ export default defineConfig([
     ],
     languageOptions: {
       globals: globals.browser,
+      // Pin the parser's project root to this package. Without it, the tseslint
+      // parser auto-walks the tree and finds multiple candidate roots in the
+      // monorepo (apps/client + packages/portal), which the IDE's ESLint
+      // integration rejects with a "multiple candidate TSConfigRootDirs" error.
+      parserOptions: {
+        tsconfigRootDir: import.meta.dirname,
+      },
     },
   },
   {
