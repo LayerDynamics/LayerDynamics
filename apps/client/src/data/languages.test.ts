@@ -56,7 +56,7 @@ describe('languages data', () => {
   it('honors the curated picks exactly (no silent drift)', () => {
     const expected: Record<LanguageId, string[]> = {
       python: ['auto_dep', 'scriptic', 'logly'],
-      rust: ['mechx', 'forge', 'ferrite', 'Plastiq__', 'node-rust-pty', 'GameWarden'],
+      rust: ['mechx', 'micro_machines', 'pellucid'],
       typescript: ['KiClaude', 'tgc', 'mdx-to-json'],
       deno: ['BrowserX', 'rex-orm'],
       webassembly: ['wasm_os'],

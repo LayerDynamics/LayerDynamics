@@ -71,7 +71,7 @@ export const languages: LanguageDef[] = [
   {
     id: 'rust',
     label: 'Rust',
-    blurb: 'Systems work — simulation engines, native runtimes, GPU-native CAD, and deep interop.',
+    blurb: 'Systems work — a next-gen simulation engine, KVM microVM virtualization, and real-time intelligence with on-device ML.',
     glb: '/assets/objects/RustLogo.glb',
     repos: [
       {
@@ -82,42 +82,18 @@ export const languages: LanguageDef[] = [
         stars: 0,
       },
       {
-        name: 'forge',
+        name: 'micro_machines',
         description:
-          'Forge is an Electron-like desktop application framework using Rust and Deno. Apps are 100% TypeScript/JavaScript — no per-app Rust required. The runtime provides native system access through a secure, capability-based API.',
-        url: `${GH}/forge`,
-        primaryLang: 'Rust',
-        stars: 3,
-      },
-      {
-        name: 'ferrite',
-        description:
-          'A PyTorch-like deep learning framework in Rust with automatic differentiation, neural networks, and Metal GPU acceleration for Apple Silicon.',
-        url: `${GH}/ferrite`,
+          'A KVM-based virtual machine monitor (VMM) in Rust that runs secure, multi-tenant microVMs with a container UX — the same microVM lineage as Firecracker, but shipping the batteries a typical dev/deploy workflow needs out of the box. `mm run` an OCI image to get a hardware-isolated VM that boots in well under a second.',
+        url: `${GH}/micro_machines`,
         primaryLang: 'Rust',
         stars: 0,
       },
       {
-        name: 'Plastiq__',
+        name: 'pellucid',
         description:
-          'Plastiq is a GPU-native, open-source parametric CAD engine with a programmable BRep kernel built in Rust and Tauri.',
-        url: `${GH}/Plastiq__`,
-        primaryLang: 'Rust',
-        stars: 0,
-      },
-      {
-        name: 'node-rust-pty',
-        description:
-          'A high-performance Node.js native module providing comprehensive PTY (pseudo-terminal) functionality with virtual DOM-based rendering and advanced session management, implemented in Rust with N-API bindings.',
-        url: `${GH}/node-rust-pty`,
-        primaryLang: 'Rust',
-        stars: 1,
-      },
-      {
-        name: 'GameWarden',
-        description:
-          'A ML-first game engine written in Rust. It bridges game development and machine learning research using Bevy ECS and Rapier3D, supports ONNX runtime, Ollama and vLLM, and is Gymnasium-compatible with vectorized environments for ML training, with bindings in both Deno and Node.js.',
-        url: `${GH}/GameWarden`,
+          'Real-time situational-awareness console — markets, geopolitics, climate, energy, supply chain, infrastructure, cyber, and intelligence — surfaced through a deck.gl 2D map and a globe.gl 3D map, with cross-source correlation and on-device ML. Ships as a Tauri desktop app and a hosted SaaS.',
+        url: `${GH}/pellucid`,
         primaryLang: 'Rust',
         stars: 0,
       },
