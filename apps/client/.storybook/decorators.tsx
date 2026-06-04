@@ -133,6 +133,9 @@ interface CanvasOpts {
   camera?: [number, number, number]
   /** Fixed pixel height for deterministic framing. Default 480. */
   height?: number
+  /** Fixed pixel width for deterministic aspect (e.g. portrait vs landscape).
+   *  Default '100%' (fills the story frame). */
+  width?: number
 }
 
 function CanvasFrame({ children, opts }: { children: ReactNode; opts: CanvasOpts }) {
@@ -146,7 +149,7 @@ function CanvasFrame({ children, opts }: { children: ReactNode; opts: CanvasOpts
     children
   )
   return (
-    <div style={{ width: '100%', height: opts.height ?? 480, background: brand.bg0 }}>
+    <div style={{ width: opts.width ?? '100%', height: opts.height ?? 480, background: brand.bg0 }}>
       <Canvas
         frameloop="always"
         camera={{ position: opts.camera ?? [0, 0, 6], fov: 50 }}

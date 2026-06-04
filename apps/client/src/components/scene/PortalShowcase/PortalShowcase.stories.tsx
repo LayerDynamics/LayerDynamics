@@ -38,6 +38,12 @@ export const Wasmos: Story = {
   play: sceneSmokeTest,
 }
 
+/** The forge portal — static GitHub Pages site embedded direct at its own origin. */
+export const Forge: Story = {
+  args: { app: 'forge', size: [4, 2.6] },
+  play: sceneSmokeTest,
+}
+
 /** Unconfigured (no app/origin) → renders nothing, still mounts cleanly. */
 export const Inert: Story = {
   args: { app: undefined, providerOrigin: undefined },
