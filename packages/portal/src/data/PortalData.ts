@@ -13,6 +13,16 @@ export const PORTAL_DATA: PortalDataEntry[] = [
       'Experimental OS in a browser tab: a WASM microkernel scheduling WASI processes, a Unix userland + windowed compositor, and a nested riscv64 Linux. A proof of concept.',
     repoUrl: 'https://github.com/LayerDynamics/wasm_os',
   },
+  {
+    id: 'forge',
+    label: 'Forge',
+    kind: 'dynamic',
+    preferredPresenter: 'dom-window',
+    defaultSize: [4, 2.6],
+    description:
+      'Forge is an Electron-like desktop application framework using Rust and Deno. Apps are 100% TypeScript/JavaScript - no per-app Rust required. The runtime provides native system access through a secure, capability-based API.',
+    repoUrl: 'https://github.com/LayerDynamics/forge',
+  },
   { id: 'demo-static', label: 'Demo Static Build', kind: 'static', preferredPresenter: 'dom-window', defaultSize: [3, 2] },
   { id: 'demo-dynamic', label: 'Demo Live App', kind: 'dynamic', preferredPresenter: 'dom-window', defaultSize: [3.2, 2] },
   { id: 'demo-stream', label: 'Demo Streamed App', kind: 'stream', preferredPresenter: 'texture', defaultSize: [2.4, 1.6] },
