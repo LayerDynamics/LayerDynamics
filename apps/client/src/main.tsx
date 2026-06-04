@@ -3,6 +3,7 @@ import './draco' // self-host the Draco decoder — MUST precede the App import 
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import { Globals } from '@react-spring/web'
+import { raf } from '@react-spring/rafz'
 import './index.css'
 import App from './App.tsx'
 
@@ -15,6 +16,18 @@ import App from './App.tsx'
 // correctly under "always". This runs after the App import graph (where
 // @react-spring/three assigns "demand"), so it wins.
 Globals.assign({ frameLoop: 'always' })
+
+// @react-spring/three registers an R3F per-frame effect (addEffect(() =>
+// raf.advance())) to drive springs in "demand" mode. Under our forced "always"
+// loop, rafz's own continuous rAF already ticks every spring, so that manual
+// advance is redundant — and rafz warns once per frame ("Cannot call the manual
+// advancement of rafz whilst frameLoop is not set as demand"), flooding the
+// console. Guard advance so it only does work in "demand" mode and is a silent
+// no-op otherwise; this stays correct if the loop ever flips back to demand.
+const advanceRaf = raf.advance
+raf.advance = () => {
+  if (raf.frameLoop === 'demand') advanceRaf()
+}
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
