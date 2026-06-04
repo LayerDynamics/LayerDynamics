@@ -1,11 +1,12 @@
 name: Generate Repo Cards
 
 on:
+  # Regenerate on a weekly schedule and on-demand only. The `push: main` trigger
+  # was removed: it auto-committed regenerated SVGs on every code push, which
+  # diverged local/remote main (you'd land "behind 1" each push). Cards still stay
+  # fresh via the weekly cron; run manually anytime with workflow_dispatch.
   schedule:
     - cron: "0 0 * * 0"
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
