@@ -26,6 +26,23 @@ export const REGISTERED_APPS: AppPortalConfigEntry[] = [
     defaultSize: [4, 2.6],
   },
   {
+    // Forge — owner-built site on GitHub Pages (sets no X-Frame-Options/CSP,
+    // verified framing-permissive). Embedded directly at its own origin: a path-prefix
+    // proxy would break GitHub Pages' absolute asset paths. `kind: 'dynamic'` matches
+    // the direct-embed precedent (WASM_OS) — the allowlist invariant reserves
+    // `kind: 'static'` for provider-served (serveStrategy 'static') apps. Sandbox is
+    // tight — a content site needs only allow-scripts (its JS), allow-popups (external
+    // links → new tab), and allow-same-origin (its own origin for any storage).
+    id: 'forge',
+    label: 'Forge',
+    kind: 'dynamic',
+    origin: 'https://forge-deno.com',
+    serveStrategy: 'direct',
+    preferredPresenter: 'dom-window',
+    sandbox: ['allow-scripts', 'allow-popups', 'allow-same-origin'],
+    defaultSize: [4, 2.6],
+  },
+  {
     id: 'demo-static',
     label: 'Demo Static Build',
     kind: 'static',
