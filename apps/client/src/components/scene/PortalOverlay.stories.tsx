@@ -32,6 +32,11 @@ export const Open: Story = {
     const dialog = await body.findByRole('dialog')
     await expect(dialog).toHaveAttribute('aria-label', 'WASM_OS')
 
+    // The header chrome surfaces a link out to the source repository.
+    const repo = body.getByRole('link', { name: /view repo/i })
+    await expect(repo).toHaveAttribute('href', 'https://github.com/LayerDynamics/wasm_os')
+    await expect(repo).toHaveAttribute('target', '_blank')
+
     const close = body.getByRole('button', { name: /close/i })
     await userEvent.click(close)
     await expect(usePortalOverlay.getState().openApp).toBeNull()

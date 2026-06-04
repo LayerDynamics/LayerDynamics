@@ -74,6 +74,44 @@
   text-transform: uppercase;
 }
 
+.portal-overlay__actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.portal-overlay__repo {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 103, 80, 0.5);
+  border-radius: 8px;
+  background: transparent;
+  color: #ff9d8a;
+  font:
+    600 12px/1 'Space Grotesk',
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.portal-overlay__repo:hover,
+.portal-overlay__repo:focus-visible {
+  background: #ff6750;
+  border-color: #ff6750;
+  color: #050507;
+  outline: none;
+}
+
 .portal-overlay__close {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.18);

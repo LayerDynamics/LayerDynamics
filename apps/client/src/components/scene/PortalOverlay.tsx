@@ -77,7 +77,9 @@ export default function PortalOverlay() {
   }, [openApp, close])
 
   if (!openApp) return null
-  const label = getPortalData(openApp)?.label ?? openApp
+  const data = getPortalData(openApp)
+  const label = data?.label ?? openApp
+  const repoUrl = data?.repoUrl
 
   // Portal to <body> so the modal escapes the `.landing` stacking context
   // (position:fixed there) and renders above the Nav and every scene layer.
@@ -92,9 +94,21 @@ export default function PortalOverlay() {
       >
         <header className="portal-overlay__bar">
           <span className="portal-overlay__title">{label}</span>
-          <button className="portal-overlay__close" onClick={close} aria-label="Close">
-            ×
-          </button>
+          <div className="portal-overlay__actions">
+            {repoUrl && (
+              <a
+                className="portal-overlay__repo"
+                href={repoUrl}
+                target="_blank"
+                rel="noreferrer"
+              >
+                View repo ↗
+              </a>
+            )}
+            <button className="portal-overlay__close" onClick={close} aria-label="Close">
+              ×
+            </button>
+          </div>
         </header>
 
         <div className="portal-overlay__body">

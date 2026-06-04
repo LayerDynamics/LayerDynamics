@@ -48,7 +48,12 @@ export interface RegisteredApp {
 export type PortalDataEntry = Pick<
   RegisteredApp,
   'id' | 'label' | 'kind' | 'preferredPresenter' | 'defaultSize'
->
+> & {
+  /** Short, human-facing blurb shown on the dormant (pre-click) portal card. */
+  description?: string
+  /** Source-repository URL surfaced in the open overlay's header chrome. */
+  repoUrl?: string
+}
 
 /** Provider allowlist entry = RegisteredApp plus serving knobs. */
 export interface AppPortalConfigEntry extends RegisteredApp {

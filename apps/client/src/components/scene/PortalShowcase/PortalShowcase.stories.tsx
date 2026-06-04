@@ -32,6 +32,12 @@ type Story = StoryObj<typeof PortalShowcase>
 /** A configured showcase (renders the dormant portal). */
 export const Configured: Story = { play: sceneSmokeTest }
 
+/** The wasmos portal — carries a description blurb rendered on the dormant card. */
+export const Wasmos: Story = {
+  args: { app: 'wasmos', size: [4, 2.6] },
+  play: sceneSmokeTest,
+}
+
 /** Unconfigured (no app/origin) → renders nothing, still mounts cleanly. */
 export const Inert: Story = {
   args: { app: undefined, providerOrigin: undefined },

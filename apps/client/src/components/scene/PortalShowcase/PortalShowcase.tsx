@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { Text } from '@react-three/drei'
-import { PortalEdge, getPortalData } from '@layerdynamics/portal'
+import { PortalEdge, getPortalData, roundedRectGeometry } from '@layerdynamics/portal'
 import { usePortalOverlay } from '../../../stores/usePortalOverlay'
 import { brand } from '../../../styles/brand'
 
@@ -42,15 +42,23 @@ export function PortalShowcase({
     }
   }, [hover])
 
-  if (!app || !providerOrigin) return null
   const [w, h] = size
-  const label = getPortalData(app)?.label ?? app
+  // Corner radius scales with the card but stays subtle — capped so wide cards
+  // don't read as pills. Rounds both the clickable surface and the coral frame.
+  const radius = Math.min(0.16, w * 0.045, h * 0.045)
+  const surface = useMemo(() => roundedRectGeometry(w, h, radius), [w, h, radius])
+
+  if (!app || !providerOrigin) return null
+  const data = getPortalData(app)
+  const label = data?.label ?? app
+  const description = data?.description
 
   return (
     <group position={position}>
       {/* Clickable surface — opens the overlay (stopPropagation so the level's
           background click handlers don't also fire). */}
       <mesh
+        geometry={surface}
         onClick={(e) => {
           e.stopPropagation()
           open(app, providerOrigin)
@@ -61,15 +69,14 @@ export function PortalShowcase({
         }}
         onPointerOut={() => setHover(false)}
       >
-        <planeGeometry args={[w, h]} />
         <meshBasicMaterial color={brand.bg2} transparent opacity={hover ? 0.55 : 0.32} />
       </mesh>
 
-      <PortalEdge width={w} height={h} intensity={hover ? 2 : 1.1} />
+      <PortalEdge width={w} height={h} intensity={hover ? 2 : 1.1} radius={radius} />
 
       <Text
         font={FONT_MED}
-        position={[0, h * 0.12, 0.02]}
+        position={[0, h * 0.33, 0.02]}
         fontSize={Math.min(0.42, w * 0.11)}
         color={brand.lavender}
         anchorX="center"
@@ -80,9 +87,24 @@ export function PortalShowcase({
         {label}
       </Text>
 
+      {description && (
+        <Text
+          font={FONT_MED}
+          position={[0, h * 0.0, 0.02]}
+          fontSize={Math.min(0.13, w * 0.033)}
+          color={brand.violetSoft}
+          anchorX="center"
+          anchorY="middle"
+          lineHeight={1.4}
+          maxWidth={w * 0.82}
+        >
+          {description}
+        </Text>
+      )}
+
       <Text
         font={FONT_MED}
-        position={[0, -h * 0.22, 0.02]}
+        position={[0, -h * 0.36, 0.02]}
         fontSize={Math.min(0.2, w * 0.052)}
         color={brand.violet}
         anchorX="center"
