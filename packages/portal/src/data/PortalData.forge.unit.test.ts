@@ -9,6 +9,7 @@ describe('forge portal catalog entry', () => {
     expect(e.preferredPresenter).toBe('dom-window')
     expect(e.defaultSize).toEqual([4, 2.6])
     expect(e.repoUrl).toBe('https://github.com/LayerDynamics/forge')
+    expect(e.siteUrl).toBe('https://forge-deno.com')
     expect(e.description).toMatch(/Electron-like desktop application framework/)
   })
 })

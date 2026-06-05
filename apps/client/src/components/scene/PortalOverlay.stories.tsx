@@ -37,6 +37,36 @@ export const Open: Story = {
     await expect(repo).toHaveAttribute('href', 'https://github.com/LayerDynamics/wasm_os')
     await expect(repo).toHaveAttribute('target', '_blank')
 
+    // wasmos has no siteUrl in the catalog → no "Go to site" action.
+    await expect(body.queryByRole('link', { name: /go to site/i })).toBeNull()
+
+    const close = body.getByRole('button', { name: /close/i })
+    await userEvent.click(close)
+    await expect(usePortalOverlay.getState().openApp).toBeNull()
+  },
+}
+
+/** Opened on forge — surfaces a "Go to site" action to the left of "View repo". */
+export const Forge: Story = {
+  render: () => {
+    usePortalOverlay.setState({ openApp: 'forge', providerOrigin: 'http://127.0.0.1:1' })
+    return <PortalOverlay />
+  },
+  play: async () => {
+    const body = within(document.body)
+    const dialog = await body.findByRole('dialog')
+    await expect(dialog).toHaveAttribute('aria-label', 'Forge')
+
+    // "Go to site" points at the live site and opens in a new tab.
+    const site = body.getByRole('link', { name: /go to site/i })
+    await expect(site).toHaveAttribute('href', 'https://forge-deno.com')
+    await expect(site).toHaveAttribute('target', '_blank')
+    await expect(site).toHaveAttribute('rel', expect.stringContaining('noreferrer'))
+
+    // It sits to the LEFT of "View repo" in the actions row (earlier in the DOM).
+    const repo = body.getByRole('link', { name: /view repo/i })
+    await expect(site.compareDocumentPosition(repo) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy()
+
     const close = body.getByRole('button', { name: /close/i })
     await userEvent.click(close)
     await expect(usePortalOverlay.getState().openApp).toBeNull()

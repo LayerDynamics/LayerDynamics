@@ -22,6 +22,7 @@ export const PORTAL_DATA: PortalDataEntry[] = [
     description:
       'Forge is an Electron-like desktop application framework using Rust and Deno. Apps are 100% TypeScript/JavaScript - no per-app Rust required. The runtime provides native system access through a secure, capability-based API.',
     repoUrl: 'https://github.com/LayerDynamics/forge',
+    siteUrl: 'https://forge-deno.com',
   },
   { id: 'demo-static', label: 'Demo Static Build', kind: 'static', preferredPresenter: 'dom-window', defaultSize: [3, 2] },
   { id: 'demo-dynamic', label: 'Demo Live App', kind: 'dynamic', preferredPresenter: 'dom-window', defaultSize: [3.2, 2] },

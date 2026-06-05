@@ -53,6 +53,8 @@ export type PortalDataEntry = Pick<
   description?: string
   /** Source-repository URL surfaced in the open overlay's header chrome. */
   repoUrl?: string
+  /** Public live-site URL surfaced as the "Go to site" action in the overlay header. */
+  siteUrl?: string
 }
 
 /** Provider allowlist entry = RegisteredApp plus serving knobs. */

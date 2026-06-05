@@ -112,6 +112,39 @@
   outline: none;
 }
 
+/* Primary action: jump out to the live site. Filled coral so it reads as the
+   main CTA, with "View repo" as the outlined secondary beside it. */
+.portal-overlay__site {
+  display: inline-flex;
+  align-items: center;
+  height: 36px;
+  padding: 0 14px;
+  border: 1px solid #ff6750;
+  border-radius: 8px;
+  background: #ff6750;
+  color: #050507;
+  font:
+    600 12px/1 'Space Grotesk',
+    system-ui,
+    sans-serif;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  white-space: nowrap;
+  transition:
+    background 120ms ease,
+    border-color 120ms ease,
+    box-shadow 120ms ease;
+}
+
+.portal-overlay__site:hover,
+.portal-overlay__site:focus-visible {
+  background: #ff7d68;
+  border-color: #ff7d68;
+  box-shadow: 0 0 18px rgba(255, 103, 80, 0.45);
+  outline: none;
+}
+
 .portal-overlay__close {
   appearance: none;
   border: 1px solid rgba(255, 255, 255, 0.18);
@@ -176,5 +209,26 @@
     height: 100%;
     border: 0;
     border-radius: 0;
+  }
+  /* Tighten the bar so title + Go to site + View repo + close fit one row. */
+  .portal-overlay__bar {
+    padding: 8px 8px 8px 12px;
+    gap: 8px;
+  }
+  .portal-overlay__title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .portal-overlay__site,
+  .portal-overlay__repo {
+    height: 32px;
+    padding: 0 10px;
+    font-size: 11px;
+    letter-spacing: 0.04em;
+  }
+  .portal-overlay__close {
+    width: 32px;
+    height: 32px;
   }
 }
