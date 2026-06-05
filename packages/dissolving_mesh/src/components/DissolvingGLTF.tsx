@@ -1,18 +1,17 @@
 import { type ThreeElements } from '@react-three/fiber'
 import { useGLTF } from '@react-three/drei'
 import { useEffect, useMemo } from 'react'
-import { Mesh, MeshStandardMaterial } from 'three'
-import type { ColorRepresentation, Material, Object3D } from 'three'
-import { ErosionMaterial } from '../material/ErosionMaterial'
-import { prepareErosionGeometry } from '../lib/scatter'
+import { Mesh } from 'three'
+import type { ColorRepresentation } from 'three'
+import { buildDissolvingScene } from '../lib/dissolveScene'
 import { useDissolveController, type DissolveAnimation } from './useDissolveController'
 
 export interface DissolvingGLTFProps extends DissolveAnimation {
   /** URL of the `.glb` / `.gltf` to load and dissolve. */
   url: string
   /**
-   * Draco decoder directory (e.g. `/draco/`) for Draco-compressed assets. Set once and
-   * applied before the asset loads. Omit for uncompressed GLBs.
+   * Draco decoder directory (e.g. `/draco/`) for Draco-compressed assets. Passed to this
+   * load only (no global loader state is mutated). Omit for uncompressed GLBs.
    */
   decoderPath?: string
 
@@ -36,68 +35,6 @@ export interface DissolvingGLTFProps extends DissolveAnimation {
 
 /** Placement props (position/rotation/scale/…) are forwarded to the wrapping group. */
 type GroupProps = Omit<ThreeElements['group'], 'children'>
-
-/**
- * Copy the PBR-relevant fields of a loaded GLB material onto an ErosionMaterial so the
- * dissolved mesh keeps its original textures, colour and shading. Done field-by-field
- * (rather than `.copy`) so it is safe regardless of the source material subtype — an
- * unlit `MeshBasicMaterial` source won't poison `roughness`/`metalness` with `undefined`.
- */
-function adoptSurface(target: ErosionMaterial, source: Material): void {
-  const std = source as MeshStandardMaterial
-  if (std.color) target.color.copy(std.color)
-  if (std.emissive) target.emissive.copy(std.emissive)
-  if (typeof std.emissiveIntensity === 'number') target.emissiveIntensity = std.emissiveIntensity
-  if (typeof std.roughness === 'number') target.roughness = std.roughness
-  if (typeof std.metalness === 'number') target.metalness = std.metalness
-  if (std.map) target.map = std.map
-  if (std.normalMap) target.normalMap = std.normalMap
-  if (std.roughnessMap) target.roughnessMap = std.roughnessMap
-  if (std.metalnessMap) target.metalnessMap = std.metalnessMap
-  if (std.emissiveMap) target.emissiveMap = std.emissiveMap
-  if (std.aoMap) target.aoMap = std.aoMap
-  if (std.alphaMap) target.alphaMap = std.alphaMap
-  if (typeof std.flatShading === 'boolean') target.flatShading = std.flatShading
-  target.vertexColors = source.vertexColors
-  target.transparent = source.transparent
-  target.opacity = source.opacity
-  target.side = source.side
-  target.needsUpdate = true
-}
-
-interface BuiltScene {
-  object: Object3D
-  materials: ErosionMaterial[]
-}
-
-/**
- * Clone the loaded scene and turn every mesh into a dissolving flake-mesh: prepare its
- * geometry (non-indexed per-triangle attributes) and swap its material for an
- * ErosionMaterial that adopts the original surface. Each mesh gets a distinct seed so
- * their flakes don't release in lock-step.
- */
-function buildDissolvingScene(source: Object3D, seed: number, normalBias: number): BuiltScene {
-  const object = source.clone(true)
-  const materials: ErosionMaterial[] = []
-  let index = 0
-
-  object.traverse((node) => {
-    const mesh = node as Mesh
-    if (!mesh.isMesh || !mesh.geometry) return
-
-    const sources = Array.isArray(mesh.material) ? mesh.material : [mesh.material]
-    const material = new ErosionMaterial()
-    const first = sources[0]
-    if (first) adoptSurface(material, first)
-
-    mesh.geometry = prepareErosionGeometry(mesh.geometry, { seed: seed + index, normalBias })
-    mesh.material = material
-    materials.push(material)
-    index++
-  })
-
-  return { object, materials }
-}
 
 /**
  * Load a GLB and dissolve its actual meshes into burning flakes while preserving the
@@ -129,13 +66,12 @@ export function DissolvingGLTF({
   normalBias = 0.6,
   ...groupProps
 }: DissolvingGLTFProps & GroupProps) {
-  // Must be configured before the loader reads it, so set it before useGLTF below.
-  if (decoderPath) useGLTF.setDecoderPath(decoderPath)
-
-  const { scene } = useGLTF(url)
+  // Pass the Draco decoder path to this load only (drei applies it per-load when the
+  // second arg is a string) instead of mutating useGLTF's global decoder path in render.
+  const { scene } = useGLTF(url, decoderPath)
 
   const { object, materials } = useMemo(
-    () => buildDissolvingScene(scene, seed, normalBias),
+    () => buildDissolvingScene(scene, { seed, normalBias }),
     [scene, seed, normalBias],
   )
 

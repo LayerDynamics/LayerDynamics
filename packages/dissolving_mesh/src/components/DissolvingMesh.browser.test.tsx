@@ -85,4 +85,25 @@ describe('DissolvingMesh', () => {
       .poll(() => (scene ? findErosionMaterial(scene)?.progress : undefined), { timeout: 8000 })
       .toBe(1)
   })
+
+  it('fires onComplete exactly once when controlled progress is driven to 1', async () => {
+    const geometry = new BoxGeometry(1, 1, 1)
+    let completeCalls = 0
+    const screen = await render(
+      <Canvas>
+        <ambientLight />
+        <DissolvingMesh geometry={geometry} progress={1} onComplete={() => completeCalls++} />
+      </Canvas>,
+    )
+
+    await expect
+      .poll(() => screen.container.querySelector('canvas'), { timeout: 3000 })
+      .toBeTruthy()
+
+    // It fires...
+    await expect.poll(() => completeCalls, { timeout: 8000 }).toBeGreaterThanOrEqual(1)
+    // ...and the latch keeps it from re-firing every frame while progress stays at 1.
+    await new Promise((resolve) => setTimeout(resolve, 300))
+    expect(completeCalls).toBe(1)
+  })
 })

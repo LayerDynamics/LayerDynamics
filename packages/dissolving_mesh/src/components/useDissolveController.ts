@@ -20,7 +20,11 @@ export interface DissolveAnimation {
   paused?: boolean
   /** Called every frame with the current progress (0..1). */
   onProgress?: (progress: number) => void
-  /** Called once when a non-looping animation reaches progress 1. */
+  /**
+   * Called once when the dissolve first reaches progress 1 — for both a non-looping
+   * auto-play and a controlled `progress` that is driven to 1 (e.g. scroll/timeline).
+   * Re-arms whenever progress could leave 1 (the controls change or it scrubs back down).
+   */
   onComplete?: () => void
 }
 
@@ -59,6 +63,12 @@ export function useDissolveController(
       value.current = progress
       for (const material of materials) material.progress = progress
       onProgress?.(progress)
+      // Fire completion once when a controlled scrub is driven to (or past) 1. The
+      // re-arm effect resets the latch when `progress` changes away from this value.
+      if (progress >= 1 && !completed.current) {
+        completed.current = true
+        onComplete?.()
+      }
       return
     }
 

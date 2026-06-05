@@ -8,6 +8,8 @@ export { ErosionMaterial } from './material/ErosionMaterial'
 export type { ErosionMaterialParameters } from './material/ErosionMaterial'
 export { prepareErosionGeometry } from './lib/scatter'
 export type { ErosionGeometryOptions } from './lib/scatter'
+export { buildDissolvingScene, adoptSurface } from './lib/dissolveScene'
+export type { DissolveScene, DissolveSceneOptions } from './lib/dissolveScene'
 export {
   injectErosion,
   ER_VERTEX_MARKER,
