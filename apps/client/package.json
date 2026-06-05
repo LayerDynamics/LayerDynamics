@@ -15,6 +15,7 @@
     "build-storybook": "storybook build"
   },
   "dependencies": {
+    "@layerdynamics/dissolving-mesh": "workspace:*",
     "@layerdynamics/portal": "workspace:*",
     "@pmndrs/cannon-worker-api": "^2.4.0",
     "@react-spring/rafz": "^10.1.0",
